@@ -30,7 +30,6 @@ Position.row.__doc__ = 'A zero-based row number'
 Position.column.__doc__ = 'A zero-based column number'
 
 
-
 class DuplicateQueenError(Exception):
     """An exception indicating an attempt to add a queen where one is already present."""
 
@@ -43,7 +42,6 @@ class DuplicateQueenError(Exception):
         return f'duplicate queen in row {self._position.row} column {self._position.column}'
 
 
-
 class MissingQueenError(Exception):
     """An exception indicating an attempt to remove a queen where one is not present."""
 
@@ -54,7 +52,6 @@ class MissingQueenError(Exception):
 
     def __str__(self) -> str:
         return f'missing queen in row {self._position.row} column {self._position.column}'
-
 
 
 class QueensState:
@@ -99,7 +96,6 @@ class QueensState:
                 elif abs(q1.column - q2.column) == abs(q1.row - q2.row): # check Diagonals
                     return True
         return False
-
 
 
     def with_queens_added(self, positions: list[Position]) -> Self:
