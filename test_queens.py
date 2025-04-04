@@ -61,16 +61,20 @@ class TestQueensState(unittest.TestCase):
 
     def test_has_queen_True(self):
         """Testcase: has_queen() should return True if queen exists on given position of the chessboard"""
-        pass
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0)]
+        self.assertTrue(state.has_queen(Position(0, 0)))
 
 
     def test_has_queen_False(self):
-        """Testcase: has_queen() should return False if queen does not exist"""
-        pass
+        """Testcase: has_queen() should return False if queen does not exist on given position of the chessboard"""
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0)]
+        self.assertFalse(state.has_queen(Position(1, 0)))
 
 
     def test_queens_unsafe_True(self):
-        """Testcase: queens_unsafe() should return True if queens can be captured by at least one other queen"""
+        """Testcase: queens_unsafe() should return True if there are at least one queen exists"""
         pass
 
 
