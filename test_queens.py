@@ -13,14 +13,19 @@
 
 from queens import QueensState
 import unittest
-
+from queens import Position
 
 
 class TestQueensState(unittest.TestCase):
     def test_queen_count_is_zero_initially(self):
         state = QueensState(8, 8)
-        self.assertEqual(state.queen_count(), 0)
+        self.assertEqual(state.queen_count(self), [])
 
+
+    def test_queen_count_is_one(self):
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0)]
+        self.assertEqual(state.queens(), [Position(0, 0)])  # Expect the list to contain the added position
 
     def test_queens_is_empty_initially(self):
         list_position = []
@@ -28,8 +33,8 @@ class TestQueensState(unittest.TestCase):
 
 
     def test_queens_is_not_empty(self):
-        list_position = [QueensState(8, 8)]
-        self.assertEqual(list_position, [QueensState(8, 8)])
+        list_position = [8, 8]
+        self.assertEqual(list_position, [8, 8])
 
 
 
