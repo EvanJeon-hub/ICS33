@@ -77,7 +77,7 @@ class QueensState:
     def queens(self) -> list[Position]:
         """Returns a list of the positions in which queens appear on the chessboard,
         arranged in no particular order."""
-        return Position
+        return [QueensState.rows, QueensState.columns]
 
 
     def has_queen(self, position: Position) -> bool:
