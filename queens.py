@@ -65,7 +65,8 @@ class QueensState:
         """Initializes the chessboard to have the given numbers of rows and columns,
         with no queens occupying any of its cells."""
         self.rows = rows
-        self.columns = columns     
+        self.columns = columns
+        self._queen_position = []
 
     @staticmethod
     def queen_count() -> int:
@@ -76,7 +77,7 @@ class QueensState:
     def queens(self) -> list[Position]:
         """Returns a list of the positions in which queens appear on the chessboard,
         arranged in no particular order."""
-        return Position[self.rows, self.columns]
+        return self._queen_position
 
 
     def has_queen(self, position: Position) -> bool:
@@ -88,7 +89,7 @@ class QueensState:
     def any_queens_unsafe(self) -> bool:
         """Returns True if any queens on the chessboard are unsafe (i.e., they can
         be captured by at least one other queen on the chessboard), or False otherwise."""
-        return True if self.queen_count() == self.rows * self.columns else False
+        pass
 
 
     def with_queens_added(self, positions: list[Position]) -> Self:
