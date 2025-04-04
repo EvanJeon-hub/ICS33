@@ -91,6 +91,14 @@ class QueensState:
         be captured by at least one other queen on the chessboard), or False otherwise."""
         if self.queen_count() < 2:
             return False
+        queens = self.queens()
+        for i, q1 in enumerate(queens):
+            for q2 in queens[i+1:]:
+                if q1.column == q2.column and q1.row == q2.row: # check if queens are in same row or column
+                    return True
+                elif abs(q1.column - q2.column) == abs(q1.row - q2.row): # check Diagonals
+                    return True
+        return False
 
 
 
