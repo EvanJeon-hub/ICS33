@@ -66,8 +66,8 @@ class QueensState:
     def __init__(self, rows: int, columns: int):
         """Initializes the chessboard to have the given numbers of rows and columns,
         with no queens occupying any of its cells."""
-        pass
-
+        self.rows = rows
+        self.columns = columns     
 
     def queen_count(self) -> int:
         """Returns the number of queens on the chessboard."""
@@ -77,7 +77,7 @@ class QueensState:
     def queens(self) -> list[Position]:
         """Returns a list of the positions in which queens appear on the chessboard,
         arranged in no particular order."""
-        pass
+        return Position
 
 
     def has_queen(self, position: Position) -> bool:
