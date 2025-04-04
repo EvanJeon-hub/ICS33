@@ -133,8 +133,13 @@ class TestQueensState(unittest.TestCase):
         self.assertFalse(state.any_queens_unsafe())
 
 
-    def queens_added_success(self):
-        """Testcase: Builds a new QueensState with queens added in the given positions"""
+    def queens_added_success_SingleQueen(self):
+        """Testcase: Builds a new QueensState with single queen added in the given positions"""
+        pass
+
+
+    def queens_added_success_MultipleQueen(self):
+        """Testcase: Builds a new QueensState with multiple queens added in the given positions"""
         pass
 
 
@@ -143,8 +148,13 @@ class TestQueensState(unittest.TestCase):
         pass
 
 
-    def queens_removed_success(self):
-        """Testcase: Builds a new QueensState with queens removed in the given positions"""
+    def queens_removed_success_SingleQueen(self):
+        """Testcase: Builds a new QueensState with single queen removed in the given positions"""
+        pass
+
+
+    def queens_removed_success_MultipleQueen(self):
+        """Testcase: Builds a new QueensState with multiple queens removed in the given positions"""
         pass
 
 
