@@ -18,9 +18,7 @@
 # DO NOT MODIFY THE Position NAMEDTUPLE OR THE PROVIDED EXCEPTION CLASSES.
 
 from collections import namedtuple
-from typing import Self
-
-
+from typing import Self, Type
 
 Position = namedtuple('Position', ['row', 'column'])
 
@@ -77,20 +75,19 @@ class QueensState:
     def queens(self) -> list[Position]:
         """Returns a list of the positions in which queens appear on the chessboard,
         arranged in no particular order."""
-        return [QueensState.rows, QueensState.columns]
+        return Position(self.rows, self.columns)
 
 
     def has_queen(self, position: Position) -> bool:
         """Returns True if a queen occupies the given position on the chessboard, or
         False otherwise."""
-        pass
+        return True if position in self.queens() else False
 
 
     def any_queens_unsafe(self) -> bool:
         """Returns True if any queens on the chessboard are unsafe (i.e., they can
         be captured by at least one other queen on the chessboard), or False otherwise."""
         pass
-
 
     def with_queens_added(self, positions: list[Position]) -> Self:
         """Builds a new QueensState with queens added in the given positions,
