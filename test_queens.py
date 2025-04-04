@@ -22,6 +22,16 @@ class TestQueensState(unittest.TestCase):
         self.assertEqual(state.queen_count(), 0)
 
 
+    def test_queens_is_empty_initially(self):
+        list_position = []
+        self.assertEqual(list_position, [])
+
+
+    def test_queens_is_not_empty(self):
+        list_position = [QueensState(8, 8)]
+        self.assertEqual(list_position, [QueensState(8, 8)])
+
+
 
 
 
