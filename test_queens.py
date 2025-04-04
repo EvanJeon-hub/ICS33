@@ -45,11 +45,18 @@ class TestQueensState(unittest.TestCase):
         self.assertEqual(state.queens(), [])
 
 
-    def test_queens_is_not_empty(self):
-        """Testcase: queens() should return a list of the positions in which queens appear on the chessboard"""
+    def test_queens_are_one(self):
+        """Testcase: queens() should return a list of the position in which queens appear on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queens(), [Position(0, 0)])
+
+
+    def test_queens_are_two(self):
+        """Testcase: queens() should return a list of the positions in which queens appear on the chessboard"""
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0), Position(1, 0)]
+        self.assertEqual(state.queens(), [Position(0, 0), Position(1, 0)])
 
 
     def test_has_queen_True(self):
