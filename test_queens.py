@@ -89,34 +89,48 @@ class TestQueensState(unittest.TestCase):
         """Testcase: queens_unsafe() should return True if queen can
         be captured by at least one other queen on the chessboard
         by same rows"""
-        pass
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0), Position(0, 1)]
+        self.assertTrue(state.any_queens_unsafe())
 
 
     def test_queens_unsafe_True_columns(self):
         """Testcase: queens_unsafe() should return True if queen can
         be captured by at least one other queen on the chessboard
         by same columns"""
-        pass
+        state = QueensState(8, 8)
+        state.queen_position = [Position(1, 1), Position(0, 1)]
+        self.assertTrue(state.any_queens_unsafe())
 
 
     def test_queens_unsafe_True_Diagonals(self):
         """Testcase: queens_unsafe() should return True if queen can
         be captured by at least one other queen on the chessboard by diagonals"""
-        pass
+        state = QueensState(8, 8)
+        state.queen_position = [Position(1, 1), Position(2, 2)]
+        self.assertTrue(state.any_queens_unsafe())
 
 
-    def test_queens_unsafe_False_no_two_queens(self):
+    def test_queens_unsafe_False_single_queen(self):
         """Testcase: There are less than two queen exists on the chessboard
         so queen cannot attack each other"""
         state = QueensState(8, 8)
-        state.queen_position = [Position(0, 0)] or []
+        state.queen_position = [Position(0, 0)]
         self.assertFalse(state.any_queens_unsafe())
 
 
-    def test_queens_unsafe_False_two_queens(self):
-        """Testcase: There are at least two queens exists on the chessboard,
-        but they cannot attack each other because of their positions"""
-        pass
+    def test_queens_unsafe_False_no_queen(self):
+        """Testcase: There are no queen exists on the chessboard"""
+        state = QueensState(8, 8)
+        state.queen_position = []
+        self.assertFalse(state.any_queens_unsafe())
+
+
+    def test_queens_unsafe_False_cannot_attack_each_other(self):
+        """Testcase: should return False if no queens can attack each other"""
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0), Position(1, 2), Position(2, 4)]
+        self.assertFalse(state.any_queens_unsafe())
 
 
 if __name__ == '__main__':
