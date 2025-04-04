@@ -87,7 +87,8 @@ class QueensState:
     def any_queens_unsafe(self) -> bool:
         """Returns True if any queens on the chessboard are unsafe (i.e., they can
         be captured by at least one other queen on the chessboard), or False otherwise."""
-        pass
+        return True if self.queen_count() == self.rows * self.columns else False
+
 
     def with_queens_added(self, positions: list[Position]) -> Self:
         """Builds a new QueensState with queens added in the given positions,
