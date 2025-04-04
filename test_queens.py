@@ -18,36 +18,51 @@ from queens import Position
 
 class TestQueensState(unittest.TestCase):
     def test_queen_count_is_zero_initially(self):
+        """Testcase: queen count should return zero initially"""
         state = QueensState(8, 8)
         state.queen_position = []
         self.assertEqual(state.queen_count(), 0)
 
 
     def test_queen_count_is_one(self):
+        """Testcase: queen count should return 1 if one queen exists on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queen_count(), 1)
 
 
     def test_queens_is_empty_initially(self):
+        """Testcase: queens() should return an empty list if queen does not exist"""
         state = QueensState(8, 8)
         state.queen_position = []
         self.assertEqual(state.queens(), [])
 
 
     def test_queens_is_not_empty(self):
+        """Testcase: queens() should return a list of the positions in which queens appear on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queens(), [Position(0, 0)])
 
 
     def test_has_queen_True(self):
+        """Testcase: has_queen() should return True if queen exists on given position of the chessboard"""
         pass
 
 
     def test_has_queen_False(self):
+        """Testcase: has_queen() should return False if queen does not exist"""
         pass
 
+
+    def test_queens_unsafe_True(self):
+        """Testcase: queens_unsafe() should return True if queens can be captured by at least one other queen"""
+        pass
+
+
+    def test_queens_unsafe_False(self):
+        """Testcase: queens_unsafe() should return False if there are no other queens"""
+        pass
 
 
 
