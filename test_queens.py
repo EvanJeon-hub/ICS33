@@ -20,24 +20,33 @@ class TestQueensState(unittest.TestCase):
     def test_queen_count_is_zero_initially(self):
         state = QueensState(8, 8)
         state.queen_position = []
-        self.assertEqual(state.queen_count(self), 0)
+        self.assertEqual(state.queen_count(), 0)
 
 
     def test_queen_count_is_one(self):
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
-        self.assertEqual(state.queen_count(self), 1)
+        self.assertEqual(state.queen_count(), 1)
 
 
     def test_queens_is_empty_initially(self):
         state = QueensState(8, 8)
+        state.queen_position = []
         self.assertEqual(state.queens(), [])
 
 
-    def test_queens_positions_is_not_empty(self):
+    def test_queens_is_not_empty(self):
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queens(), [Position(0, 0)])
+
+
+    def test_has_queen_True(self):
+        pass
+
+
+    def test_has_queen_False(self):
+        pass
 
 
 
