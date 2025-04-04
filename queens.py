@@ -67,7 +67,8 @@ class QueensState:
         self.rows = rows
         self.columns = columns     
 
-    def queen_count(self) -> int:
+    @staticmethod
+    def queen_count() -> int:
         """Returns the number of queens on the chessboard."""
         return 0
 
@@ -75,7 +76,7 @@ class QueensState:
     def queens(self) -> list[Position]:
         """Returns a list of the positions in which queens appear on the chessboard,
         arranged in no particular order."""
-        return Position(self.rows, self.columns)
+        return Position[self.rows, self.columns]
 
 
     def has_queen(self, position: Position) -> bool:
