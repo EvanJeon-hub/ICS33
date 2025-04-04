@@ -16,6 +16,11 @@ import unittest
 from queens import Position
 
 
+# coverage testing:
+# 1. coverage report -m (shows report with percent)
+# 2. coverage run -m --branch pytest . (branch coverage)
+
+
 class TestQueensState(unittest.TestCase):
     def test_queen_count_is_zero_initially(self):
         """Testcase: queen_count() should return zero initially"""
@@ -25,65 +30,79 @@ class TestQueensState(unittest.TestCase):
 
 
     def test_queen_count_is_one(self):
-        """Testcase: queen_count() should return 1 if one queen exists on the chessboard"""
+        """Testcase: queen_count() should return 1
+        if one queen exists on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queen_count(), 1)
 
 
     def test_queen_count_is_more_than_one(self):
-        """Testcase: queen_count() should return 2 if two queen exists on the chessboard"""
+        """Testcase: queen_count() should return 2
+        if two queen exists on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0), Position(1, 0)]
         self.assertEqual(state.queen_count(), 2)
 
 
     def test_queens_is_empty_initially(self):
-        """Testcase: queens() should return an empty list if queen does not exist"""
+        """Testcase: queens() should return an empty list
+        if queen does not exist"""
         state = QueensState(8, 8)
         state.queen_position = []
         self.assertEqual(state.queens(), [])
 
 
     def test_queens_is_one(self):
-        """Testcase: queens() should return a list of the position in which queens appear on the chessboard"""
+        """Testcase: queens() should return a list of the position
+        in which queens appear on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queens(), [Position(0, 0)])
 
 
     def test_queens_are_two(self):
-        """Testcase: queens() should return a list of the positions in which queens appear on the chessboard"""
+        """Testcase: queens() should return a list of the positions
+        in which queens appear on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0), Position(1, 0)]
         self.assertEqual(state.queens(), [Position(0, 0), Position(1, 0)])
 
 
     def test_has_queen_True(self):
-        """Testcase: has_queen() should return True if queen exists on given position of the chessboard"""
+        """Testcase: has_queen() should return True
+        if queen exists on given position of the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertTrue(state.has_queen(Position(0, 0)))
 
 
     def test_has_queen_False(self):
-        """Testcase: has_queen() should return False if queen does not exist on given position of the chessboard"""
+        """Testcase: has_queen() should return False
+        if queen does not exist on given position of the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertFalse(state.has_queen(Position(1, 0)))
 
 
     def test_queens_unsafe_True(self):
-        """Testcase: queens_unsafe() should return True if there are at least one queen exists"""
+        """Testcase: queens_unsafe() should return True if queen can
+        be captured by at least one other queen on the chessboard"""
         pass
 
 
-    def test_queens_unsafe_False(self):
-        """Testcase: queens_unsafe() should return False if there are no other queens"""
+    def test_queens_unsafe_False_no_two_queens(self):
+        """Testcase: There are less than two queen exists on the chessboard
+        so queen cannot attack each other"""
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0)] or []
+        self.assertFalse(state.any_queens_unsafe())
+
+
+    def test_queens_unsafe_False_two_queens(self):
+        """Testcase: There are at least two queens exists on the chessboard,
+        but they cannot attack each other because of their positions"""
         pass
-
-
-
 
 
 if __name__ == '__main__':
