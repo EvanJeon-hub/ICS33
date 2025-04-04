@@ -133,5 +133,25 @@ class TestQueensState(unittest.TestCase):
         self.assertFalse(state.any_queens_unsafe())
 
 
+    def queens_added_success(self):
+        """Testcase: Builds a new QueensState with queens added in the given positions"""
+        pass
+
+
+    def queens_added_failure(self):
+        """raise DuplicateQueenError when there is already a queen in the given positions"""
+        pass
+
+
+    def queens_removed_success(self):
+        """Testcase: Builds a new QueensState with queens removed in the given positions"""
+        pass
+
+
+    def queens_removed_failure(self):
+        """raise MissingQueenError when there is no queen in the given position"""
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()
