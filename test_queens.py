@@ -85,10 +85,17 @@ class TestQueensState(unittest.TestCase):
         self.assertFalse(state.has_queen(Position(1, 0)))
 
 
-    def test_queens_unsafe_True_rows_columns(self):
+    def test_queens_unsafe_True_rows(self):
         """Testcase: queens_unsafe() should return True if queen can
         be captured by at least one other queen on the chessboard
-        by same rows and columns"""
+        by same rows"""
+        pass
+
+
+    def test_queens_unsafe_True_columns(self):
+        """Testcase: queens_unsafe() should return True if queen can
+        be captured by at least one other queen on the chessboard
+        by same columns"""
         pass
 
 
