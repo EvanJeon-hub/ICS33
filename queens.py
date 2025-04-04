@@ -69,9 +69,9 @@ class QueensState:
         self._queen_position = []
 
     @staticmethod
-    def queen_count() -> int:
+    def queen_count(self) -> int:
         """Returns the number of queens on the chessboard."""
-        return 0
+        return len(self._queen_position)
 
 
     def queens(self) -> list[Position]:
