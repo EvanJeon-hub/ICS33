@@ -18,17 +18,24 @@ from queens import Position
 
 class TestQueensState(unittest.TestCase):
     def test_queen_count_is_zero_initially(self):
-        """Testcase: queen count should return zero initially"""
+        """Testcase: queen_count() should return zero initially"""
         state = QueensState(8, 8)
         state.queen_position = []
         self.assertEqual(state.queen_count(), 0)
 
 
     def test_queen_count_is_one(self):
-        """Testcase: queen count should return 1 if one queen exists on the chessboard"""
+        """Testcase: queen_count() should return 1 if one queen exists on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queen_count(), 1)
+
+
+    def test_queen_count_is_more_than_one(self):
+        """Testcase: queen_count() should return 2 if two queen exists on the chessboard"""
+        state = QueensState(8, 8)
+        state.queen_position = [Position(0, 0), Position(1, 0)]
+        self.assertEqual(state.queen_count(), 2)
 
 
     def test_queens_is_empty_initially(self):
