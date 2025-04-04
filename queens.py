@@ -66,18 +66,18 @@ class QueensState:
         with no queens occupying any of its cells."""
         self.rows = rows
         self.columns = columns
-        self._queen_position = []
+        self.queen_position = []
 
-    @staticmethod
+
     def queen_count(self) -> int:
         """Returns the number of queens on the chessboard."""
-        return len(self._queen_position)
+        return len(self.queen_position)
 
 
     def queens(self) -> list[Position]:
         """Returns a list of the positions in which queens appear on the chessboard,
         arranged in no particular order."""
-        return self._queen_position
+        return self.queen_position
 
 
     def has_queen(self, position: Position) -> bool:
