@@ -22,6 +22,7 @@ from queens import Position
 
 
 class TestQueensState(unittest.TestCase):
+    """Testing Class for QueensState"""
     def test_queen_count_is_zero_initially(self):
         """Testcase: queen_count() should return zero initially"""
         state = QueensState(8, 8)
@@ -144,4 +145,5 @@ class TestQueensState(unittest.TestCase):
         pass
 
 if __name__ == '__main__':
+    """Unittest"""
     unittest.main()
