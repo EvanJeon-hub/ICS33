@@ -123,9 +123,11 @@ class TestQueensState(unittest.TestCase):
     def queens_added_success_SingleQueen(self):
         """Testcase: Builds a new QueensState with single queen added in the given positions"""
         state = QueensState(8, 8)
-        current_queen_position = [Position(0, 0)]
-        new_queen_state = current_queen_position.append[Position(1, 1)]
-        self.assertEqual(state.with_queens_added([Position(1, 1)], new_queen_state))
+        new_position = [Position(1, 1)]
+        new_queen_state = state.with_queens_added(new_position)
+        self.assertEqual(new_queen_state.queen_count(), 1)
+
+
 
     def queens_added_success_MultipleQueen(self):
         """Testcase: Builds a new QueensState with multiple queens added in the given positions"""
