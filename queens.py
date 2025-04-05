@@ -37,7 +37,6 @@ class DuplicateQueenError(Exception):
         """Initializes the exception, given a position where the duplicate queen exists."""
         self._position = position
 
-
     def __str__(self) -> str:
         return f'duplicate queen in row {self._position.row} column {self._position.column}'
 
@@ -48,7 +47,6 @@ class MissingQueenError(Exception):
     def __init__(self, position: Position):
         """Initializes the exception, given a position where a queen is missing."""
         self._position = position
-
 
     def __str__(self) -> str:
         return f'missing queen in row {self._position.row} column {self._position.column}'
@@ -65,23 +63,19 @@ class QueensState:
         self.columns = columns
         self.queen_position = []
 
-
     def queen_count(self) -> int:
         """Returns the number of queens on the chessboard."""
         return len(self.queen_position)
-
 
     def queens(self) -> list[Position]:
         """Returns a list of the positions in which queens appear on the chessboard,
         arranged in no particular order."""
         return self.queen_position
 
-
     def has_queen(self, position: Position) -> bool:
         """Returns True if a queen occupies the given position on the chessboard, or
         False otherwise."""
         return True if position in self.queens() else False
-
 
     def any_queens_unsafe(self) -> bool:
         """Returns True if any queens on the chessboard are unsafe (i.e., they can
@@ -97,14 +91,12 @@ class QueensState:
                     return True
         return False
 
-
     def with_queens_added(self, positions: list[Position]) -> Self:
         """Builds a new QueensState with queens added in the given positions,
         without modifying 'self' in any way.  Raises a DuplicateQueenError when
         there is already a queen in at least one of the given positions."""
         # Should Raise an Error when it fails, Should return a new QueensState when Success
         pass
-
 
     def with_queens_removed(self, positions: list[Position]) -> Self:
         """Builds a new QueensState with queens removed from the given positions,
