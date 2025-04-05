@@ -102,6 +102,7 @@ class QueensState:
         """Builds a new QueensState with queens added in the given positions,
         without modifying 'self' in any way.  Raises a DuplicateQueenError when
         there is already a queen in at least one of the given positions."""
+        # Should Raise an Error when it fails, Should return a new QueensState when Success
         pass
 
 
@@ -109,4 +110,5 @@ class QueensState:
         """Builds a new QueensState with queens removed from the given positions,
         without modifying 'self' in any way.  Raises a MissingQueenError when there
         is no queen in at least one of the given positions."""
+        # Should Raise an Error when it fails, Should return a new QueensState when Success
         pass
