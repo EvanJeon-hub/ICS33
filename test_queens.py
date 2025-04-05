@@ -126,7 +126,8 @@ class TestQueensState(unittest.TestCase):
         new_position = [Position(1, 1)]
         new_queen_state = state.with_queens_added(new_position)
         self.assertEqual(new_queen_state.queen_count(), 1)
-
+        self.assertIn([Position(1, 1)], new_queen_state.queens())
+        self.assertNotIn([Position(1, 1)], state.queens())
 
 
     def queens_added_success_MultipleQueen(self):
