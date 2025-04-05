@@ -57,7 +57,7 @@ class TestQueensState(unittest.TestCase):
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queens(), [Position(0, 0)])
 
-    def test_queens_are_two(self):
+    def test_queens_are_more_than_one(self):
         """Testcase: queens() should return a list of the positions
         in which queens appear on the chessboard"""
         state = QueensState(8, 8)
