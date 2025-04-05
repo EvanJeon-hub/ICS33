@@ -129,7 +129,6 @@ class TestQueensState(unittest.TestCase):
         self.assertIn([Position(1, 1)], new_queen_state.queens())
         self.assertNotIn([Position(1, 1)], state.queens())
 
-
     def queens_added_success_MultipleQueen(self):
         """Testcase: Builds a new QueensState with multiple queens added in the given positions"""
         pass
