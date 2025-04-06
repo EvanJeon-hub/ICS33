@@ -103,7 +103,6 @@ class QueensState:
         new_queen_state = QueensState(self.rows, self.columns)
         new_queen_state.queen_position = new_queen_position
 
-
     def with_queens_removed(self, positions: list[Position]) -> Self:
         """Builds a new QueensState with queens removed from the given positions,
         without modifying 'self' in any way.  Raises a MissingQueenError when there
