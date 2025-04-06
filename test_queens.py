@@ -140,6 +140,8 @@ class TestQueensState(unittest.TestCase):
         self.assertIn([Position(1, 1)], new_queen_state.queens())
         self.assertIn([Position(1, 1)], current_state.queens())
         self.assertNotIn([Position(2, 2)], current_state.queens())
+        self.assertNotIn([Position(1, 1)], state.queens())
+        self.assertNotIn([Position(2, 2)], state.queens())
 
     def queens_added_failure(self):
         """raise DuplicateQueenError when there is already a queen in the given positions"""
@@ -151,7 +153,7 @@ class TestQueensState(unittest.TestCase):
         self.assertRaises(DuplicateQueenError)
         self.assertIn([Position(1, 1)], new_queen_state.queens())
         self.assertIn([Position(1, 1)], current_state.queens())
-
+        self.assertNotIn([Position(1, 1)], state.queens())
 
     def queens_removed_success_SingleQueen(self):
         """Testcase: Builds a new QueensState with single queen removed in the given positions"""
