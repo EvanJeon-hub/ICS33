@@ -11,9 +11,8 @@
 # like "test_queen_count", since it doesn't entirely test the "queen_count" method,
 # but instead focuses on just one aspect of how it behaves.  You'll want to do likewise.
 
-from queens import QueensState
+from queens import QueensState, Position, DuplicateQueenError, MissingQueenError
 import unittest
-from queens import Position
 
 
 # coverage testing:
@@ -144,7 +143,12 @@ class TestQueensState(unittest.TestCase):
 
     def queens_added_failure(self):
         """raise DuplicateQueenError when there is already a queen in the given positions"""
-        pass
+        state = QueensState(8, 8)
+        current_position = [Position(1, 1)]
+        current_state = state.with_queens_added(current_position)
+        new_position = [Position(1, 1)]
+        new_queen_state = current_state.with_queens_added(new_position)
+        self.assertRaises(DuplicateQueenError)
 
     def queens_removed_success_SingleQueen(self):
         """Testcase: Builds a new QueensState with single queen removed in the given positions"""

@@ -105,3 +105,4 @@ class QueensState:
         # Should Raise an Error when it fails, Should return a new QueensState when Success
         pass
 
+
