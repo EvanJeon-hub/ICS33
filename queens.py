@@ -104,3 +104,4 @@ class QueensState:
         is no queen in at least one of the given positions."""
         # Should Raise an Error when it fails, Should return a new QueensState when Success
         pass
+
