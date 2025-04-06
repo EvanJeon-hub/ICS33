@@ -95,8 +95,13 @@ class QueensState:
         """Builds a new QueensState with queens added in the given positions,
         without modifying 'self' in any way.  Raises a DuplicateQueenError when
         there is already a queen in at least one of the given positions."""
-        # Should Raise an Error when it fails, Should return a new QueensState when Success
-        pass
+        new_queen_position = list(self.queen_position)
+        for position in positions:
+            if position in new_queen_position:
+                raise DuplicateQueenError(position)
+            new_queen_position.append(position)
+        new_queen_state = QueensState(self.rows, self.columns)
+        new_queen_state.queen_position = new_queen_position
 
     def with_queens_removed(self, positions: list[Position]) -> Self:
         """Builds a new QueensState with queens removed from the given positions,
