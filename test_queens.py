@@ -149,6 +149,9 @@ class TestQueensState(unittest.TestCase):
         new_position = [Position(1, 1)]
         new_queen_state = current_state.with_queens_added(new_position)
         self.assertRaises(DuplicateQueenError)
+        self.assertIn([Position(1, 1)], new_queen_state.queens())
+        self.assertIn([Position(1, 1)], current_state.queens())
+
 
     def queens_removed_success_SingleQueen(self):
         """Testcase: Builds a new QueensState with single queen removed in the given positions"""
