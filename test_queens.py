@@ -119,7 +119,7 @@ class TestQueensState(unittest.TestCase):
         state.queen_position = [Position(0, 0), Position(1, 2), Position(2, 4)]
         self.assertFalse(state.any_queens_unsafe())
 
-    def queens_added_success_SingleQueen(self):
+    def test_queens_added_success_SingleQueen(self):
         """Testcase: Builds a new QueensState with single queen added in the given positions"""
         state = QueensState(8, 8)
         new_position = [Position(1, 1)]
@@ -128,7 +128,7 @@ class TestQueensState(unittest.TestCase):
         self.assertIn([Position(1, 1)], new_queen_state.queens())
         self.assertNotIn([Position(1, 1)], state.queens())
 
-    def queens_added_success_MultipleQueen(self):
+    def test_queens_added_success_MultipleQueen(self):
         """Testcase: Builds a new QueensState with multiple queens added in the given positions"""
         state = QueensState(8, 8)
         current_position = [Position(1, 1)]
@@ -143,7 +143,7 @@ class TestQueensState(unittest.TestCase):
         self.assertNotIn([Position(1, 1)], state.queens())
         self.assertNotIn([Position(2, 2)], state.queens())
 
-    def queens_added_failure(self):
+    def test_queens_added_failure(self):
         """raise DuplicateQueenError when there is already a queen in the given positions"""
         state = QueensState(8, 8)
         current_position = [Position(1, 1)]
@@ -155,15 +155,15 @@ class TestQueensState(unittest.TestCase):
         self.assertIn([Position(1, 1)], current_state.queens())
         self.assertNotIn([Position(1, 1)], state.queens())
 
-    def queens_removed_success_SingleQueen(self):
+    def test_queens_removed_success_SingleQueen(self):
         """Testcase: Builds a new QueensState with single queen removed in the given positions"""
         pass
 
-    def queens_removed_success_MultipleQueen(self):
+    def test_queens_removed_success_MultipleQueen(self):
         """Testcase: Builds a new QueensState with multiple queens removed in the given positions"""
         pass
 
-    def queens_removed_failure(self):
+    def test_queens_removed_failure(self):
         """raise MissingQueenError when there is no queen in the given position"""
         pass
 
