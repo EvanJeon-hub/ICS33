@@ -148,10 +148,10 @@ class TestQueensState(unittest.TestCase):
         state = QueensState(8, 8)
         current_position = [Position(1, 1)]
         current_state = state.with_queens_added(current_position)
-        new_position = [Position(1, 1)]
-        new_queen_state = current_state.with_queens_added(new_position)
-        self.assertRaises(DuplicateQueenError)
-        self.assertIn(Position(1, 1), new_queen_state.queens())
+
+        with self.assertRaises(DuplicateQueenError):
+            current_state.with_queens_added([Position(1, 1)])
+
         self.assertIn(Position(1, 1), current_state.queens())
         self.assertNotIn(Position(1, 1), state.queens())
 
