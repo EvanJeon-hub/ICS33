@@ -16,8 +16,8 @@ import unittest
 
 
 # coverage testing:
-# 1. coverage report -m (shows report with percent)
-# 2. coverage run -m --branch pytest . (branch coverage)
+# coverage report -m (shows report with percent)
+# coverage run -m --branch pytest . (branch coverage)
 
 
 class TestQueensState(unittest.TestCase):

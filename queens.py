@@ -108,6 +108,13 @@ class QueensState:
         """Builds a new QueensState with queens removed from the given positions,
         without modifying 'self' in any way.  Raises a MissingQueenError when there
         is no queen in at least one of the given positions."""
-
+        new_queen_position = list(self.queen_position)
+        for position in positions:
+            if position in new_queen_position:
+                raise MissingQueenError(position)
+            new_queen_position.remove(position)
+        new_queen_state = QueensState(self.rows, self.columns)
+        new_queen_state.queen_position = new_queen_position
+        return new_queen_state
 
 
