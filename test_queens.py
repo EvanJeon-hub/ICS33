@@ -189,7 +189,15 @@ class TestQueensState(unittest.TestCase):
 
     def test_queens_removed_failure(self):
         """raise MissingQueenError when there is no queen in the given position"""
-        pass
+        state = QueensState(8, 8)
+        current_position = [Position(1, 1)]
+        current_state = state.with_queens_added(current_position)
+
+        with self.assertRaises(MissingQueenError):
+            current_state.with_queens_removed([Position(0, 0)])
+
+        self.assertIn(Position(1, 1), current_state.queens())
+        self.assertNotIn(Position(1, 1), state.queens())
 
 
 
