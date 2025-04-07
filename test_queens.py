@@ -20,6 +20,7 @@ import unittest
 # coverage run -m --branch pytest . (branch coverage)
 
 class TestExceptions(unittest.TestCase):
+    """Testing class for DuplicateQueenError and MissingQueenError"""
     def test_duplicate_queen_error(self):
         """Testcase for DuplicateQueenError."""
         position = Position(2, 5)
@@ -31,7 +32,13 @@ class TestExceptions(unittest.TestCase):
 
     def test_missing_queen_error(self):
         """Testcase for MissingQueenError."""
-        pass
+        position = Position(2, 5)
+        try:
+            raise MissingQueenError(position)
+        except MissingQueenError as e:
+            expected_message = "missing queen in row 2 column 5"
+            self.assertEqual(str(e), expected_message)
+
 
 # Now we have to add testcase for non-squared board
 class TestQueensState(unittest.TestCase):
