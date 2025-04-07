@@ -145,7 +145,14 @@ class TestQueensState(unittest.TestCase):
 
     def test_queens_added_success_add_multiple_queens_at_once(self):
         """Testcase: adding multiple queens at once"""
-        pass
+        state = QueensState(8, 8)
+        new_position = [Position(1, 1), Position(2, 2)]
+        new_queen_state = state.with_queens_added(new_position)
+        self.assertEqual(new_queen_state.queen_count(), 2)
+        self.assertNotIn(Position(1, 1), state.queens())
+        self.assertNotIn(Position(2, 2), state.queens())
+        self.assertIn(Position(1, 1), new_queen_state.queens())
+        self.assertIn(Position(2, 2), new_queen_state.queens())
 
     def test_queens_added_failure(self):
         """raise DuplicateQueenError when there is already a queen in the given positions"""
