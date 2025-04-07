@@ -19,7 +19,7 @@ import unittest
 # coverage report -m (shows report with percent)
 # coverage run -m --branch pytest . (branch coverage)
 
-class TestExceptions(unittest.Testcase):
+class TestExceptions(unittest.TestCase):
     def test_duplicate_queen_error(self):
         """Testcase for DuplicateQueenError."""
         position = Position(2, 5)
