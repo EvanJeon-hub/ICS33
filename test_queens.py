@@ -157,7 +157,13 @@ class TestQueensState(unittest.TestCase):
 
     def test_queens_removed_success_SingleQueen(self):
         """Testcase: Builds a new QueensState with single queen removed in the given positions"""
-        pass
+        state = QueensState(8, 8)
+        current_position = [Position(1, 1)]
+        current_state = state.with_queens_added(current_position)
+        new_position = [Position(1, 1)]
+        new_state = current_state.with_queens_removed(new_position)
+        self.assertEqual(new_state.queen_count(), 0)
+        self.assertNotIn(Position(1, 1), new_state.queens())
 
     def test_queens_removed_success_MultipleQueen(self):
         """Testcase: Builds a new QueensState with multiple queens removed in the given positions"""

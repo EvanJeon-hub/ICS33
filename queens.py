@@ -111,8 +111,8 @@ class QueensState:
         new_queen_position = list(self.queen_position)
         for position in positions:
             if position in new_queen_position:
-                raise MissingQueenError(position)
-            new_queen_position.remove(position)
+                new_queen_position.remove(position)
+            raise MissingQueenError(position)
         new_queen_state = QueensState(self.rows, self.columns)
         new_queen_state.queen_position = new_queen_position
         return new_queen_state
