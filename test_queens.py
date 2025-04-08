@@ -39,7 +39,6 @@ class TestExceptions(unittest.TestCase):
             expected_message = "missing queen in row 2 column 5"
             self.assertEqual(str(e), expected_message)
 
-
 class TestQueensState(unittest.TestCase):
     """Testing Class for QueensState"""
     def test_queen_count_is_zero_initially_sq(self):
