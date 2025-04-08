@@ -25,8 +25,7 @@ Position = namedtuple('Position', ['row', 'column'])
 # Ordinarily, we would write docstrings within classes or their methods.
 # Since a namedtuple builds those classes and methods for us, we instead
 # add the documentation by hand afterward.
-Position.__doc__ = ('A position on a chessboard, '
-                    'specified by zero-based row and column numbers.')
+Position.__doc__ = 'A position on a chessboard, specified by zero-based row and column numbers.'
 Position.row.__doc__ = 'A zero-based row number'
 Position.column.__doc__ = 'A zero-based column number'
 
