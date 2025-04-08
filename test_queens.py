@@ -41,7 +41,6 @@ class TestExceptions(unittest.TestCase):
 
 
 # Now we have to add testcase for non-squared board
-
 class TestQueensState(unittest.TestCase):
     """Testing Class for QueensState"""
     def test_queen_count_is_zero_initially(self):
