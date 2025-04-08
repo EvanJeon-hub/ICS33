@@ -267,9 +267,8 @@ class TestQueensState(unittest.TestCase):
         self.assertIn(Position(1, 1), new_queen_state.queens())
         self.assertNotIn(Position(1, 1), state.queens())
 
-    # CheckPoint
-    def test_queens_added_success_MultipleQueen(self):
-        """Testcase: Builds a new QueensState with multiple queens added in the given positions"""
+    def test_queens_added_success_MultipleQueen_sq(self):
+        """Testcase: returns a new QueensState with multiple queens"""
         state = QueensState(8, 8)
         current_position = [Position(1, 1)]
         current_state = state.with_queens_added(current_position)
@@ -283,7 +282,22 @@ class TestQueensState(unittest.TestCase):
         self.assertNotIn(Position(1, 1), state.queens())
         self.assertNotIn(Position(2, 2), state.queens())
 
-    def test_queens_added_success_add_multiple_queens_at_once(self):
+    def test_queens_added_success_MultipleQueen_rect(self):
+        """Testcase: returns a new QueensState with multiple queens"""
+        state = QueensState(4, 8)
+        current_position = [Position(1, 1)]
+        current_state = state.with_queens_added(current_position)
+        new_position = [Position(2, 2)]
+        new_queen_state = current_state.with_queens_added(new_position)
+        self.assertEqual(new_queen_state.queen_count(), 2)
+        self.assertIn(Position(2, 2), new_queen_state.queens())
+        self.assertIn(Position(1, 1), new_queen_state.queens())
+        self.assertIn(Position(1, 1), current_state.queens())
+        self.assertNotIn(Position(2, 2), current_state.queens())
+        self.assertNotIn(Position(1, 1), state.queens())
+        self.assertNotIn(Position(2, 2), state.queens())
+
+    def test_queens_added_success_add_multiple_queens_at_once_sq(self):
         """Testcase: adding multiple queens at once"""
         state = QueensState(8, 8)
         new_position = [Position(1, 1), Position(2, 2)]
@@ -294,7 +308,18 @@ class TestQueensState(unittest.TestCase):
         self.assertIn(Position(1, 1), new_queen_state.queens())
         self.assertIn(Position(2, 2), new_queen_state.queens())
 
-    def test_queens_added_failure(self):
+    def test_queens_added_success_add_multiple_queens_at_once_rect(self):
+        """Testcase: adding multiple queens at once"""
+        state = QueensState(4, 8)
+        new_position = [Position(1, 1), Position(2, 2)]
+        new_queen_state = state.with_queens_added(new_position)
+        self.assertEqual(new_queen_state.queen_count(), 2)
+        self.assertNotIn(Position(1, 1), state.queens())
+        self.assertNotIn(Position(2, 2), state.queens())
+        self.assertIn(Position(1, 1), new_queen_state.queens())
+        self.assertIn(Position(2, 2), new_queen_state.queens())
+
+    def test_queens_added_failure_sq(self):
         """raise DuplicateQueenError when there is already a queen in the given positions"""
         state = QueensState(8, 8)
         current_position = [Position(1, 1)]
@@ -306,7 +331,19 @@ class TestQueensState(unittest.TestCase):
         self.assertIn(Position(1, 1), current_state.queens())
         self.assertNotIn(Position(1, 1), state.queens())
 
-    def test_queens_removed_success_SingleQueen(self):
+    def test_queens_added_failure_rect(self):
+        """raise DuplicateQueenError when there is already a queen in the given positions"""
+        state = QueensState(4, 8)
+        current_position = [Position(1, 1)]
+        current_state = state.with_queens_added(current_position)
+
+        with self.assertRaises(DuplicateQueenError):
+            current_state.with_queens_added([Position(1, 1)])
+
+        self.assertIn(Position(1, 1), current_state.queens())
+        self.assertNotIn(Position(1, 1), state.queens())
+
+    def test_queens_removed_success_SingleQueen_sq(self):
         """Testcase: Builds a new QueensState with single queen removed in the given positions"""
         state = QueensState(8, 8)
         current_position = [Position(1, 1)]
@@ -316,7 +353,17 @@ class TestQueensState(unittest.TestCase):
         self.assertEqual(new_state.queen_count(), 0)
         self.assertNotIn(Position(1, 1), new_state.queens())
 
-    def test_queens_removed_success_MultipleQueen(self):
+    def test_queens_removed_success_SingleQueen_rect(self):
+        """Testcase: Builds a new QueensState with single queen removed in the given positions"""
+        state = QueensState(4, 8)
+        current_position = [Position(1, 1)]
+        current_state = state.with_queens_added(current_position)
+        new_position = [Position(1, 1)]
+        new_state = current_state.with_queens_removed(new_position)
+        self.assertEqual(new_state.queen_count(), 0)
+        self.assertNotIn(Position(1, 1), new_state.queens())
+
+    def test_queens_removed_success_MultipleQueen_sq(self):
         """Testcase: Builds a new QueensState with multiple queens removed in the given positions"""
         state = QueensState(8, 8)
         current_position = [Position(1, 1), Position(2, 2)]
@@ -327,9 +374,32 @@ class TestQueensState(unittest.TestCase):
         self.assertNotIn(Position(1, 1), new_state.queens())
         self.assertNotIn(Position(2, 2), new_state.queens())
 
-    def test_queens_removed_failure(self):
+    def test_queens_removed_success_MultipleQueen_rect(self):
+        """Testcase: Builds a new QueensState with multiple queens removed in the given positions"""
+        state = QueensState(4, 8)
+        current_position = [Position(1, 2), Position(2, 3)]
+        current_state = state.with_queens_added(current_position)
+        new_position = [Position(1, 2), Position(2, 3)]
+        new_state = current_state.with_queens_removed(new_position)
+        self.assertEqual(new_state.queen_count(), 0)
+        self.assertNotIn(Position(1, 2), new_state.queens())
+        self.assertNotIn(Position(2, 3), new_state.queens())
+
+    def test_queens_removed_failure_sq(self):
         """raise MissingQueenError when there is no queen in the given position"""
         state = QueensState(8, 8)
+        current_position = [Position(1, 1)]
+        current_state = state.with_queens_added(current_position)
+
+        with self.assertRaises(MissingQueenError):
+            current_state.with_queens_removed([Position(0, 0)])
+
+        self.assertIn(Position(1, 1), current_state.queens())
+        self.assertNotIn(Position(1, 1), state.queens())
+
+    def test_queens_removed_failure_rect(self):
+        """raise MissingQueenError when there is no queen in the given position"""
+        state = QueensState(4, 8)
         current_position = [Position(1, 1)]
         current_state = state.with_queens_added(current_position)
 
