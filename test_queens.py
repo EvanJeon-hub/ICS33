@@ -43,47 +43,89 @@ class TestExceptions(unittest.TestCase):
 # Now we have to add testcase for non-squared board
 class TestQueensState(unittest.TestCase):
     """Testing Class for QueensState"""
-    def test_queen_count_is_zero_initially(self):
+    def test_queen_count_is_zero_initially_sq(self):
         """Testcase: queen_count() should return zero initially"""
         state = QueensState(8, 8)
         state.queen_position = []
         self.assertEqual(state.queen_count(), 0)
 
-    def test_queen_count_is_one(self):
+    def test_queen_count_is_zero_initially_rect(self):
+        """Testcase: queen_count() should return zero initially"""
+        state = QueensState(4, 8)
+        state.queen_position = []
+        self.assertEqual(state.queen_count(), 0)
+
+    def test_queen_count_is_one_sq(self):
         """Testcase: queen_count() should return 1
         if one queen exists on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queen_count(), 1)
 
-    def test_queen_count_is_more_than_one(self):
+    def test_queen_count_is_one_rect(self):
+        """Testcase: queen_count() should return 1
+        if one queen exists on the chessboard"""
+        state = QueensState(4, 8)
+        state.queen_position = [Position(0, 0)]
+        self.assertEqual(state.queen_count(), 1)
+
+    def test_queen_count_is_more_than_one_sq(self):
         """Testcase: queen_count() should return 2
         if two queen exists on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0), Position(1, 0)]
         self.assertEqual(state.queen_count(), 2)
 
-    def test_queens_is_empty_initially(self):
+    def test_queen_count_is_more_than_one_rect(self):
+        """Testcase: queen_count() should return 2
+        if two queen exists on the chessboard"""
+        state = QueensState(4, 8)
+        state.queen_position = [Position(0, 0), Position(1, 0)]
+        self.assertEqual(state.queen_count(), 2)
+
+    def test_queens_is_empty_initially_sq(self):
         """Testcase: queens() should return an empty list
         if queen does not exist"""
         state = QueensState(8, 8)
         state.queen_position = []
         self.assertEqual(state.queens(), [])
 
-    def test_queens_is_one(self):
+    def test_queens_is_empty_initially_rect(self):
+        """Testcase: queens() should return an empty list
+        if queen does not exist"""
+        state = QueensState(4, 8)
+        state.queen_position = []
+        self.assertEqual(state.queens(), [])
+
+    def test_queens_is_one_sq(self):
         """Testcase: queens() should return a list of the position
         in which queens appear on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0)]
         self.assertEqual(state.queens(), [Position(0, 0)])
 
-    def test_queens_are_more_than_one(self):
+    def test_queens_is_one_rect(self):
+        """Testcase: queens() should return a list of the position
+        in which queens appear on the chessboard"""
+        state = QueensState(4, 8)
+        state.queen_position = [Position(0, 0)]
+        self.assertEqual(state.queens(), [Position(0, 0)])
+
+    def test_queens_are_more_than_one_sq(self):
         """Testcase: queens() should return a list of the positions
         in which queens appear on the chessboard"""
         state = QueensState(8, 8)
         state.queen_position = [Position(0, 0), Position(1, 0)]
         self.assertEqual(state.queens(), [Position(0, 0), Position(1, 0)])
 
+    def test_queens_are_more_than_one_rect(self):
+        """Testcase: queens() should return a list of the positions
+        in which queens appear on the chessboard"""
+        state = QueensState(4, 8)
+        state.queen_position = [Position(0, 0), Position(1, 0)]
+        self.assertEqual(state.queens(), [Position(0, 0), Position(1, 0)])
+
+    # Checkpoint
     def test_has_queen_True(self):
         """Testcase: has_queen() should return True
         if queen exists on given position of the chessboard"""
@@ -225,7 +267,6 @@ class TestQueensState(unittest.TestCase):
 
         self.assertIn(Position(1, 1), current_state.queens())
         self.assertNotIn(Position(1, 1), state.queens())
-
 
 
 if __name__ == '__main__':
