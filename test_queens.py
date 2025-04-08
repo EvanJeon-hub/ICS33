@@ -121,6 +121,12 @@ class TestQueensState(unittest.TestCase):
         state.queen_position = [Position(1, 1), Position(2, 2)]
         self.assertTrue(state.any_queens_unsafe())
 
+    def test_queens_unsafe_True_only_one_queen_unsafe(self):
+        """Testcase: only one queen unsafe"""
+        state = QueensState(8, 8)
+        state.queen_position = [Position(1, 1), Position(2, 2), Position(2, 3)]
+        self.assertTrue(state.any_queens_unsafe())
+
     def test_queens_unsafe_False_single_queen(self):
         """Testcase: There are less than two queen exists on the chessboard
         so queen cannot attack each other"""
