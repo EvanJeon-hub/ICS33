@@ -1,5 +1,5 @@
 # queens.py
-#
+"""queens.py contains methods and to modify the QueensState"""
 # ICS 33 Spring 2025
 # Project 0: History of Modern
 #
@@ -18,38 +18,45 @@
 # DO NOT MODIFY THE Position NAMEDTUPLE OR THE PROVIDED EXCEPTION CLASSES.
 
 from collections import namedtuple
-from typing import Self, Type
+from typing import Self
 
 Position = namedtuple('Position', ['row', 'column'])
 
 # Ordinarily, we would write docstrings within classes or their methods.
 # Since a namedtuple builds those classes and methods for us, we instead
 # add the documentation by hand afterward.
-Position.__doc__ = 'A position on a chessboard, specified by zero-based row and column numbers.'
+Position.__doc__ = ('A position on a chessboard, '
+                    'specified by zero-based row and column numbers.')
 Position.row.__doc__ = 'A zero-based row number'
 Position.column.__doc__ = 'A zero-based column number'
 
 
 class DuplicateQueenError(Exception):
-    """An exception indicating an attempt to add a queen where one is already present."""
+    """An exception indicating an attempt
+    to add a queen where one is already present."""
 
     def __init__(self, position: Position):
-        """Initializes the exception, given a position where the duplicate queen exists."""
+        """Initializes the exception,
+        given a position where the duplicate queen exists."""
         self._position = position
 
     def __str__(self) -> str:
-        return f'duplicate queen in row {self._position.row} column {self._position.column}'
+        return (f'duplicate queen in row '
+                f'{self._position.row} column {self._position.column}')
 
 
 class MissingQueenError(Exception):
-    """An exception indicating an attempt to remove a queen where one is not present."""
+    """An exception indicating an attempt
+    to remove a queen where one is not present."""
 
     def __init__(self, position: Position):
-        """Initializes the exception, given a position where a queen is missing."""
+        """Initializes the exception,
+        given a position where a queen is missing."""
         self._position = position
 
     def __str__(self) -> str:
-        return f'missing queen in row {self._position.row} column {self._position.column}'
+        return (f'missing queen in row '
+                f'{self._position.row} column {self._position.column}')
 
 
 class QueensState:
@@ -57,8 +64,8 @@ class QueensState:
     solving the n-queens problem."""
 
     def __init__(self, rows: int, columns: int):
-        """Initializes the chessboard to have the given numbers of rows and columns,
-        with no queens occupying any of its cells."""
+        """Initializes the chessboard to have the given numbers
+        of rows and columns, with no queens occupying any of its cells."""
         self.rows = rows
         self.columns = columns
         self.queen_position = []
@@ -68,26 +75,26 @@ class QueensState:
         return len(self.queen_position)
 
     def queens(self) -> list[Position]:
-        """Returns a list of the positions in which queens appear on the chessboard,
+        """Returns a list of the positions where queens appear on the board,
         arranged in no particular order."""
         return self.queen_position
 
     def has_queen(self, position: Position) -> bool:
-        """Returns True if a queen occupies the given position on the chessboard, or
-        False otherwise."""
-        return True if position in self.queens() else False
+        """Returns True if a queen occupies
+        the given position on the chessboard, or False otherwise."""
+        return position in self.queens()
 
     def any_queens_unsafe(self) -> bool:
-        """Returns True if any queens on the chessboard are unsafe (i.e., they can
-        be captured by at least one other queen on the chessboard), or False otherwise."""
+        """Returns True if any queens on the chessboard are unsafe
+        or False otherwise."""
         if self.queen_count() < 2:
             return False
         queens = self.queens()
         for i, q1 in enumerate(queens):
             for q2 in queens[i+1:]:
-                if q1.column == q2.column or q1.row == q2.row: # check if queens are in same row or column
+                if q1.column == q2.column or q1.row == q2.row:
                     return True
-                elif abs(q1.column - q2.column) == abs(q1.row - q2.row): # check Diagonals
+                if abs(q1.column - q2.column) == abs(q1.row - q2.row):
                     return True
         return False
 
@@ -105,9 +112,9 @@ class QueensState:
         return new_queen_state
 
     def with_queens_removed(self, positions: list[Position]) -> Self:
-        """Builds a new QueensState with queens removed from the given positions,
-        without modifying 'self' in any way.  Raises a MissingQueenError when there
-        is no queen in at least one of the given positions."""
+        """Builds a new QueensState with queens removed,
+        without modifying 'self' in any way. Raises a MissingQueenError
+        when there is no queen in at least one of the given positions."""
         new_queen_position = list(self.queen_position)
         for position in positions:
             if position in new_queen_position:
@@ -117,5 +124,3 @@ class QueensState:
         new_queen_state = QueensState(self.rows, self.columns)
         new_queen_state.queen_position = new_queen_position
         return new_queen_state
-
-
