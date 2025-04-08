@@ -124,3 +124,4 @@ class QueensState:
         new_queen_state = QueensState(self.rows, self.columns)
         new_queen_state.queen_position = new_queen_position
         return new_queen_state
+
