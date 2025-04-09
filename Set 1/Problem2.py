@@ -12,10 +12,7 @@ class Album:
     def add_song(self, song):
         self._songs.append(song)
 
-a1 = Album('U2')
-a1.add_song('Zoo Station')
-a1.add_song('The Fly')
-print(a1.songs())
-a2 = Album('Bruce Hornsby')
-a2.add_song('Circus on the Moon')
-print(a2.songs())
+# The problem with this code is that _songs is defined as a class variable.
+# Therefore, _songs will include all instances for a1 and a2.
+# As a solution, _song should be stated as self._songs = [] in __init__ function
+# in order to prevent storing songs with the wrong artist.
