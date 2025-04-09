@@ -144,7 +144,7 @@
       <workItem from="1743811697973" duration="12000" />
       <workItem from="1744176117562" duration="838000" />
       <workItem from="1744177030171" duration="10744000" />
-      <workItem from="1744241908731" duration="356000" />
+      <workItem from="1744241908731" duration="670000" />
     </task>
     <task id="LOCAL-00001" summary="Spring 2025 starting point">
       <option name="closed" value="true" />
@@ -498,7 +498,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744242098982</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="final commit">
+      <option name="closed" value="true" />
+      <created>1744242292398</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1744242292398</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -573,7 +581,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add two testcase for queens()&#10;Case 1: position is empty&#10;Case 2: position is not empty - should return list of the position of queens" />
     <MESSAGE value="fixed queen_count() method" />
     <MESSAGE value="fixed testing function for count_queen()" />
     <MESSAGE value="fixed testing function for queens()" />
@@ -598,7 +605,8 @@
     <MESSAGE value="fixed some style issues" />
     <MESSAGE value="problem3.py" />
     <MESSAGE value="added testcase for print_values fails" />
-    <option name="LAST_COMMIT_MESSAGE" value="added testcase for print_values fails" />
+    <MESSAGE value="final commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="final commit" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ICS33_Reinforcement_Exercises$.coverage" NAME=" Coverage Results" MODIFIED="1744242160816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Set 1" />

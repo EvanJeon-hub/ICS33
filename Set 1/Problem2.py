@@ -1,3 +1,8 @@
+# Set 1 Problem 2
+# Evan-Soobin Jeon
+# 3537131
+# ejeon2@uci.edu
+
 class Album:
     def __init__(self, artist):
         self._artist = artist
