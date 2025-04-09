@@ -55,10 +55,16 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python tests.Python tests in Problem3.py.executor": "Run",
+    "Python tests.Python tests in problem3.py.executor": "Run",
     "Python tests.Python tests in test_queens.py.executor": "Run",
+    "Python.Problem1.executor": "Run",
+    "Python.Problem2.executor": "Run",
+    "Python.Problem3.executor": "Run",
     "Python.abstarct_class.executor": "Run",
     "Python.note.executor": "Run",
     "Python.prepare_submission.executor": "Run",
+    "Python.printing.executor": "Run",
     "Python.queens.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
@@ -70,6 +76,13 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -129,7 +142,7 @@
       <workItem from="1743567284079" duration="31983000" />
       <workItem from="1743811697973" duration="12000" />
       <workItem from="1744176117562" duration="838000" />
-      <workItem from="1744177030171" duration="1149000" />
+      <workItem from="1744177030171" duration="10744000" />
     </task>
     <task id="LOCAL-00001" summary="Spring 2025 starting point">
       <option name="closed" value="true" />
@@ -419,7 +432,47 @@
       <option name="project" value="LOCAL" />
       <updated>1743809736413</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Reinforcement activities - Completed Problem 1 and 2">
+      <option name="closed" value="true" />
+      <created>1744237302195</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1744237302195</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Push">
+      <option name="closed" value="true" />
+      <created>1744237324138</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1744237324138</updated>
+    </task>
+    <task id="LOCAL-00039" summary="fixed some style issues">
+      <option name="closed" value="true" />
+      <created>1744237432390</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1744237432390</updated>
+    </task>
+    <task id="LOCAL-00040" summary="fixed some style issues">
+      <option name="closed" value="true" />
+      <created>1744237441027</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1744237441027</updated>
+    </task>
+    <task id="LOCAL-00041" summary="problem3.py">
+      <option name="closed" value="true" />
+      <created>1744241396861</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1744241396861</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -494,10 +547,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implement has_queen() method in QueensStatae" />
-    <MESSAGE value="Implement any_queens_unsafe() method in QueensStatae" />
-    <MESSAGE value="adding staticmethod and fix parameters in queens()" />
-    <MESSAGE value="fixed some implementation about __init__method" />
     <MESSAGE value="oppsie. wrong comment" />
     <MESSAGE value="Add two testcase for queens()&#10;Case 1: position is empty&#10;Case 2: position is not empty - should return list of the position of queens" />
     <MESSAGE value="fixed queen_count() method" />
@@ -519,13 +568,22 @@
     <MESSAGE value="added docstrings and simple testcase instances for queens_added() and queens_removed() method" />
     <MESSAGE value="commit" />
     <MESSAGE value="added more testcase for queens_added() and queens_removed()" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more testcase for queens_added() and queens_removed()" />
+    <MESSAGE value="Reinforcement activities - Completed Problem 1 and 2" />
+    <MESSAGE value="Push" />
+    <MESSAGE value="fixed some style issues" />
+    <MESSAGE value="problem3.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="problem3.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ICS33_Reinforcement_Exercises$.coverage" NAME=" Coverage Results" MODIFIED="1744241888632" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Set 1" />
     <SUITE FILE_PATH="coverage/UCI$note.coverage" NAME="note Coverage Results" MODIFIED="1743554875184" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ICS33" />
     <SUITE FILE_PATH="coverage/UCI$queens.coverage" NAME="queens Coverage Results" MODIFIED="1743811375583" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ICS33-Project 0" />
     <SUITE FILE_PATH="coverage/UCI$.coverage" NAME=" Coverage Results" MODIFIED="1743810499547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ICS33-Project 0" />
+    <SUITE FILE_PATH="coverage/ICS33_Reinforcement_Exercises$Problem2.coverage" NAME="Problem2 Coverage Results" MODIFIED="1744236996159" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Set 1" />
+    <SUITE FILE_PATH="coverage/ICS33_Reinforcement_Exercises$printing.coverage" NAME="printing Coverage Results" MODIFIED="1744241612089" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Set 1" />
     <SUITE FILE_PATH="coverage/UCI$abstarct_class.coverage" NAME="abstarct_class Coverage Results" MODIFIED="1743545601223" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ICS32" />
     <SUITE FILE_PATH="coverage/UCI$prepare_submission.coverage" NAME="prepare_submission Coverage Results" MODIFIED="1743807579468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ICS33-Project 0" />
+    <SUITE FILE_PATH="coverage/ICS33_Reinforcement_Exercises$Problem1.coverage" NAME="Problem1 Coverage Results" MODIFIED="1744235042975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Set 1" />
+    <SUITE FILE_PATH="coverage/ICS33_Reinforcement_Exercises$Problem3.coverage" NAME="Problem3 Coverage Results" MODIFIED="1744235154867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Set 1" />
   </component>
 </project>

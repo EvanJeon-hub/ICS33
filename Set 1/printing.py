@@ -20,5 +20,5 @@ def print_reversed_list(values):
         print(value[::-1])
 
 
-print(print_values_in_range(1, 6, 2))
+print(print_values_in_range('a', 6, 2))
 print(print_reversed_list(['1234', '678']))
