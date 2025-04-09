@@ -38,12 +38,12 @@
     &quot;assignee&quot;: &quot;EvanJeon-hub&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/EvanJeon-hub/Project.git&quot;,
-    &quot;accountId&quot;: &quot;721d9918-29b6-4ff1-b22c-e19742e16eac&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/EvanJeon-hub/ICS33-Reinforcement_Exercises.git",
+    "accountId": "721d9918-29b6-4ff1-b22c-e19742e16eac"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -129,7 +129,7 @@
       <workItem from="1743567284079" duration="31983000" />
       <workItem from="1743811697973" duration="12000" />
       <workItem from="1744176117562" duration="838000" />
-      <workItem from="1744177030171" duration="806000" />
+      <workItem from="1744177030171" duration="1149000" />
     </task>
     <task id="LOCAL-00001" summary="Spring 2025 starting point">
       <option name="closed" value="true" />

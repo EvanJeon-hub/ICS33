@@ -1,16 +1,21 @@
-# This is a sample Python script.
+class Album:
+    def __init__(self, artist):
+        self._artist = artist
+        self._songs = []
 
-# Press ⌃F5 to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+    def artist(self):
+        return self._artist
 
+    def songs(self):
+        return self._songs
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+    def add_song(self, song):
+        self._songs.append(song)
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+a1 = Album('U2')
+a1.add_song('Zoo Station')
+a1.add_song('The Fly')
+print(a1.songs())
+a2 = Album('Bruce Hornsby')
+a2.add_song('Circus on the Moon')
+print(a2.songs())
