@@ -13,6 +13,15 @@ class TestPrintingFunctions(unittest.TestCase):
         expected_output = "1\n3\n5\n"
         self.assertEqual(captured_output.getvalue(), expected_output)
 
+    def test_print_values_not_in_range(self):
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
+        with self.assertRaises(ValueError):
+            print_values_in_range('a', 6, 2)
+        sys.stdout = sys.__stdout__
+        expected_output = "1\n3\n5\n"
+        self.assertNotEqual(captured_output.getvalue(), expected_output)
+
     def test_print_reversed_list_single(self):
         captured_output = io.StringIO()
         sys.stdout = captured_output
