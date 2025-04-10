@@ -1,3 +1,8 @@
+# project1.py
+# Evan-Soobin Jeon
+# 3537131
+# ejeon2@uci.edu
+
 from pathlib import Path
 
 
