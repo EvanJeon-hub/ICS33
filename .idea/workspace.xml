@@ -53,39 +53,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests in Problem3.py.executor": "Run",
-    "Python tests.Python tests in problem3.py.executor": "Run",
-    "Python tests.Python tests in test_queens.py.executor": "Run",
-    "Python.Problem1.executor": "Run",
-    "Python.Problem2.executor": "Run",
-    "Python.Problem3.executor": "Run",
-    "Python.abstarct_class.executor": "Run",
-    "Python.note.executor": "Run",
-    "Python.prepare_submission.executor": "Run",
-    "Python.printing.executor": "Run",
-    "Python.queens.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/evanjeon/ICS33-Reinforcement Exercises",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests in Problem3.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in problem3.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_queens.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Problem1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Problem2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Problem3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.abstarct_class.executor&quot;: &quot;Run&quot;,
+    &quot;Python.note.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prepare_submission.executor&quot;: &quot;Run&quot;,
+    &quot;Python.printing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.queens.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/evanjeon/ICS33-Reinforcement Exercises&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Set 1" />
@@ -144,7 +144,7 @@
       <workItem from="1743811697973" duration="12000" />
       <workItem from="1744176117562" duration="838000" />
       <workItem from="1744177030171" duration="10744000" />
-      <workItem from="1744241908731" duration="670000" />
+      <workItem from="1744241908731" duration="945000" />
     </task>
     <task id="LOCAL-00001" summary="Spring 2025 starting point">
       <option name="closed" value="true" />
@@ -506,7 +506,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744242292398</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="push">
+      <option name="closed" value="true" />
+      <created>1744242597389</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1744242597389</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -581,7 +589,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed queen_count() method" />
     <MESSAGE value="fixed testing function for count_queen()" />
     <MESSAGE value="fixed testing function for queens()" />
     <MESSAGE value="removed unnecessary staticmethod" />
@@ -606,7 +613,8 @@
     <MESSAGE value="problem3.py" />
     <MESSAGE value="added testcase for print_values fails" />
     <MESSAGE value="final commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="final commit" />
+    <MESSAGE value="push" />
+    <option name="LAST_COMMIT_MESSAGE" value="push" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/ICS33_Reinforcement_Exercises$.coverage" NAME=" Coverage Results" MODIFIED="1744242160816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Set 1" />
