@@ -16,11 +16,12 @@ class ExampleContextManager(Exception):
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        if exc_type is issubclass(exc_type, self.expected_exception):
+        if exc_type is not None and issubclass(exc_type, self.expected_exception):
             return True
-        raise CustomTypeError(f"{self.expected_exception} is not raised"
-                              f"but raised {exc_type if exc_type else 'no exception'}")
+
+        raise CustomTypeError(f"Expected {self.expected_exception.__name__}, but got {exc_type.__name__ if exc_type else 'no exception'}")
 
 
 def should_raise(sample_exception):
     return ExampleContextManager(sample_exception)
+
