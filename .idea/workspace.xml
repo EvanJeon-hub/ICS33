@@ -53,39 +53,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python tests.Python tests in Problem3.py.executor": "Run",
-    "Python tests.Python tests in problem3.py.executor": "Run",
-    "Python tests.Python tests in test_queens.py.executor": "Run",
-    "Python.Problem1.executor": "Run",
-    "Python.Problem2.executor": "Run",
-    "Python.Problem3.executor": "Run",
-    "Python.abstarct_class.executor": "Run",
-    "Python.note.executor": "Run",
-    "Python.prepare_submission.executor": "Run",
-    "Python.printing.executor": "Run",
-    "Python.queens.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/evanjeon/ICS33-Reinforcement Exercises",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python tests.Python tests in Problem3.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in problem3.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python tests.Python tests in test_queens.py.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Problem1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Problem2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.Problem3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.abstarct_class.executor&quot;: &quot;Run&quot;,
+    &quot;Python.note.executor&quot;: &quot;Run&quot;,
+    &quot;Python.prepare_submission.executor&quot;: &quot;Run&quot;,
+    &quot;Python.printing.executor&quot;: &quot;Run&quot;,
+    &quot;Python.queens.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/evanjeon/ICS33-Reinforcement Exercises&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Set 1" />
