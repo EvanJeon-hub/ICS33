@@ -14,7 +14,7 @@ class TestPrintingFunctions(unittest.TestCase):
         captured_output = io.StringIO()
         sys.stdout = captured_output
         print_values_in_range(1, 6, 2)
-        sys.stdout = sys.__stdout__
+        sys.stdout = sys.__stdout__  # __stdout__ = Standard output
         expected_output = "1\n3\n5\n"
         self.assertEqual(captured_output.getvalue(), expected_output)
 
