@@ -8,6 +8,7 @@ class CustomTypeError(Exception):
     pass
 
 
+
 class ExampleContextManager(Exception):
     def __init__(self, expected_exception):
         self.expected_exception = expected_exception
