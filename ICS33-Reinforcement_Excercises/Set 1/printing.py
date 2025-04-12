@@ -1,5 +1,4 @@
 # printing.py
-#
 # ICS 33 Spring 2025
 # Exercise Set 1
 #
