@@ -1,8 +1,12 @@
+# test_project1.py
+# Evan-Soobin Jeon
+# ejeon2@uci.edu
+
 import unittest
-from alerts import *
-from cancellations import *
-from devices import *
-from inputs import *
+from alerts import Alert
+from cancellations import Cancellation
+from devices import Device
+from inputs import _input
 from project1 import *
 
 
