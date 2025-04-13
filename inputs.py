@@ -1,6 +1,9 @@
+# inputs.py
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
+
 import shlex
+
 
 def _input(command):
     command_input = shlex.split(command)

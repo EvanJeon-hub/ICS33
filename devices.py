@@ -1,11 +1,12 @@
+# devices.py
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
 
 from alerts import Alert
-from cancellations import *
+from cancellations import Cancellation
 from inputs import _input
 
-class Device(_input):
+class Device:
     def __init__(self, device_id):
         if device_id < 0:
             raise ValueError("device_id must be a non-negative integer.")
@@ -27,5 +28,3 @@ class Device(_input):
         pass
 
 
-def running_device(device_input):
-    return Device(device_input)
