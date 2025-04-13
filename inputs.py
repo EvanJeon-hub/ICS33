@@ -12,13 +12,13 @@ def _input(command):
     if command == "DEVICE" and int(command_input[1]) > 0:
         """characteristic 2"""
 
-    if command == "PROPAGATE":
+    if command == "PROPAGATE" and int(command_input[1]) > 0 and int(command_input[2]) > 0 and int(command_input[3]) > 0:
         """characteristic 3"""
 
-    if command == "ALERT":
+    if command == "ALERT" and int(command_input[1]) > 0 and command_input[2] == str and int(command_input[3]) > 0:
         """characteristic 4"""
 
-    if command == "CANCEL":
+    if command == "CANCEL" and int(command_input[1]) > 0 and command_input[2] == str and int(command_input[3]) > 0:
         """characteristic 5"""
 
     if command == "":
