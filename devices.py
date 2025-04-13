@@ -1,11 +1,11 @@
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
 
-from alerts import *
+from alerts import Alert
 from cancellations import *
-from inputs import Input
+from inputs import _input
 
-class Device(Input):
+class Device(_input):
     def __init__(self, device_id):
         if device_id < 0:
             raise ValueError("device_id must be a non-negative integer.")
