@@ -17,3 +17,7 @@ class Alert:
     def creat_receive_alert_message(self, sender_id: int, receiver_id: str, time: int):
         return f"@{time}: #{sender_id} RECEIVED ALERT FROM #{receiver_id}: {self.description}"
 
+    @ staticmethod
+    def create_end_message(time: int):
+        return f"@{time}: END"
+
