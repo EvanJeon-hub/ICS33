@@ -20,3 +20,7 @@ print(a1.songs())
 a2 = Album('Bruce Hornsby')
 a2.add_song('Circus on the Moon')
 print(a2.songs())
+
+# Nothing ever assigned a value into self._songs, which means that Album objects never have their own _songs attribute.
+# Consequently, any time we access the value of self._songs,
+# we're accessing the same class attribute, no matter what Album it is.
