@@ -3,17 +3,29 @@
 
 from alerts import *
 from cancellations import *
+from inputs import Input
 
-class devices:
+class Device(Input):
     def __init__(self, device_id):
         if device_id < 0:
             raise ValueError("device_id must be a non-negative integer.")
-        self.ID = device_id
+        self.device_id = device_id
+        self.notified_alerts = set()
+        self.canceled_alerts = set()
 
     def __enter__(self):
+        print(f"Device {self.device_id} is leaving simulation.")
         return self
 
     def __exit__(self, exc_type, exc_val, exc_traceback):
-        return False
+        print(f"Device {self.ID} is leaving simulation.")
+
+    def send_message(self, message):
+        pass
+
+    def receive_message(self, message):
+        pass
 
 
+def running_device(device_input):
+    return Device(device_input)
