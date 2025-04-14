@@ -13,16 +13,25 @@ from project1 import *
 # coverage run -m --branch pytest . (branch coverage)
 
 class Test_Alerts(unittest.TestCase):
-    def test_alert_initialization(self):
+    def test_alert_initialization_success(self):
         alert = Alert(device_id=1, description="power_outage", time=100)
         self.assertEqual(alert.device_id, 1)
         self.assertEqual(alert.description, "power_outage")
         self.assertEqual(alert.time, 100)
 
-    def test_alert_str(self):
+    def test_alert_initialization_failure(self):
+        with self.assertRaises(ValueError):
+            Alert(device_id=-1, description="power_outage", time=100)
+
+    def test_alert_str_success(self):
         alert = Alert(2, "network_error", 250)
         expected_str = "Alert[network_error] from Device 2 at 250ms"
         self.assertEqual(str(alert), expected_str)
+
+    def test_alert_str_failure(self):
+        alert = Alert(2, "network_error", 250)
+        expected_str = "Alert[network_error] from Device 3 at 250ms"
+        self.assertNotEqual(str(alert), expected_str)
 
     def test_create_send_alert_message_success(self):
         alert = Alert(1, "OhNo", 300)
@@ -62,13 +71,22 @@ class Test_Alerts(unittest.TestCase):
 
 
 class Test_cancellations(unittest.TestCase):
-    def test_cancellation_initialization(self):
+    def test_cancellation_initialization_success(self):
         cancellation = Cancellation(device_id=1, description="OhNo", time=1000)
         self.assertEqual(cancellation.device_id, 1)
         self.assertEqual(cancellation.description, "OhNo")
         self.assertEqual(cancellation.time, 1000)
 
+    def test_cancellation_initialization_failure(self):
+        with self.assertRaises(ValueError):
+            Cancellation(device_id=-1, description="OhNo", time=1000)
+
     def test_cancellation_str(self):
+        cancellation = Cancellation(2, "network_error", 250)
+        expected_str = "Cancellation[network_error] from Device 2 at 250ms"
+        self.assertEqual(str(cancellation), expected_str)
+
+    def test_cancellation_str_success(self):
         cancellation = Cancellation(2, "network_error", 250)
         expected_str = "Cancellation[network_error] from Device 2 at 250ms"
         self.assertEqual(str(cancellation), expected_str)
@@ -111,7 +129,26 @@ class Test_cancellations(unittest.TestCase):
 
 
 class Test_devices(unittest.TestCase):
-    pass
+    def test_device_initialization_success(self):
+        device = Device(device_id=1)
+        self.assertEqual(device.device_id, 1)
+        self.assertEqual(device.notified_alerts, set())
+        self.assertEqual(device.canceled_alerts, set())
+        self.assertEqual(device.propagation_set, {})
+
+    def test_device_initialization_failure(self):
+        with self.assertRaises(ValueError):
+            Device(device_id=-1)
+
+    def test_device_add_propagation_set_success(self):
+        device = Device(device_id=1)
+        device.add_propagation_set(target_device=2, delay=100)
+        self.assertEqual(device.propagation_set, {2: 100})
+
+    def test_device_add_propagation_set_failure(self):
+        device = Device(device_id=1)
+        with self.assertRaises(ValueError):
+            device.add_propagation_set(target_device=-1, delay=100)
 
 
 class Test_inputs(unittest.TestCase):

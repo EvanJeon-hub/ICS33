@@ -4,6 +4,8 @@
 
 class Cancellation:
     def __init__(self, device_id: int, description: str, time: int):
+        if device_id < 0:
+            raise ValueError("device_id must be a non-negative integer.")
         self.device_id = device_id
         self.description = description
         self.time = time
