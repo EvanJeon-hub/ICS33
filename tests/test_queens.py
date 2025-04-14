@@ -15,7 +15,7 @@ import unittest
 from queens import QueensState, Position, DuplicateQueenError, MissingQueenError
 
 
-# coverage testing:
+
 # coverage report -m (shows report with percent)
 # coverage run -m --branch pytest . (branch coverage)
 
