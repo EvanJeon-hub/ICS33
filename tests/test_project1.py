@@ -3,6 +3,8 @@
 # ejeon2@uci.edu
 
 import unittest
+from io import StringIO
+from contextlib import redirect_stdout
 from alerts import Alert
 from cancellations import Cancellation
 from devices import Device
@@ -13,6 +15,7 @@ from project1 import *
 # coverage run -m --branch pytest . (branch coverage)
 
 class Test_Alerts(unittest.TestCase):
+    # __init__()
     def test_alert_initialization_success(self):
         alert = Alert(device_id=1, description="power_outage", time=100)
         self.assertEqual(alert.device_id, 1)
@@ -23,6 +26,7 @@ class Test_Alerts(unittest.TestCase):
         with self.assertRaises(ValueError):
             Alert(device_id=-1, description="power_outage", time=100)
 
+    # __str__()
     def test_alert_str_success(self):
         alert = Alert(2, "network_error", 250)
         expected_str = "Alert[network_error] from Device 2 at 250ms"
@@ -33,6 +37,7 @@ class Test_Alerts(unittest.TestCase):
         expected_str = "Alert[network_error] from Device 3 at 250ms"
         self.assertNotEqual(str(alert), expected_str)
 
+    # create_send_alert_message()
     def test_create_send_alert_message_success(self):
         alert = Alert(1, "OhNo", 300)
         message = alert.create_send_alert_message(sender_id=2, receiver_id=1, time=50)
@@ -45,6 +50,7 @@ class Test_Alerts(unittest.TestCase):
         expected_message = "@100: #2 SENT ALERT TO #1: OhNo"
         self.assertNotEqual(message, expected_message)
 
+    # create_receive_alert_message()
     def test_create_receive_alert_message_success(self):
         alert = Alert(1, "OhNo", 300)
         message = alert.create_receive_alert_message(sender_id=1, receiver_id=2, time=100)
@@ -57,6 +63,7 @@ class Test_Alerts(unittest.TestCase):
         expected_message = "@200: #1 RECEIVED ALERT FROM #3: OhNo"
         self.assertNotEqual(message, expected_message)
 
+    # create_end_message()
     def test_create_end_message_success(self):
         alert = Alert(1, "OhNo", 300)
         message = alert.create_end_message(time=500)
@@ -71,6 +78,7 @@ class Test_Alerts(unittest.TestCase):
 
 
 class Test_cancellations(unittest.TestCase):
+    # __init__()
     def test_cancellation_initialization_success(self):
         cancellation = Cancellation(device_id=1, description="OhNo", time=1000)
         self.assertEqual(cancellation.device_id, 1)
@@ -81,6 +89,7 @@ class Test_cancellations(unittest.TestCase):
         with self.assertRaises(ValueError):
             Cancellation(device_id=-1, description="OhNo", time=1000)
 
+    # __str__()
     def test_cancellation_str(self):
         cancellation = Cancellation(2, "network_error", 250)
         expected_str = "Cancellation[network_error] from Device 2 at 250ms"
@@ -91,6 +100,7 @@ class Test_cancellations(unittest.TestCase):
         expected_str = "Cancellation[network_error] from Device 2 at 250ms"
         self.assertEqual(str(cancellation), expected_str)
 
+    # create_send_cancel_message()
     def test_create_send_cancel_message_success(self):
         cancellation = Cancellation(1, "OhNo", 1000)
         message = cancellation.create_send_cancel_message(sender_id=2, receiver_id=1, time=150)
@@ -103,6 +113,7 @@ class Test_cancellations(unittest.TestCase):
         expected_message = "@200: #2 SENT CANCELLATION TO #1: OhNo"
         self.assertNotEqual(message, expected_message)
 
+    # create_receive_cancel_message()
     def test_create_receive_cancel_message_success(self):
         cancellation = Cancellation(1, "OhNo", 1000)
         message = cancellation.create_receive_cancel_message(sender_id=1, receiver_id=2, time=200)
@@ -115,6 +126,7 @@ class Test_cancellations(unittest.TestCase):
         expected_message = "@150: #1 RECEIVED CANCELLATION FROM #2: OhNo"
         self.assertNotEqual(message, expected_message)
 
+    # create_end_message()
     def test_create_end_message(self):
         cancellation = Cancellation(1, "OhNo", 1000)
         message = cancellation.create_end_message(time=600)
@@ -129,6 +141,7 @@ class Test_cancellations(unittest.TestCase):
 
 
 class Test_devices(unittest.TestCase):
+    # __init__()
     def test_device_initialization_success(self):
         device = Device(device_id=1)
         self.assertEqual(device.device_id, 1)
@@ -140,6 +153,7 @@ class Test_devices(unittest.TestCase):
         with self.assertRaises(ValueError):
             Device(device_id=-1)
 
+    # add_propagation_set()
     def test_device_add_propagation_set_success(self):
         device = Device(device_id=1)
         device.add_propagation_set(target_device=2, delay=100)
@@ -149,6 +163,92 @@ class Test_devices(unittest.TestCase):
         device = Device(device_id=1)
         with self.assertRaises(ValueError):
             device.add_propagation_set(target_device=-1, delay=100)
+
+    # receive_alert()
+    def test_receive_alert_description_already_notified(self):
+        device = Device(device_id=1)
+        alert = Alert(device_id=2, description="power_outage", time=100)
+        device.notified_alerts.add("power_outage")
+        queue = []
+        device.receive_alert(alert, 50, queue)
+        self.assertEqual(queue, [])
+
+    def test_receive_alert_create_receive_alert_message_success(self):
+        device = Device(device_id=1)
+        alert = Alert(device_id=2, description="power_outage", time=100)
+        queue = []
+
+        output = StringIO()
+        with redirect_stdout(output):
+            device.receive_alert(alert, 50, queue)
+
+        output_lines = output.getvalue().strip().split("\n")
+        expected_message = "@50: #1 RECEIVED ALERT FROM #2: power_outage"
+        self.assertIn(expected_message, output_lines)
+
+    def test_receive_alert_create_receive_alert_message_failure(self):
+        device = Device(device_id=1)
+        alert = Alert(device_id=2, description="power_outage", time=100)
+        queue = []
+
+        output = StringIO()
+        with redirect_stdout(output):
+            device.receive_alert(alert, 50, queue)
+
+        output_lines = output.getvalue().strip().split("\n")
+        expected_message = "@100: #1 RECEIVED ALERT FROM #2: power_outage"
+        self.assertNotIn(expected_message, output_lines)
+
+    def test_receive_alert_create_send_alert_message_success(self):
+        device = Device(device_id=1)
+        alert = Alert(device_id=2, description="power_outage", time=100)
+        queue = []
+
+        output = StringIO()
+        with redirect_stdout(output):
+            device.receive_alert(alert, 50, queue)
+
+        output_lines = output.getvalue().strip().split("\n")
+        expected_message = "@50: #1 SENT ALERT TO #2: power_outage"
+        self.assertIn(expected_message, output_lines)
+
+    def test_receive_alert_create_send_alert_message_failure(self):
+        device = Device(device_id=1)
+        alert = Alert(device_id=2, description="power_outage", time=100)
+        queue = []
+
+        output = StringIO()
+        with redirect_stdout(output):
+            device.receive_alert(alert, 50, queue)
+
+        output_lines = output.getvalue().strip().split("\n")
+        expected_message = "@100: #1 SENT ALERT TO #2: power_outage"
+        self.assertNotIn(expected_message, output_lines)
+
+    def test_receive_alert_propagation_success(self):
+        device = Device(device_id=1)
+        alert = Alert(device_id=2, description="power_outage", time=100)
+        device.add_propagation_set(target_device=3, delay=50)
+        queue = []
+        device.receive_alert(alert, 50, queue)
+        self.assertEqual(queue, [(100, "alert", 3, alert)])
+
+    def test_receive_alert_propagation_failure(self):
+        device = Device(device_id=1)
+        alert = Alert(device_id=2, description="power_outage", time=100)
+        device.add_propagation_set(target_device=3, delay=50)
+        queue = []
+        device.receive_alert(alert, 50, queue)
+        self.assertNotEqual(queue, [(200, "alert", 3, alert)])
+
+    # receive_cancellation()
+    def test_receive_cancellation_description_already_canceled(self):
+        device = Device(device_id=1)
+        cancel = Cancellation(device_id=2, description="power_outage", time=100)
+        device.canceled_alerts.add("power_outage")
+        queue = []
+        device.receive_cancellation(cancel, 50, queue)
+        self.assertEqual(queue, [])
 
 
 class Test_inputs(unittest.TestCase):
