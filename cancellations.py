@@ -15,9 +15,13 @@ class Cancellation:
         return f"@{time}: #{sender_id} SENT CANCELLATION TO #{receiver_id}: {self.description}"
 
     def create_receive_cancel_message(self, sender_id: int, receiver_id: int, time: int):
-        return f"@{time}: #{sender_id} RECEIVED CANCELLATION ALERT TO #{receiver_id}: {self.description}"
+        return f"@{time}: #{sender_id} RECEIVED CANCELLATION FROM #{receiver_id}: {self.description}"
 
     @staticmethod
     def create_end_message(time: int):
         return f"@{time}: END"
 
+cancellation = Cancellation(1, "OhNo", 1000)
+print(cancellation.create_receive_cancel_message(sender_id=1, receiver_id=2, time=200))
+print(cancellation.create_send_cancel_message(sender_id=2, receiver_id=1, time=150))
+print(cancellation.create_end_message(time=600))

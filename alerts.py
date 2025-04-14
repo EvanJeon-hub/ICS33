@@ -14,11 +14,14 @@ class Alert:
     def create_send_alert_message(self, sender_id: int, receiver_id: int, time: int):
         return f"@{time}: #{sender_id} SENT ALERT TO #{receiver_id}: {self.description}"
 
-    def creat_receive_alert_message(self, sender_id: int, receiver_id: str, time: int):
+    def create_receive_alert_message(self, sender_id: int, receiver_id: int, time: int):
         return f"@{time}: #{sender_id} RECEIVED ALERT FROM #{receiver_id}: {self.description}"
 
     @ staticmethod
     def create_end_message(time: int):
         return f"@{time}: END"
 
-print(Alert(1, "Test Alert", 1000))
+alert = Alert(1, "OhNo", 1000)
+print(alert.create_receive_alert_message(sender_id=1, receiver_id=2, time=100))
+print(alert.create_send_alert_message(sender_id=2, receiver_id=1, time=50))
+print(alert.create_end_message(time=600))
