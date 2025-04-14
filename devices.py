@@ -30,7 +30,8 @@ class Device:
         for target_device, delay in self.propagation_set.items():
             propagation_time = current_time + delay
             new_alert = Alert(self.device_id, alert.description, propagation_time)
-            queue.append(new_alert)
+            print(alert.create_send_alert_message(self.device_id, target_device.device_id, propagation_time))
+            queue.append((propagation_time, "alert", target_device, new_alert))
 
     def receive_cancellation(self, cancel: Cancellation, current_time: int, queue: list):
         if cancel.description in self.canceled_alerts:
@@ -42,7 +43,8 @@ class Device:
         for target_device, delay in self.propagation_set.items():
             cancellation_time = current_time + delay
             new_cancellation = Cancellation(self.device_id, cancel.description, cancellation_time)
-            queue.append(new_cancellation)
+            print(cancel.create_send_cancel_message(self.device_id, target_device.device_id, cancellation_time))
+            queue.append((cancellation_time, "cancel", target_device, new_cancellation))
 
     # After raising an alert, the device should be ready to receive another alert
     def raise_alert(self, description, time, queue):
