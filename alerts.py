@@ -21,3 +21,4 @@ class Alert:
     def create_end_message(time: int):
         return f"@{time}: END"
 
+print(Alert(1, "Test Alert", 1000))
