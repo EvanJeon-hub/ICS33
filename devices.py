@@ -21,7 +21,16 @@ class Device:
         self.propagation_set[target_device] = delay
 
     def receive_alert(self, alert: Alert, current_time: int, queue: list):
-        pass
+        if alert.description in self.notified_alerts:
+            return
+
+        self.notified_alerts.add(alert.description)
+        print(alert.create_receive_alert_message(self.device_id, alert.device_id, current_time))
+
+        for target_device, delay in self.propagation_set.items():
+            propagation_time = current_time + delay
+            new_alert = Alert(self.device_id, alert.description, propagation_time)
+            queue.append(new_alert)
 
     def receive_cancellation(self, cancel: Cancellation, current_time: int, queue: list):
         pass

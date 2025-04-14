@@ -9,6 +9,8 @@ from devices import Device
 from inputs import input_command
 from project1 import *
 
+# coverage report -m (shows report with percent)
+# coverage run -m --branch pytest . (branch coverage)
 
 class Test_Alerts(unittest.TestCase):
     def test_alert_initialization(self):
