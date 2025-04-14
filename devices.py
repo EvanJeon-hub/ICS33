@@ -4,7 +4,7 @@
 
 from alerts import Alert
 from cancellations import Cancellation
-from inputs import _input
+from inputs import input_command
 
 class Device:
     def __init__(self, device_id):

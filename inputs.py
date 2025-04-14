@@ -5,7 +5,7 @@
 import shlex
 
 
-def _input(command):
+def input_command(command):
     command_input = shlex.split(command)
     command = command_input[0]
 

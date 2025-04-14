@@ -20,3 +20,5 @@ class Cancellation:
     @staticmethod
     def create_end_message(time: int):
         return f"@{time}: END"
+
+print (Cancellation(1, 'Hello', 5000))

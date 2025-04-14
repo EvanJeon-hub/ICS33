@@ -6,7 +6,7 @@ import unittest
 from alerts import Alert
 from cancellations import Cancellation
 from devices import Device
-from inputs import _input
+from inputs import input_command
 from project1 import *
 
 
