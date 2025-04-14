@@ -33,7 +33,16 @@ class Device:
             queue.append(new_alert)
 
     def receive_cancellation(self, cancel: Cancellation, current_time: int, queue: list):
-        pass
+        if cancel.description in self.canceled_alerts:
+            return
+
+        self.canceled_alerts.add(cancel.description)
+        print(cancel.create_receive_cancel_message(self.device_id, cancel.device_id, current_time))
+
+        for target_device, delay in self.propagation_set.items():
+            cancellation_time = current_time + delay
+            new_cancellation = Cancellation(self.device_id, cancel.description, cancellation_time)
+            queue.append(new_cancellation)
 
     # After raising an alert, the device should be ready to receive another alert
     def raise_alert(self, description, time, queue):
