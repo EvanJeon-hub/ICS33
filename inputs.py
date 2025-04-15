@@ -2,32 +2,39 @@
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
 import shlex
+from alerts import Alert
+from cancellations import Cancellation
+from devices import Device
 
+def input_command(file_path):
+    """Reads the input file and processes commands."""
 
-def input_command(command):
-    command_input = shlex.split(command)
-    command = command_input[0]
+    devices = {}
+    events = []
+    simulation_time = None
 
-    if command == "LENGTH" and int(command_input[1]) > 0:
-        """characteristic 1"""
+    with open(file_path, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            tokens = shlex.split(file_path)
+            command = tokens[0]
 
-    if command == "DEVICE" and int(command_input[1]) > 0:
-        """characteristic 2"""
+        if command == "LENGTH":
+            """characteristic 1"""
 
-    if command == "PROPAGATE" and int(command_input[1]) > 0 and int(command_input[2]) > 0 and int(command_input[3]) > 0:
-        """characteristic 3"""
+        elif command == "DEVICE":
+            """characteristic 2"""
 
-    if command == "ALERT" and int(command_input[1]) > 0 and command_input[2] == str and int(command_input[3]) > 0:
-        """characteristic 4"""
+        elif command == "PROPAGATE":
+            """characteristic 3"""
 
-    if command == "CANCEL" and int(command_input[1]) > 0 and command_input[2] == str and int(command_input[3]) > 0:
-        """characteristic 5"""
+        elif command == "ALERT":
+            """characteristic 4"""
 
-    if command == "":
-        """characteristic 6"""
-
-    if command == "#":
-        """characteristic 7"""
+        if command == "CANCEL":
+            """characteristic 5"""
 
 
 
