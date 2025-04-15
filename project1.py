@@ -11,6 +11,7 @@ def _read_input_file_path() -> Path:
     """Reads the input file path from the standard input"""
     return Path(input().strip())
 
+
 def main() -> None:
     """Runs the simulation program in its entirety"""
     input_file_path = _read_input_file_path()
@@ -24,13 +25,22 @@ def main() -> None:
 
     for event in events:
         if event[0] == "PROPAGATE":
-            pass
+            _, sender_id, receiver_id, delay = event
+            sender = devices[sender_id]
+            receiver = devices[receiver_id]
+            sender.add_propagation_set(receiver, int(delay))
 
         elif event[0] == "ALERT":
-            pass
+            _, alert = event
+            device = devices[alert.device_id]
+            queue.append((alert.time, "alert", device, alert))
 
         elif event[0] == "CANCEL":
-            pass
+            _, cancellation = event
+            device = devices[cancellation.device_id]
+            queue.append(
+                (cancellation.time, "cancellation", device, cancellation)
+            )
 
         queue.sort(key=lambda x: x[0])
 
@@ -50,6 +60,7 @@ def main() -> None:
         queue.sort(key=lambda x: x[0])
 
     print(Alert.create_end_message(simulation_time))
+
 
 if __name__ == '__main__':
     main()
