@@ -6,6 +6,7 @@ import unittest
 from io import StringIO
 from contextlib import redirect_stdout
 import tempfile
+import os
 from alerts import Alert
 from cancellations import Cancellation
 from devices import Device
@@ -363,6 +364,10 @@ class TestInputs(unittest.TestCase):
             temp_file.flush()
             devices, events, simulation_time = input_command(temp_file.name)
 
+        self.assertIsInstance(devices, dict)
+        self.assertIsInstance(events, list)
+        self.assertIsInstance(simulation_time, int)
+        self.assertIsInstance(devices[1], Device)
         self.assertEqual(simulation_time, 600000)
         self.assertEqual(len(devices), 1)
         self.assertEqual(len(events), 3)
@@ -390,6 +395,10 @@ class TestInputs(unittest.TestCase):
             temp_file.flush()
             devices, events, simulation_time = input_command(temp_file.name)
 
+        self.assertNotIsInstance(simulation_time, str)
+        self.assertNotIsInstance(devices, list)
+        self.assertNotIsInstance(events, dict)
+        self.assertNotIsInstance(devices[1], str)
         self.assertNotEqual(simulation_time, 700000)
         self.assertNotEqual(len(devices), 2)
         self.assertNotEqual(len(events), 4)
@@ -463,6 +472,53 @@ class TestInputs(unittest.TestCase):
         self.assertNotEqual(events[2][1].device_id, 2)
         self.assertNotEqual(events[1][1].time, 6000)
         self.assertNotEqual(events[2][1].time, 7000)
+
+    def test_invalid_command_ignored_success(self):
+        """Test that invalid commands are ignored by input_command"""
+        with tempfile.NamedTemporaryFile(
+                mode='w+', delete=False, encoding='utf-8') as temp_file:
+            temp_file.write("""
+            LENGTH 100
+            DEVICE 1
+            UNKNOWN_COMMAND foo bar baz
+            DEVICE 2
+            """)
+            temp_file_path = temp_file.name
+
+        devices, events, simulation_time = input_command(temp_file_path)
+
+        os.remove(temp_file_path)
+
+        self.assertEqual(simulation_time, 100)
+        self.assertEqual(len(devices), 2)
+        self.assertEqual(len(events), 0)
+        self.assertIn(1, devices)
+        self.assertIn(2, devices)
+        self.assertIsInstance(devices[1], Device)
+        self.assertIsInstance(devices[2], Device)
+
+    def test_invalid_command_ignored_failure(self):
+        """Test that invalid commands are ignored by input_command"""
+        with tempfile.NamedTemporaryFile(
+                mode='w+', delete=False, encoding='utf-8') as temp_file:
+            temp_file.write("""
+            LENGTH 100
+            DEVICE 1
+            UNKNOWN_COMMAND foo bar baz
+            DEVICE 2
+            """)
+            temp_file_path = temp_file.name
+
+        devices, events, simulation_time = input_command(temp_file_path)
+
+        os.remove(temp_file_path)
+
+        self.assertNotEqual(simulation_time, 200)
+        self.assertNotEqual(len(devices), 3)
+        self.assertNotEqual(len(events), 1)
+        self.assertNotIn(3, devices)
+        self.assertNotIsInstance(devices[1], str)
+        self.assertNotIsInstance(devices[2], str)
 
 
 class TestProject1(unittest.TestCase):

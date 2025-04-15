@@ -49,4 +49,7 @@ def input_command(file_path):
                 cancellation = Cancellation(device_id, description, time)
                 events.append(("CANCEL", cancellation))
 
+            else:
+                continue
+
     return devices, events, simulation_time
