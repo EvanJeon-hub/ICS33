@@ -56,7 +56,7 @@ class Device:
 
         else:
             print(alert.create_receive_alert_message(
-                alert.device_id, self.device_id, current_time
+                self.device_id, alert.device_id, current_time
             ))
             for target_device, delay in self.propagation_set.items():
                 propagation_time = current_time + delay
