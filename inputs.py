@@ -6,9 +6,9 @@ from alerts import Alert
 from cancellations import Cancellation
 from devices import Device
 
+
 def input_command(file_path):
     """Reads the input file and processes commands."""
-
     devices = {}
     events = []
     simulation_time = None
@@ -33,8 +33,11 @@ def input_command(file_path):
         elif command == "ALERT":
             """characteristic 4"""
 
-        if command == "CANCEL":
+        elif command == "CANCEL":
             """characteristic 5"""
+
+        return devices, events, simulation_time
+
 
 
 
