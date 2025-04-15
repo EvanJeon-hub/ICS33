@@ -1,7 +1,6 @@
-# inputs.py
+"""inputs.py"""
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
-
 import shlex
 
 

@@ -17,9 +17,19 @@ class Device:
         self.canceled_alerts = set()
         self.propagation_set = {}
 
+    def __eq__(self, other):
+        """Equality check for devices based on device_id."""
+        return isinstance(other, Device) and self.device_id == other.device_id
+
+    def __hash__(self):
+        """Hash function for devices based on device_id."""
+        return hash(self.device_id)
+
     def add_propagation_set(self, target_device, delay):
         """Add a target device and its delay to the propagation set."""
-        if target_device < 0 or delay < 0:
+        if not isinstance(target_device, Device):
+            raise TypeError("target_device must be a Device instance.")
+        if target_device.device_id < 0 or delay < 0:
             raise ValueError("must be non-negative integers.")
         self.propagation_set[target_device] = delay
 
