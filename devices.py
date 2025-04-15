@@ -74,16 +74,16 @@ class Device:
 
         # Propagate the cancellation to other devices
         for target_device, delay in self.propagation_set.items():
-            cancellation_time = current_time + delay
+            propagation_time = current_time + delay
             new_cancellation = Cancellation(
-                self.device_id, cancel.description, cancellation_time
+                self.device_id, cancel.description, propagation_time
             )
             print(
                 cancel.create_send_cancel_message
-                (self.device_id, target_device.device_id, cancellation_time)
+                (self.device_id, target_device.device_id, propagation_time)
             )
             queue.append(
-                (cancellation_time, "cancel", target_device, new_cancellation)
+                (propagation_time, "cancel", target_device, new_cancellation)
             )
 
     def raise_alert(self, description, time, queue):

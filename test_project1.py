@@ -349,43 +349,120 @@ class TestDevices(unittest.TestCase):
 
 class TestInputs(unittest.TestCase):
     """Test cases for the input_command function"""
-    def test_basic_input_parsing(self):
+    def test_basic_input_parsing_success(self):
         """test the input_command function"""
         test_input = StringIO(
-            "LENGTH 100\n"
+            "LENGTH 600000\n"
             "DEVICE 1\n"
-            "PROPAGATE 1 2 50\n"
-            "ALERT 1 power_outage 10\n"
-            "CANCEL 1 power_outage 20\n"
+            "PROPAGATE 1 2 100\n"
+            "ALERT 1 OhNo 5000\n"
+            "CANCEL 1 OhNo 6000\n"
         )
         with tempfile.NamedTemporaryFile(delete=True) as temp_file:
             temp_file.write(test_input.getvalue().encode())
             temp_file.flush()
             devices, events, simulation_time = input_command(temp_file.name)
 
-        self.assertEqual(simulation_time, 100)
+        self.assertEqual(simulation_time, 600000)
         self.assertEqual(len(devices), 1)
         self.assertEqual(len(events), 3)
+        self.assertEqual(events[0], ("PROPAGATE", 1, 2, "100"))
+        self.assertEqual(events[1][0], "ALERT")
+        self.assertEqual(events[2][0], "CANCEL")
+        self.assertEqual(events[1][1].description, "OhNo")
+        self.assertEqual(events[2][1].description, "OhNo")
+        self.assertEqual(events[1][1].device_id, 1)
+        self.assertEqual(events[2][1].device_id, 1)
+        self.assertEqual(events[1][1].time, 5000)
+        self.assertEqual(events[2][1].time, 6000)
 
-    def test_input_startswith_hash(self):
+    def test_basic_input_parsing_failure(self):
+        """test the input_command function"""
+        test_input = StringIO(
+            "LENGTH 600000\n"
+            "DEVICE 1\n"
+            "PROPAGATE 1 2 100\n"
+            "ALERT 1 OhNo 5000\n"
+            "CANCEL 1 OhNo 6000\n"
+        )
+        with tempfile.NamedTemporaryFile(delete=True) as temp_file:
+            temp_file.write(test_input.getvalue().encode())
+            temp_file.flush()
+            devices, events, simulation_time = input_command(temp_file.name)
+
+        self.assertNotEqual(simulation_time, 700000)
+        self.assertNotEqual(len(devices), 2)
+        self.assertNotEqual(len(events), 4)
+        self.assertNotEqual(events[0], ("PROPAGATE", 1, 3, "100"))
+        self.assertNotEqual(events[0][0], "ALERT")
+        self.assertNotEqual(events[1][0], "CANCEL")
+        self.assertNotEqual(events[2][0], "ALERT")
+        self.assertNotEqual(events[1][1].description, "Ohno")
+        self.assertNotEqual(events[2][1].description, "Ohno")
+        self.assertNotEqual(events[1][1].device_id, 2)
+        self.assertNotEqual(events[2][1].device_id, 2)
+        self.assertNotEqual(events[1][1].time, 6000)
+        self.assertNotEqual(events[2][1].time, 7000)
+
+    def test_input_startswith_hash_success(self):
         """test the input_command function"""
         test_input = StringIO(
             "# This is a comment\n"
-            "LENGTH 100\n"
+            "LENGTH 600000\n"
             "# Another comment\n"
             "DEVICE 1\n"
-            "PROPAGATE 1 2 50\n"
-            "ALERT 1 power_outage 10\n"
-            "CANCEL 1 power_outage 20\n"
+            "PROPAGATE 1 2 100\n"
+            "ALERT 1 OhNo 5000\n"
+            "CANCEL 1 OhNo 6000\n"
         )
         with tempfile.NamedTemporaryFile(delete=True) as temp_file:
             temp_file.write(test_input.getvalue().encode())
             temp_file.flush()
             devices, events, simulation_time = input_command(temp_file.name)
 
-        self.assertEqual(simulation_time, 100)
+        self.assertEqual(simulation_time, 600000)
         self.assertEqual(len(devices), 1)
         self.assertEqual(len(events), 3)
+        self.assertEqual(events[0], ("PROPAGATE", 1, 2, "100"))
+        self.assertEqual(events[0][0], "PROPAGATE")
+        self.assertEqual(events[1][0], "ALERT")
+        self.assertEqual(events[2][0], "CANCEL")
+        self.assertEqual(events[1][1].description, "OhNo")
+        self.assertEqual(events[2][1].description, "OhNo")
+        self.assertEqual(events[1][1].device_id, 1)
+        self.assertEqual(events[2][1].device_id, 1)
+        self.assertEqual(events[1][1].time, 5000)
+        self.assertEqual(events[2][1].time, 6000)
+
+    def test_input_startswith_hash_failure(self):
+        """test the input_command function"""
+        test_input = StringIO(
+            "# This is a comment\n"
+            "LENGTH 600000\n"
+            "# Another comment\n"
+            "DEVICE 1\n"
+            "PROPAGATE 1 2 100\n"
+            "ALERT 1 OhNo 5000\n"
+            "CANCEL 1 OhNo 6000\n"
+        )
+        with tempfile.NamedTemporaryFile(delete=True) as temp_file:
+            temp_file.write(test_input.getvalue().encode())
+            temp_file.flush()
+            devices, events, simulation_time = input_command(temp_file.name)
+
+        self.assertNotEqual(simulation_time, 700000)
+        self.assertNotEqual(len(devices), 2)
+        self.assertNotEqual(len(events), 4)
+        self.assertNotEqual(events[0], ("PROPAGATE", 1, 3, "100"))
+        self.assertNotEqual(events[0][0], "ALERT")
+        self.assertNotEqual(events[1][0], "CANCEL")
+        self.assertNotEqual(events[2][0], "ALERT")
+        self.assertNotEqual(events[1][1].description, "Ohno")
+        self.assertNotEqual(events[2][1].description, "Ohno")
+        self.assertNotEqual(events[1][1].device_id, 2)
+        self.assertNotEqual(events[2][1].device_id, 2)
+        self.assertNotEqual(events[1][1].time, 6000)
+        self.assertNotEqual(events[2][1].time, 7000)
 
 
 class TestProject1(unittest.TestCase):
