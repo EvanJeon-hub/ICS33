@@ -36,9 +36,3 @@ class Alert:
     def create_end_message(time: int):
         """creates a formatted message for ending"""
         return f"@{time}: END"
-
-# alert = Alert(1, "Fire", 10)
-# print(alert.create_send_alert_message(1, 2, 10))
-
-
-
