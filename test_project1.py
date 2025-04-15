@@ -5,6 +5,7 @@
 import unittest
 from io import StringIO
 from contextlib import redirect_stdout
+import tempfile
 from alerts import Alert
 from cancellations import Cancellation
 from devices import Device
@@ -60,7 +61,7 @@ class TestAlerts(unittest.TestCase):
         self.assertNotEqual(message, expected_message)
 
     def test_create_receive_alert_message_success(self):
-        """test the creation of the receive alert message"""
+        """test the creation of the receiving alert message"""
         alert = Alert(1, "OhNo", 300)
         message = alert.create_receive_alert_message(
             sender_id=1, receiver_id=2, time=100
@@ -69,7 +70,7 @@ class TestAlerts(unittest.TestCase):
         self.assertEqual(message, expected_message)
 
     def test_create_receive_alert_message_failure(self):
-        """test the creation of the receive alert message"""
+        """test the creation of the receiving alert message"""
         alert = Alert(1, "OhNo", 300)
         message = alert.create_receive_alert_message(
             sender_id=1, receiver_id=2, time=100
@@ -137,7 +138,7 @@ class TestCancellations(unittest.TestCase):
         self.assertNotEqual(message, expected_message)
 
     def test_create_receive_cancel_message_success(self):
-        """test the creation of the receive cancel message"""
+        """test the creation of the receiving cancel message"""
         cancellation = Cancellation(1, "OhNo", 1000)
         message = cancellation.create_receive_cancel_message(
             sender_id=1, receiver_id=2, time=200
@@ -146,7 +147,7 @@ class TestCancellations(unittest.TestCase):
         self.assertEqual(message, expected_message)
 
     def test_create_receive_cancel_message_failure(self):
-        """test the creation of the receive cancel message"""
+        """test the creation of the receiving cancel message"""
         cancellation = Cancellation(1, "OhNo", 1000)
         message = cancellation.create_receive_cancel_message(
             sender_id=1, receiver_id=2, time=200
@@ -276,7 +277,7 @@ class TestDevices(unittest.TestCase):
         expected_message = "@100: #1 RECEIVED ALERT FROM #2: power"
         self.assertNotIn(expected_message, output_lines)
 
-    # Line 47 - 54
+    # TODO: Line 47 - 54
     def test_receive_alert_create_send_alert_message_success(self):
         """test the receive_alert method"""
 
@@ -324,21 +325,21 @@ class TestDevices(unittest.TestCase):
         expected_message = "@100: #1 RECEIVED CANCELLATION FROM #2: power"
         self.assertNotIn(expected_message, output_lines)
 
-    # Line 68 - 76
+    # TODO: Line 68 - 76
     def test_receive_cancellation_create_send_cancel_message_success(self):
         """test the receive_cancellation method"""
 
     def test_receive_cancellation_create_send_cancel_message_failure(self):
         """test the receive_cancellation method"""
 
-    # raise_alert()
+    # TODO: raise_alert()
     def test_raise_alert_success(self):
         """test the raise_alert method"""
 
     def test_raise_alert_failure(self):
         """test the raise_alert method"""
 
-    # cancel_alert()
+    # TODO: cancel_alert()
     def test_cancel_alert_success(self):
         """test the cancel_alert method"""
 
@@ -348,6 +349,43 @@ class TestDevices(unittest.TestCase):
 
 class TestInputs(unittest.TestCase):
     """Test cases for the input_command function"""
+    def test_basic_input_parsing(self):
+        """test the input_command function"""
+        test_input = StringIO(
+            "LENGTH 100\n"
+            "DEVICE 1\n"
+            "PROPAGATE 1 2 50\n"
+            "ALERT 1 power_outage 10\n"
+            "CANCEL 1 power_outage 20\n"
+        )
+        with tempfile.NamedTemporaryFile(delete=True) as temp_file:
+            temp_file.write(test_input.getvalue().encode())
+            temp_file.flush()
+            devices, events, simulation_time = input_command(temp_file.name)
+
+        self.assertEqual(simulation_time, 100)
+        self.assertEqual(len(devices), 1)
+        self.assertEqual(len(events), 3)
+
+    def test_input_startswith_hash(self):
+        """test the input_command function"""
+        test_input = StringIO(
+            "# This is a comment\n"
+            "LENGTH 100\n"
+            "# Another comment\n"
+            "DEVICE 1\n"
+            "PROPAGATE 1 2 50\n"
+            "ALERT 1 power_outage 10\n"
+            "CANCEL 1 power_outage 20\n"
+        )
+        with tempfile.NamedTemporaryFile(delete=True) as temp_file:
+            temp_file.write(test_input.getvalue().encode())
+            temp_file.flush()
+            devices, events, simulation_time = input_command(temp_file.name)
+
+        self.assertEqual(simulation_time, 100)
+        self.assertEqual(len(devices), 1)
+        self.assertEqual(len(events), 3)
 
 
 class TestProject1(unittest.TestCase):
