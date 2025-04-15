@@ -31,7 +31,7 @@ class Device:
             raise TypeError("target_device must be a Device instance.")
         if target_device.device_id < 0 or delay < 0:
             raise ValueError("must be non-negative integers.")
-        # Adds the device and delay to the propagation_set dictionary
+        # Adds the device and delay time to the propagation_set dictionary
         self.propagation_set[target_device] = delay
 
     def receive_alert(self, alert: Alert, current_time: int, queue: list):
@@ -42,6 +42,7 @@ class Device:
 
         # record the alert status
         self.notified_alerts.add(alert.description)
+
         # print the alert message
         print(alert.create_receive_alert_message
               (self.device_id, alert.device_id, current_time)
@@ -67,6 +68,7 @@ class Device:
 
         # record the cancellation status
         self.canceled_alerts.add(cancel.description)
+
         # print the cancellation message
         print(cancel.create_receive_cancel_message
               (self.device_id, cancel.device_id, current_time)
