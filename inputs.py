@@ -13,7 +13,7 @@ def input_command(file_path):
     events = []
     simulation_time = int
 
-    with open(file_path, "r") as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if not line or line.startswith("#"):
@@ -23,23 +23,19 @@ def input_command(file_path):
             command = tokens[0]
 
             if command == "LENGTH":
-                """characteristic 1"""
                 simulation_time = int(tokens[1])
 
             elif command == "DEVICE":
-                """characteristic 2"""
                 device_id = int(tokens[1])
                 devices[device_id] = Device(device_id)
 
             elif command == "PROPAGATE":
-                """characteristic 3"""
                 sender_id = int(tokens[1])
                 receiver_id = int(tokens[2])
                 delay = tokens[3]
                 events.append(("PROPAGATE", sender_id, receiver_id, delay))
 
             elif command == "ALERT":
-                """characteristic 4"""
                 device_id = int(tokens[1])
                 description = tokens[2]
                 time = int(tokens[3])
@@ -47,7 +43,6 @@ def input_command(file_path):
                 events.append(("ALERT", alert))
 
             elif command == "CANCEL":
-                """characteristic 5"""
                 device_id = int(tokens[1])
                 description = tokens[2]
                 time = int(tokens[3])
