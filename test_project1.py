@@ -184,17 +184,60 @@ class TestDevices(unittest.TestCase):
         with self.assertRaises(ValueError):
             Device(device_id=-1)
 
+    def test_device_eq_success(self):
+        """Test equality check (__eq__) for two devices with same ID"""
+        d1 = Device(device_id=5)
+        d2 = Device(device_id=5)
+        self.assertEqual(d1, d2)
+
+    def test_device_eq_failure(self):
+        """Test inequality check (__eq__) for two devices with different IDs"""
+        d1 = Device(device_id=5)
+        d2 = Device(device_id=7)
+        self.assertNotEqual(d1, d2)
+
+    def test_device_hash_equal(self):
+        """Test hash function (__hash__) for two devices with same ID"""
+        d1 = Device(device_id=10)
+        d2 = Device(device_id=10)
+        self.assertEqual(hash(d1), hash(d2))
+
+    def test_device_hash_not_equal(self):
+        """Test hash function (__hash__) for two devices with different IDs"""
+        d1 = Device(device_id=10)
+        d2 = Device(device_id=20)
+        self.assertNotEqual(hash(d1), hash(d2))
+
     def test_device_add_propagation_set_success(self):
         """test the add_propagation_set method"""
         device = Device(device_id=1)
-        device.add_propagation_set(target_device=2, delay=100)
-        self.assertEqual(device.propagation_set, {2: 100})
+        target_device = Device(device_id=2)
+        device.add_propagation_set(target_device=target_device, delay=100)
+        self.assertEqual(device.propagation_set, {target_device: 100})
 
-    def test_device_add_propagation_set_failure(self):
+    def test_device_add_propagation_set_failure_type_error(self):
         """test the add_propagation_set method"""
         device = Device(device_id=1)
-        with self.assertRaises(ValueError):
-            device.add_propagation_set(target_device=-1, delay=100)
+        with self.assertRaises(TypeError):
+            device.add_propagation_set(target_device="not_a_device", delay=100)
+
+    def test_device_add_propagation_set_failure_value_error(self):
+        """test that ValueError is raised for invalid device_id or delay"""
+        device = Device(device_id=1)
+
+        with self.assertRaises(ValueError) as context1:
+            device.add_propagation_set(
+                target_device=Device(device_id=-1), delay=100
+            )
+        self.assertIn(
+            "device_id must be a non-negative", str(context1.exception)
+        )
+
+        with self.assertRaises(ValueError) as context2:
+            device.add_propagation_set(
+                target_device=Device(device_id=2), delay=-50
+            )
+        self.assertIn("must be non-negative", str(context2.exception))
 
     def test_receive_alert_description_already_notified(self):
         """test the receive_alert method"""
@@ -233,7 +276,7 @@ class TestDevices(unittest.TestCase):
         expected_message = "@100: #1 RECEIVED ALERT FROM #2: power"
         self.assertNotIn(expected_message, output_lines)
 
-    # Line 31 - 34
+    # Line 47 - 54
     def test_receive_alert_create_send_alert_message_success(self):
         """test the receive_alert method"""
 
@@ -281,7 +324,7 @@ class TestDevices(unittest.TestCase):
         expected_message = "@100: #1 RECEIVED CANCELLATION FROM #2: power"
         self.assertNotIn(expected_message, output_lines)
 
-    # Line 44 - 47
+    # Line 68 - 76
     def test_receive_cancellation_create_send_cancel_message_success(self):
         """test the receive_cancellation method"""
 
