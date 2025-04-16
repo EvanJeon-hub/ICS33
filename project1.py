@@ -42,7 +42,7 @@ def main() -> None:
                 (cancellation.time, "cancellation", device, cancellation)
             )
 
-        queue.sort(key=lambda x: x[0])
+        queue.sort(key=lambda x: (x[0], 0 if x[1] == "alert" else 1))
 
     # Run Simulation
     while queue:
@@ -57,7 +57,7 @@ def main() -> None:
         elif event_type == "cancellation":
             device.receive_cancellation(event, current_time, queue)
 
-        queue.sort(key=lambda x: x[0])
+        queue.sort(key=lambda x: (x[0], 0 if x[1] == "alert" else 1))
 
     print(Alert.create_end_message(simulation_time))
 

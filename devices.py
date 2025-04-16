@@ -37,11 +37,11 @@ class Device:
     def receive_alert(self, alert: Alert, current_time: int, queue: list):
         """""Receive an alert and propagate it to other devices."""
         # Check if the alert is already recorded
-        if alert.description in self.notified_alerts:
+        if (alert.description, alert.device_id) in self.notified_alerts:
             return
 
         # record the alert status
-        self.notified_alerts.add(alert.description)
+        self.notified_alerts.add((alert.description, alert.device_id))
 
         if self.device_id == alert.device_id:
             for target_device, delay in self.propagation_set.items():
@@ -73,11 +73,11 @@ class Device:
             self, cancel: Cancellation, current_time: int, queue: list):
         """Receive a cancellation and propagate it to other devices."""
         # Check if the cancellation is already recorded
-        if cancel.description in self.canceled_alerts:
+        if (cancel.description, cancel.device_id) in self.canceled_alerts:
             return
 
         # record the cancellation status
-        self.canceled_alerts.add(cancel.description)
+        self.canceled_alerts.add((cancel.description, cancel.device_id))
 
         if self.device_id == cancel.device_id:
             for target_device, delay in self.propagation_set.items():
@@ -89,7 +89,7 @@ class Device:
                     self.device_id, target_device.device_id, current_time
                 ))
                 queue.append(
-                    (propagation_time, "cancel", target_device, new_cancellation)
+                    (propagation_time, "cancellation", target_device, new_cancellation)
                 )
 
         else:
@@ -105,7 +105,7 @@ class Device:
                     self.device_id, target_device.device_id, current_time
                 ))
                 queue.append(
-                    (propagation_time, "cancel", target_device, new_cancellation)
+                    (propagation_time, "cancellation", target_device, new_cancellation)
                 )
 
     def raise_alert(self, description, time, queue):
