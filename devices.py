@@ -37,11 +37,11 @@ class Device:
     def receive_alert(self, alert: Alert, current_time: int, queue: list):
         """""Receive an alert and propagate it to other devices."""
         # Check if the alert is already recorded
-        if (alert.description, alert.device_id) in self.notified_alerts:
+        if (alert.description, current_time) in self.notified_alerts:
             return
 
         # record the alert status
-        self.notified_alerts.add((alert.description, alert.device_id))
+        self.notified_alerts.add((alert.description, current_time))
 
         if self.device_id == alert.device_id:
             for target_device, delay in self.propagation_set.items():
@@ -73,11 +73,11 @@ class Device:
             self, cancel: Cancellation, current_time: int, queue: list):
         """Receive a cancellation and propagate it to other devices."""
         # Check if the cancellation is already recorded
-        if (cancel.description, cancel.device_id) in self.canceled_alerts:
+        if (cancel.description, current_time) in self.canceled_alerts:
             return
 
         # record the cancellation status
-        self.canceled_alerts.add((cancel.description, cancel.device_id))
+        self.canceled_alerts.add((cancel.description, current_time))
 
         if self.device_id == cancel.device_id:
             for target_device, delay in self.propagation_set.items():
@@ -94,7 +94,7 @@ class Device:
 
         else:
             print(cancel.create_receive_cancel_message(
-                cancel.device_id, self.device_id, current_time
+                self.device_id, cancel.device_id, current_time
             ))
             for target_device, delay in self.propagation_set.items():
                 propagation_time = current_time + delay
