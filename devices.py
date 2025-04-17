@@ -31,6 +31,7 @@ class Device:
             raise TypeError("target_device must be a Device instance.")
         if target_device.device_id < 0 or delay < 0:
             raise ValueError("must be non-negative integers.")
+        # add the target device and its delay to the propagation set
         self.propagation_set[target_device] = delay
 
     def receive_alert(self, alert: Alert, current_time: int, queue: list):

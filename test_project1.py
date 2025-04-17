@@ -243,13 +243,123 @@ class TestDevices(unittest.TestCase):
             )
         self.assertIn("must be non-negative", str(context2.exception))
 
-    # TODO: Testcase for receive_alert()
+    def test_receive_alert_prevent_duplicate_success(self):
+        """test the receive_alert method"""
+        device = Device(1)
+        queue = []
 
-    # TODO: Testcase for receive_cancellation()
+        alert = Alert(0, "Power Failure", 100)
+        device.notified_alerts.add((
+            alert.description, alert.device_id, device.device_id, alert.time
+        ))
 
-    # TODO: Testcase for raise_alert()
+        device.receive_alert(alert, 100, queue)
+        self.assertEqual(len(queue), 0)
 
-    # TODO: Testcase for cancel_alert()
+    def test_receive_alert_prevent_duplicate_failure(self):
+        """test the receive_alert method"""
+        device = Device(1)
+        queue = []
+
+        alert = Alert(0, "Power Failure", 100)
+        device.notified_alerts.add((
+            alert.description, alert.device_id, device.device_id, alert.time
+        ))
+
+        device.receive_alert(alert, 100, queue)
+        self.assertNotEqual(len(queue), 1)
+
+    def test_receive_cancellation_prevent_duplicate_success(self):
+        """test the receive_cancellation method"""
+        device = Device(1)
+        queue = []
+
+        cancel = Cancellation(0, "Power Failure", 100)
+        device.canceled_alerts.add((
+            cancel.description, cancel.device_id, device.device_id, cancel.time
+        ))
+
+        device.receive_cancellation(cancel, 100, queue)
+        self.assertEqual(len(queue), 0)
+
+    def test_receive_cancellation_prevent_duplicate_failure(self):
+        """test the receive_cancellation method"""
+        device = Device(1)
+        queue = []
+
+        cancel = Cancellation(0, "Power Failure", 100)
+        device.canceled_alerts.add((
+            cancel.description, cancel.device_id, device.device_id, cancel.time
+        ))
+
+        device.receive_cancellation(cancel, 100, queue)
+        self.assertNotEqual(len(queue), 1)
+
+    def test_raise_alert_success(self):
+        """test the raise_alert method"""
+        device1 = Device(1)
+        device2 = Device(2)
+        device1.add_propagation_set(device2, delay=2)
+
+        queue = []
+        device1.raise_alert("Ohno", 10, queue)
+
+        self.assertEqual(len(queue), 1)
+        event_time, event_type, target_device, alert_obj = queue[0]
+        self.assertEqual(event_time, 12)  # 10 + delay(2)
+        self.assertEqual(event_type, "alert")
+        self.assertEqual(target_device, device2)
+        self.assertIsInstance(alert_obj, Alert)
+        self.assertEqual(alert_obj.description, "Ohno")
+
+    def test_raise_alert_failure(self):
+        """test the raise_alert method"""
+        device1 = Device(1)
+        device2 = Device(2)
+        device1.add_propagation_set(device2, delay=2)
+
+        queue = []
+        device1.raise_alert("Ohno", 10, queue)
+
+        self.assertNotEqual(len(queue), 2)
+        event_time, _, _, _ = queue[0]
+        self.assertNotEqual(event_time, 15)
+
+    def test_cancel_alert_success(self):
+        """test the cancel_alert method"""
+        device1 = Device(1)
+        device2 = Device(2)
+        device1.add_propagation_set(device2, delay=3)
+
+        queue = []
+        device1.cancel_alert("Ohno", 20, queue)
+
+        self.assertEqual(len(queue), 1)
+        event_time, event_type, target_device, cancel_obj = queue[0]
+        self.assertEqual(event_time, 23)  # 20 + delay(3)
+        self.assertEqual(event_type, "cancellation")
+        self.assertEqual(target_device, device2)
+        self.assertIsInstance(cancel_obj, Cancellation)
+        self.assertEqual(cancel_obj.description, "Ohno")
+
+    def test_cancel_alert_failure(self):
+        """test the cancel_alert method"""
+        device1 = Device(1)
+        device2 = Device(2)
+        device1.add_propagation_set(device2, delay=3)
+
+        queue = []
+        device1.cancel_alert("Ohno", 20, queue)
+
+        self.assertNotEqual(len(queue), 2)
+        event_time, _, _, _ = queue[0]
+        self.assertNotEqual(event_time, 25)
+
+    def test_alert_blocked_due_to_older_cancellation(self):
+        """test the alert_blocked_due_to_older_cancellation method"""
+
+    def test_cancel_blocked_due_to_older_alert(self):
+        """test the cancel_blocked_due_to_older_alert method"""
 
 
 class TestInputs(unittest.TestCase):
@@ -426,7 +536,10 @@ class TestInputs(unittest.TestCase):
 
 
 class TestProject1(unittest.TestCase):
-    """Test cases for the project1 module"""
+    """
+    Test cases for the project1 module.
+    This module also covers devices.py
+    """
     @patch('builtins.input', return_value='  /home/user/data.txt  ')
     def test_project1_read_input_file_path(self, _):
         """Test the _read_input_file_path function"""
@@ -488,7 +601,7 @@ class TestProject1(unittest.TestCase):
             os.remove(temp_file_path)
 
     def test_project1_main_failure(self):
-        """Test the main function with a invalid input file"""
+        """Test the main function with an invalid input file"""
         test_input = (
             "LENGTH 900\n"
             "DEVICE 1\n"
