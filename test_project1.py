@@ -3,17 +3,17 @@
 # ejeon2@uci.edu
 
 import unittest
-from io import StringIO
 from contextlib import redirect_stdout
+from unittest.mock import patch
 import tempfile
 import os
-from unittest.mock import patch
 from pathlib import Path
+from io import StringIO
 from alerts import Alert
 from cancellations import Cancellation
 from devices import Device
 from inputs import input_command
-import project1
+from project1 import read_input_file_path, main
 
 # coverage report -m (shows report with percent)
 # coverage run -m --branch pytest . (branch coverage)
@@ -544,7 +544,7 @@ class TestProject1(unittest.TestCase):
     def test_project1_read_input_file_path(self, _):
         """Test the _read_input_file_path function"""
         expected_path = Path('/home/user/data.txt')
-        result = project1.read_input_file_path()
+        result = read_input_file_path()
         self.assertEqual(result, expected_path)
         self.assertIsInstance(result, Path)
 
@@ -552,7 +552,7 @@ class TestProject1(unittest.TestCase):
         """Test the main function with a non-existent file"""
         with patch('builtins.input', return_value='non_existent_file.txt'):
             with redirect_stdout(StringIO()) as output:
-                project1.main()
+                main()
                 output_value = output.getvalue().strip()
 
             self.assertEqual(output_value, "FILE NOT FOUND")
@@ -576,7 +576,7 @@ class TestProject1(unittest.TestCase):
         try:
             with patch('builtins.input', return_value=temp_file_path), \
                  redirect_stdout(StringIO()) as output:
-                project1.main()
+                main()
                 output_value = output.getvalue().strip().replace('\r\n', '\n')
 
             expected_output = (
@@ -619,7 +619,7 @@ class TestProject1(unittest.TestCase):
         try:
             with patch('builtins.input', return_value=temp_file_path), \
                  redirect_stdout(StringIO()) as output:
-                project1.main()
+                main()
                 output_value = output.getvalue().strip().replace('\r\n', '\n')
 
             expected_output = (
@@ -642,9 +642,6 @@ class TestProject1(unittest.TestCase):
 
         finally:
             os.remove(temp_file_path)
-
-    def test_if_main_called_success(self):
-        """Test if main function is called"""
 
 
 if __name__ == '__main__':
