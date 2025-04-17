@@ -36,19 +36,23 @@ class Device:
     def receive_alert(self, alert: Alert, current_time: int, queue: list):
         """""Receive an alert and propagate it to other devices."""
         # Check if the alert has already been notified
-        #if (alert.description, alert.device_id, self.device_id, alert.time) in self.notified_alerts:
-            #return
+        if (alert.description, alert.device_id, self.device_id, alert.time) in self.notified_alerts:
+            return
+
         # Check if the alert is from a different device
         if self.device_id != alert.device_id:
             print(alert.create_receive_alert_message(
                 self.device_id, alert.device_id, current_time
             ))
+
         # Check if the alert is already canceled
         for desc, canceled_id, receiver_id, cancel_time in self.canceled_alerts:
             if desc == alert.description and cancel_time < current_time:
                 return
+
         # Add the alert to the notified alerts
         self.notified_alerts.add((alert.description, alert.device_id, self.device_id, alert.time))
+
         # Propagate the alert to other devices
         for target_device, delay in self.propagation_set.items():
             propagation_time = current_time + delay
@@ -64,17 +68,21 @@ class Device:
         # Check if the cancellation has already been notified
         if (cancel.description, cancel.device_id, self.device_id, cancel.time) in self.canceled_alerts:
             return
-        #Check if the cancellation is from a different device
+
+        # Check if the cancellation is from a different device
         if self.device_id != cancel.device_id:
             print(cancel.create_receive_cancel_message(
                 self.device_id, cancel.device_id, current_time
             ))
+
         # Check if the cancellation is already notified
         for desc, canceled_id, receiver_id, cancel_time in self.canceled_alerts:
             if desc == cancel.description and cancel_time < current_time:
                 return
+
         # Add the cancellation to the notified cancellations
         self.canceled_alerts.add((cancel.description, cancel.device_id, self.device_id, cancel.time))
+
         # Propagate the cancellation to other devices
         for target_device, delay in self.propagation_set.items():
             propagation_time = current_time + delay
