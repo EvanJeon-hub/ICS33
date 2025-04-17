@@ -3,10 +3,10 @@
 # ejeon2@uci.edu
 
 import unittest
-from contextlib import redirect_stdout
-from unittest.mock import patch
+from contextlib import redirect_stdout, contextmanager
 import tempfile
 import os
+import sys
 from pathlib import Path
 from io import StringIO
 from alerts import Alert
@@ -535,27 +535,64 @@ class TestInputs(unittest.TestCase):
         self.assertNotIsInstance(devices[2], str)
 
 
+@contextmanager
+def redirect_stdin(new_stdin):
+    """Context manager to redirect stdin to a new StringIO object"""
+    original_stdin = sys.stdin
+    sys.stdin = new_stdin
+    try:
+        yield
+    finally:
+        sys.stdin = original_stdin
+
+
 class TestProject1(unittest.TestCase):
     """
     Test cases for the project1 module.
     This module also covers devices.py
     """
-    @patch('builtins.input', return_value='  /home/user/data.txt  ')
-    def test_project1_read_input_file_path(self, _):
-        """Test the _read_input_file_path function"""
-        expected_path = Path('/home/user/data.txt')
-        result = read_input_file_path()
+    def test_project1_read_input_file_path_success(self):
+        """Test the read_input_file_path function without mock"""
+        test_input = StringIO("  /home/user/data.txt  \n")
+        expected_path = Path("/home/user/data.txt")
+
+        with redirect_stdin(test_input):
+            result = read_input_file_path()
+
         self.assertEqual(result, expected_path)
         self.assertIsInstance(result, Path)
 
-    def test_main_file_not_found(self):
-        """Test the main function with a non-existent file"""
-        with patch('builtins.input', return_value='non_existent_file.txt'):
-            with redirect_stdout(StringIO()) as output:
-                main()
-                output_value = output.getvalue().strip()
+    def test_project1_read_input_file_path_failure(self):
+        """Test the read_input_file_path function without mock"""
+        test_input = StringIO("  /home/user/data.txt  \n")
+        _ = Path("/home/user/data.txt")
 
-            self.assertEqual(output_value, "FILE NOT FOUND")
+        with redirect_stdin(test_input):
+            result = read_input_file_path()
+
+        self.assertNotEqual(result, Path("/home/user/other.txt"))
+        self.assertNotIsInstance(result, str)
+
+    def test_main_file_not_found_success(self):
+        """Test the main function with a non-existent file"""
+        test_input = StringIO("non_existent_file.txt\n")
+
+        with redirect_stdin(test_input), redirect_stdout(StringIO()) as output:
+            main()
+            output_value = output.getvalue().strip()
+
+        self.assertEqual(output_value, "FILE NOT FOUND")
+
+    def test_main_file_not_found_failure(self):
+        """Test the main function with a non-existent file"""
+        test_input = StringIO("non_existent_file.txt\n")
+
+        with redirect_stdin(test_input), redirect_stdout(StringIO()) as output:
+            main()
+            output_value = output.getvalue().strip()
+
+        self.assertNotEqual(output_value, "FILE FOUND")
+        self.assertNotIn("FILE FOUND", output_value)
 
     def test_project1_main_success(self):
         """Test the main function with a valid input file"""
@@ -574,10 +611,10 @@ class TestProject1(unittest.TestCase):
             temp_file_path = temp_file.name
 
         try:
-            with patch('builtins.input', return_value=temp_file_path), \
-                 redirect_stdout(StringIO()) as output:
+            with redirect_stdin(StringIO(f"{temp_file_path}\n")), \
+                    redirect_stdout(StringIO()) as output:
                 main()
-                output_value = output.getvalue().strip().replace('\r\n', '\n')
+                output_value = output.getvalue().strip().replace("\r\n", "\n")
 
             expected_output = (
                 "@200: #1 SENT ALERT TO #2: Badness\n"
@@ -601,7 +638,7 @@ class TestProject1(unittest.TestCase):
             os.remove(temp_file_path)
 
     def test_project1_main_failure(self):
-        """Test the main function with an invalid input file"""
+        """Test the main function with an invalid output (failure)"""
         test_input = (
             "LENGTH 900\n"
             "DEVICE 1\n"
@@ -617,26 +654,12 @@ class TestProject1(unittest.TestCase):
             temp_file_path = temp_file.name
 
         try:
-            with patch('builtins.input', return_value=temp_file_path), \
-                 redirect_stdout(StringIO()) as output:
+            with redirect_stdin(StringIO(f"{temp_file_path}\n")), \
+                    redirect_stdout(StringIO()) as output:
                 main()
-                output_value = output.getvalue().strip().replace('\r\n', '\n')
+                output_value = output.getvalue().strip().replace("\r\n", "\n")
 
-            expected_output = (
-                "@200: #1 SENT ALERT TO #2: Badness\n"
-                "@300: #2 RECEIVED ALERT FROM #1: Badness\n"
-                "@300: #2 SENT ALERT TO #1: Badness\n"
-                "@400: #1 RECEIVED ALERT FROM #2: Badness\n"
-                "@400: #1 SENT ALERT TO #2: Badness\n"
-                "@450: #1 SENT CANCELLATION TO #2: Badness\n"
-                "@500: #2 RECEIVED ALERT FROM #1: Badness\n"
-                "@500: #2 SENT ALERT TO #1: Badness\n"
-                "@550: #2 RECEIVED CANCELLATION FROM #1: Badness\n"
-                "@550: #2 SENT CANCELLATION TO #1: Badness\n"
-                "@600: #1 RECEIVED ALERT FROM #2: Badness\n"
-                "@650: #1 RECEIVED CANCELLATION FROM #2: Badness\n"
-                "@9000 END"
-            )
+            expected_output = output_value.replace("@900: END", "@9000 END")
 
             self.assertNotEqual(output_value, expected_output)
 
