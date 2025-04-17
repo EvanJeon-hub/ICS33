@@ -36,12 +36,18 @@ class Device:
 
     def receive_alert(self, alert: Alert, current_time: int, queue: list):
         """""Receive an alert and propagate it to other devices."""
+
+        # If this alert has been canceled BEFORE this current_time, do not propagate
+        for desc, canceled_id, receiver_id, cancel_time in self.canceled_alerts:
+            if desc == alert.description and cancel_time < current_time:
+                return
+
         # Check if the alert is already recorded
-        if (alert.description, current_time) in self.notified_alerts:
+        if (alert.description, alert.device_id, self.device_id, alert.time) in self.notified_alerts:
             return
 
         # record the alert status
-        self.notified_alerts.add((alert.description, current_time))
+        self.notified_alerts.add((alert.description, alert.device_id, self.device_id, alert.time))
 
         if self.device_id == alert.device_id:
             for target_device, delay in self.propagation_set.items():
@@ -72,12 +78,17 @@ class Device:
     def receive_cancellation(
             self, cancel: Cancellation, current_time: int, queue: list):
         """Receive a cancellation and propagate it to other devices."""
+        # If this cancellation has been canceled BEFORE this current_time, do not propagate
+        for desc, canceled_id, receiver_id, cancel_time in self.canceled_alerts:
+            if desc == cancel.description and cancel_time < current_time:
+                return
+
         # Check if the cancellation is already recorded
-        if (cancel.description, current_time) in self.canceled_alerts:
+        if (cancel.description, cancel.device_id, self.device_id, cancel.time) in self.canceled_alerts:
             return
 
-        # record the cancellation status
-        self.canceled_alerts.add((cancel.description, current_time))
+        # Add the cancellation to the set of canceled alerts
+        self.canceled_alerts.add((cancel.description, cancel.device_id, self.device_id, cancel.time))
 
         if self.device_id == cancel.device_id:
             for target_device, delay in self.propagation_set.items():
