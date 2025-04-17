@@ -108,13 +108,3 @@ class Device:
             queue.append(
                 (propagation_time, "cancellation", target_device, new_cancel)
             )
-
-    def raise_alert(self, description, time, queue):
-        """Raise an alert and propagate it to other devices."""
-        alert = Alert(self.device_id, description, time)
-        self.receive_alert(alert, time, queue)
-
-    def cancel_alert(self, description, time, queue):
-        """Cancel an alert and propagate it to other devices."""
-        cancellation = Cancellation(self.device_id, description, time)
-        self.receive_cancellation(cancellation, time, queue)
