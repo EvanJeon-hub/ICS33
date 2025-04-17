@@ -7,14 +7,14 @@ from inputs import input_command
 from alerts import Alert
 
 
-def _read_input_file_path() -> Path:
+def read_input_file_path() -> Path:
     """Reads the input file path from the standard input"""
     return Path(input().strip())
 
 
 def main() -> None:
     """Runs the simulation program in its entirety"""
-    input_file_path = _read_input_file_path()
+    input_file_path = read_input_file_path()
 
     if not input_file_path.exists():
         print("FILE NOT FOUND")
@@ -30,12 +30,12 @@ def main() -> None:
             receiver = devices[receiver_id]
             sender.add_propagation_set(receiver, int(delay))
 
-        elif event[0] == "ALERT":
+        if event[0] == "ALERT":
             _, alert = event
             device = devices[alert.device_id]
             queue.append((alert.time, "alert", device, alert))
 
-        elif event[0] == "CANCEL":
+        if event[0] == "CANCEL":
             _, cancellation = event
             device = devices[cancellation.device_id]
             queue.append(
@@ -48,13 +48,10 @@ def main() -> None:
     while queue:
         current_time, event_type, device, event = queue.pop(0)
 
-        if current_time >= simulation_time:
-            break
-
         if event_type == "alert":
             device.receive_alert(event, current_time, queue)
 
-        elif event_type == "cancellation":
+        if event_type == "cancellation":
             device.receive_cancellation(event, current_time, queue)
 
         queue.sort(key=lambda x: (x[0], 0 if x[1] == "alert" else 1))

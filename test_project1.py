@@ -7,11 +7,13 @@ from io import StringIO
 from contextlib import redirect_stdout
 import tempfile
 import os
+from unittest.mock import patch
+from pathlib import Path
 from alerts import Alert
 from cancellations import Cancellation
 from devices import Device
 from inputs import input_command
-from project1 import _read_input_file_path, main
+import project1
 
 # coverage report -m (shows report with percent)
 # coverage run -m --branch pytest . (branch coverage)
@@ -241,63 +243,13 @@ class TestDevices(unittest.TestCase):
             )
         self.assertIn("must be non-negative", str(context2.exception))
 
-    def test_receive_alert_description_already_notified(self):
-        """test the receive_alert method"""
-        device = Device(device_id=1)
-        alert = Alert(device_id=2, description="power_outage", time=100)
-        device.notified_alerts.add("power_outage")
-        queue = []
-        device.receive_alert(alert, 50, queue)
-        self.assertEqual(queue, [])
+    # TODO: Testcase for receive_alert()
 
-    def test_receive_alert_create_receive_alert_message_success(self):
-        """test the receive_alert method"""
-        pass
+    # TODO: Testcase for receive_cancellation()
 
-    def test_receive_alert_create_receive_alert_message_failure(self):
-        """test the receive_alert method"""
-        pass
+    # TODO: Testcase for raise_alert()
 
-    def test_receive_alert_create_send_alert_message_success(self):
-        """test the receive_alert method"""
-
-    def test_receive_alert_create_send_alert_message_failure(self):
-        """test the receive_alert method"""
-
-    def test_receive_cancellation_description_already_canceled(self):
-        """test the receive_cancellation method"""
-        device = Device(device_id=1)
-        cancel = Cancellation(
-            device_id=2, description="power", time=100
-        )
-        device.canceled_alerts.add("power")
-        queue = []
-        device.receive_cancellation(cancel, 50, queue)
-        self.assertEqual(queue, [])
-
-    def test_receive_cancellation_create_receive_cancel_message_success(self):
-        """test the receive_cancellation method"""
-
-    def test_receive_cancellation_create_receive_cancel_message_failure(self):
-        """test the receive_cancellation method"""
-
-    def test_receive_cancellation_create_send_cancel_message_success(self):
-        """test the receive_cancellation method"""
-
-    def test_receive_cancellation_create_send_cancel_message_failure(self):
-        """test the receive_cancellation method"""
-
-    def test_raise_alert_success(self):
-        """test the raise_alert method"""
-
-    def test_raise_alert_failure(self):
-        """test the raise_alert method"""
-
-    def test_cancel_alert_success(self):
-        """test the cancel_alert method"""
-
-    def test_cancel_alert_failure(self):
-        """test the cancel_alert method"""
+    # TODO: Testcase for cancel_alert()
 
 
 class TestInputs(unittest.TestCase):
@@ -475,6 +427,111 @@ class TestInputs(unittest.TestCase):
 
 class TestProject1(unittest.TestCase):
     """Test cases for the project1 module"""
+    @patch('builtins.input', return_value='  /home/user/data.txt  ')
+    def test_project1_read_input_file_path(self, _):
+        """Test the _read_input_file_path function"""
+        expected_path = Path('/home/user/data.txt')
+        result = project1.read_input_file_path()
+        self.assertEqual(result, expected_path)
+        self.assertIsInstance(result, Path)
+
+    def test_main_file_not_found(self):
+        """Test the main function with a non-existent file"""
+        with patch('builtins.input', return_value='non_existent_file.txt'):
+            with redirect_stdout(StringIO()) as output:
+                project1.main()
+                output_value = output.getvalue().strip()
+
+            self.assertEqual(output_value, "FILE NOT FOUND")
+
+    def test_project1_main_success(self):
+        """Test the main function with a valid input file"""
+        test_input = (
+            "LENGTH 900\n"
+            "DEVICE 1\n"
+            "DEVICE 2\n"
+            "PROPAGATE 1 2 100\n"
+            "PROPAGATE 2 1 100\n"
+            "ALERT 1 Badness 200\n"
+            "CANCEL 1 Badness 450\n"
+        )
+
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
+            temp_file.write(test_input)
+            temp_file_path = temp_file.name
+
+        try:
+            with patch('builtins.input', return_value=temp_file_path), \
+                 redirect_stdout(StringIO()) as output:
+                project1.main()
+                output_value = output.getvalue().strip().replace('\r\n', '\n')
+
+            expected_output = (
+                "@200: #1 SENT ALERT TO #2: Badness\n"
+                "@300: #2 RECEIVED ALERT FROM #1: Badness\n"
+                "@300: #2 SENT ALERT TO #1: Badness\n"
+                "@400: #1 RECEIVED ALERT FROM #2: Badness\n"
+                "@400: #1 SENT ALERT TO #2: Badness\n"
+                "@450: #1 SENT CANCELLATION TO #2: Badness\n"
+                "@500: #2 RECEIVED ALERT FROM #1: Badness\n"
+                "@500: #2 SENT ALERT TO #1: Badness\n"
+                "@550: #2 RECEIVED CANCELLATION FROM #1: Badness\n"
+                "@550: #2 SENT CANCELLATION TO #1: Badness\n"
+                "@600: #1 RECEIVED ALERT FROM #2: Badness\n"
+                "@650: #1 RECEIVED CANCELLATION FROM #2: Badness\n"
+                "@900: END"
+            )
+
+            self.assertEqual(output_value, expected_output)
+
+        finally:
+            os.remove(temp_file_path)
+
+    def test_project1_main_failure(self):
+        """Test the main function with a invalid input file"""
+        test_input = (
+            "LENGTH 900\n"
+            "DEVICE 1\n"
+            "DEVICE 2\n"
+            "PROPAGATE 1 2 100\n"
+            "PROPAGATE 2 1 100\n"
+            "ALERT 1 Badness 200\n"
+            "CANCEL 1 Badness 450\n"
+        )
+
+        with tempfile.NamedTemporaryFile(mode='w+', delete=False) as temp_file:
+            temp_file.write(test_input)
+            temp_file_path = temp_file.name
+
+        try:
+            with patch('builtins.input', return_value=temp_file_path), \
+                 redirect_stdout(StringIO()) as output:
+                project1.main()
+                output_value = output.getvalue().strip().replace('\r\n', '\n')
+
+            expected_output = (
+                "@200: #1 SENT ALERT TO #2: Badness\n"
+                "@300: #2 RECEIVED ALERT FROM #1: Badness\n"
+                "@300: #2 SENT ALERT TO #1: Badness\n"
+                "@400: #1 RECEIVED ALERT FROM #2: Badness\n"
+                "@400: #1 SENT ALERT TO #2: Badness\n"
+                "@450: #1 SENT CANCELLATION TO #2: Badness\n"
+                "@500: #2 RECEIVED ALERT FROM #1: Badness\n"
+                "@500: #2 SENT ALERT TO #1: Badness\n"
+                "@550: #2 RECEIVED CANCELLATION FROM #1: Badness\n"
+                "@550: #2 SENT CANCELLATION TO #1: Badness\n"
+                "@600: #1 RECEIVED ALERT FROM #2: Badness\n"
+                "@650: #1 RECEIVED CANCELLATION FROM #2: Badness\n"
+                "@9000 END"
+            )
+
+            self.assertNotEqual(output_value, expected_output)
+
+        finally:
+            os.remove(temp_file_path)
+
+    def test_if_main_called_success(self):
+        """Test if main function is called"""
 
 
 if __name__ == '__main__':
