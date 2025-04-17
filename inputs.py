@@ -53,5 +53,3 @@ def input_command(file_path):
                 continue
 
     return devices, events, simulation_time
-
-# print(input_command("sample.txt"))

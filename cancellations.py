@@ -35,6 +35,3 @@ class Cancellation:
     def create_end_message(time: int):
         """creates an end message"""
         return f"@{time}: END"
-
-# cancel = Cancellation(1, "Fire", 10)
-# print(cancel.create_send_cancel_message(1, 2, 10))

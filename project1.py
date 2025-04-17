@@ -14,7 +14,7 @@ def _read_input_file_path() -> Path:
 
 def main() -> None:
     """Runs the simulation program in its entirety"""
-    input_file_path = (_read_input_file_path())
+    input_file_path = _read_input_file_path()
 
     if not input_file_path.exists():
         print("FILE NOT FOUND")
