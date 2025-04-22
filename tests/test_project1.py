@@ -14,7 +14,6 @@ from cancellations import Cancellation
 from devices import Device
 from inputs import input_command
 from project1 import read_input_file_path, main
-
 # coverage report -m (shows report with percent)
 # coverage run -m --branch pytest . (branch coverage)
 
