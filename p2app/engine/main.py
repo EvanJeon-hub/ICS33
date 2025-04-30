@@ -34,6 +34,15 @@ class Engine:
         """A generator function that processes one event sent from the user interface,
         yielding zero or more events in response."""
 
+        # User quits the application
+        if isinstance(event, QuitInitiatedEvent):
+            if self.connection:
+                self.connection.close()
+                self.connection = None
+                self.db_path = None
+            yield EndApplicationEvent()
+
+        # User opens a database file
         if isinstance(event, OpenDatabaseEvent):
             path = event.path()
             try:
@@ -70,18 +79,6 @@ class Engine:
                     except sqlite3.Error as e:
                         yield ErrorEvent(str(e))
 
-                # Update continent
-                if isinstance(event, SaveContinentEvent):
-                    try:
-                        continent = event.continent()
-                        cursor = self.connection.cursor()
-                        cursor.execute('UPDATE continent SET continent_code=?, name=? WHERE continent_id=?',
-                                       (continent.continent_code, continent.name, continent.continent_id))
-                        self.connection.commit()
-                        yield ContinentSavedEvent(continent)
-                    except sqlite3.Error as e:
-                        yield SaveContinentFailedEvent(str(e))
-
                 # Add a new continent
                 if isinstance(event, SaveNewContinentEvent):
                     try:
@@ -89,6 +86,18 @@ class Engine:
                         cursor = self.connection.cursor()
                         cursor.execute('INSERT INTO continent (continent_code, name) VALUES (?, ?)',
                                        (continent.continent_code, continent.name))
+                        self.connection.commit()
+                        yield ContinentSavedEvent(continent)
+                    except sqlite3.Error as e:
+                        yield SaveContinentFailedEvent(str(e))
+
+                # Update continent
+                if isinstance(event, SaveContinentEvent):
+                    try:
+                        continent = event.continent()
+                        cursor = self.connection.cursor()
+                        cursor.execute('UPDATE continent SET continent_code=?, name=? WHERE continent_id=?',
+                                       (continent.continent_code, continent.name, continent.continent_id))
                         self.connection.commit()
                         yield ContinentSavedEvent(continent)
                     except sqlite3.Error as e:
@@ -121,24 +130,40 @@ class Engine:
                     except sqlite3.Error as e:
                         yield ErrorEvent(str(e))
 
+                # Add a new country
+                if isinstance(event, SaveNewCountryEvent):
+                    try:
+                        country = event.country()
+                        cursor = self.connection.cursor()
+                        cursor.execute('INSERT INTO country (country_code, name) VALUES (?, ?)',
+                                       (country.country_code, country.name))
+                        self.connection.commit()
+                        yield CountrySavedEvent(country)
+                    except sqlite3.Error as e:
+                        yield SaveCountryFailedEvent(str(e))
 
+                # Update country
+                if isinstance(event, SaveCountryEvent):
+                    try:
+                        country = event.country()
+                        cursor = self.connection.cursor()
+                        cursor.execute('UPDATE country SET country_code=?, name=? WHERE country_id=?',
+                                       (country.country_code, country.name, country.country_id))
+                        self.connection.commit()
+                        yield CountrySavedEvent(country)
+                    except sqlite3.Error as e:
+                        yield SaveCountryFailedEvent(str(e))
 
             except sqlite3.Error as e:
                 yield DatabaseOpenFailedEvent(str(e))
 
+        # User closes the database file
         if isinstance(event, CloseDatabaseEvent):
             if self.connection:
                 self.connection.close()
                 self.connection = None
                 self.db_path = None
             yield DatabaseClosedEvent()
-
-        if isinstance(event, QuitInitiatedEvent):
-            if self.connection:
-                self.connection.close()
-                self.connection = None
-                self.db_path = None
-            yield EndApplicationEvent()
 
         else:
             yield from ()
