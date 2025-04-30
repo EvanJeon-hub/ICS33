@@ -51,6 +51,18 @@ class Engine:
                         continent = Continent(result[0], result[1], result[2])
                         yield ContinentSearchResultEvent(continent)
 
+                if isinstance(event, LoadContinentEvent):
+                    continent_id = event.continent_id()
+                    cursor = self.connection.cursor()
+                    cursor.execute('SELECT * FROM continents WHERE continent_id=?', (continent_id,))
+                    result = cursor.fetchone()
+                    if result:
+                        continent = Continent(result[0], result[1], result[2])
+                        yield ContinentLoadedEvent(continent)
+
+
+
+
 
 
             except sqlite3.Error as e:
