@@ -16,7 +16,10 @@ from p2app.events.countries import (StartCountrySearchEvent, CountrySearchResult
                                         LoadCountryEvent, CountryLoadedEvent,
                                         SaveCountryEvent, SaveNewCountryEvent,
                                         CountrySavedEvent, SaveCountryFailedEvent)
-
+from p2app.events.regions import (StartRegionSearchEvent, RegionSearchResultEvent,
+                                  LoadRegionEvent, RegionLoadedEvent,
+                                  SaveRegionEvent, SaveNewRegionEvent,
+                                  RegionSavedEvent, SaveRegionFailedEvent)
 
 class Engine:
     """An object that represents the application's engine, whose main role is to
@@ -153,6 +156,48 @@ class Engine:
                         yield CountrySavedEvent(country)
                     except sqlite3.Error as e:
                         yield SaveCountryFailedEvent(str(e))
+
+                # regions.py
+                # Search for a region
+                if isinstance(event, StartRegionSearchEvent):
+                    try:
+                        region_code = event.region_code()
+                        name = event.name()
+                        cursor = self.connection.cursor()
+                        cursor.execute('SELECT * FROM region WHERE region_code=? AND name=?', (region_code, name))
+                        result = cursor.fetchone()
+                        if result:
+                            region = Region(result[0], result[1], result[2])
+                            yield RegionSearchResultEvent(region)
+                    except sqlite3.Error as e:
+                        yield ErrorEvent(str(e))
+
+                # Load a region
+                if isinstance(event, LoadRegionEvent):
+                    try:
+                        region_id = event.region_id()
+                        cursor = self.connection.cursor()
+                        cursor.execute('SELECT * FROM region WHERE region_id=?', (region_id,))
+                        result = cursor.fetchone()
+                        if result:
+                            region = Region(result[0], result[1], result[2])
+                            yield RegionLoadedEvent(region)
+                    except sqlite3.Error as e:
+                        yield ErrorEvent(str(e))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             except sqlite3.Error as e:
                 yield DatabaseOpenFailedEvent(str(e))
