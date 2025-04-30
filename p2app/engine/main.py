@@ -185,19 +185,29 @@ class Engine:
                     except sqlite3.Error as e:
                         yield ErrorEvent(str(e))
 
+                # Add a new region
+                if isinstance(event, SaveNewRegionEvent):
+                    try:
+                        region = event.region()
+                        cursor = self.connection.cursor()
+                        cursor.execute('INSERT INTO region (region_code, name) VALUES (?, ?)',
+                                       (region.region_code, region.name))
+                        self.connection.commit()
+                        yield RegionSavedEvent(region)
+                    except sqlite3.Error as e:
+                        yield SaveRegionFailedEvent(str(e))
 
-
-
-
-
-
-
-
-
-
-
-
-
+                # Update region
+                if isinstance(event, SaveRegionEvent):
+                    try:
+                        region = event.region()
+                        cursor = self.connection.cursor()
+                        cursor.execute('UPDATE region SET region_code=?, name=? WHERE region_id=?',
+                                       (region.region_code, region.name, region.region_id))
+                        self.connection.commit()
+                        yield RegionSavedEvent(region)
+                    except sqlite3.Error as e:
+                        yield SaveRegionFailedEvent(str(e))
 
             except sqlite3.Error as e:
                 yield DatabaseOpenFailedEvent(str(e))
