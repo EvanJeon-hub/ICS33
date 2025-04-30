@@ -62,6 +62,7 @@ class Engine:
                         continent_code = event.continent_code()
                         name = event.name()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('SELECT * FROM continent WHERE continent_code=? AND name=?', (continent_code, name))
                         result = cursor.fetchone()
                         if result:
@@ -74,6 +75,7 @@ class Engine:
                     try:
                         continent_id = event.continent_id()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('SELECT * FROM continent WHERE continent_id=?', (continent_id,))
                         result = cursor.fetchone()
                         if result:
@@ -87,6 +89,7 @@ class Engine:
                     try:
                         continent = event.continent()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('INSERT INTO continent (continent_code, name) VALUES (?, ?)',
                                        (continent.continent_code, continent.name))
                         self.connection.commit()
@@ -99,6 +102,7 @@ class Engine:
                     try:
                         continent = event.continent()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('UPDATE continent SET continent_code=?, name=? WHERE continent_id=?',
                                        (continent.continent_code, continent.name, continent.continent_id))
                         self.connection.commit()
@@ -113,6 +117,7 @@ class Engine:
                         country_code = event.country_code()
                         name = event.name()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('SELECT * FROM country WHERE country_code=? AND name=?', (country_code, name))
                         result = cursor.fetchone()
                         if result:
@@ -125,6 +130,7 @@ class Engine:
                     try:
                         country_id = event.country_id()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('SELECT * FROM country WHERE country_id=?', (country_id,))
                         result = cursor.fetchone()
                         if result:
@@ -138,6 +144,7 @@ class Engine:
                     try:
                         country = event.country()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('INSERT INTO country (country_code, name) VALUES (?, ?)',
                                        (country.country_code, country.name))
                         self.connection.commit()
@@ -150,6 +157,7 @@ class Engine:
                     try:
                         country = event.country()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('UPDATE country SET country_code=?, name=? WHERE country_id=?',
                                        (country.country_code, country.name, country.country_id))
                         self.connection.commit()
@@ -164,6 +172,7 @@ class Engine:
                         region_code = event.region_code()
                         name = event.name()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('SELECT * FROM region WHERE region_code=? AND name=?', (region_code, name))
                         result = cursor.fetchone()
                         if result:
@@ -177,6 +186,7 @@ class Engine:
                     try:
                         region_id = event.region_id()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('SELECT * FROM region WHERE region_id=?', (region_id,))
                         result = cursor.fetchone()
                         if result:
@@ -190,6 +200,7 @@ class Engine:
                     try:
                         region = event.region()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('INSERT INTO region (region_code, name) VALUES (?, ?)',
                                        (region.region_code, region.name))
                         self.connection.commit()
@@ -202,6 +213,7 @@ class Engine:
                     try:
                         region = event.region()
                         cursor = self.connection.cursor()
+                        # TODO: Debugging
                         cursor.execute('UPDATE region SET region_code=?, name=? WHERE region_id=?',
                                        (region.region_code, region.name, region.region_id))
                         self.connection.commit()
