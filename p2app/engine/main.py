@@ -41,6 +41,7 @@ class Engine:
                 self.db_path = path
                 yield DatabaseOpenedEvent(path)
 
+                # Continents.py
                 if isinstance(event, StartContinentSearchEvent):
                     continent_code = event.continent_code()
                     name = event.name()
@@ -60,9 +61,29 @@ class Engine:
                         continent = Continent(result[0], result[1], result[2])
                         yield ContinentLoadedEvent(continent)
 
+                if isinstance(event, SaveContinentEvent):
+                    try:
+                        continent = event.continent()
+                        cursor = self.connection.cursor()
+                        cursor.execute('UPDATE continents SET continent_code=?, name=? WHERE continent_id=?',
+                                       (continent.continent_code, continent.name, continent.continent_id))
+                        self.connection.commit()
+                        yield ContinentSavedEvent(continent)
+                    except sqlite3.Error as e:
+                        yield SaveContinentFailedEvent(str(e))
 
+                if isinstance(event, SaveNewContinentEvent):
+                    try:
+                        continent = event.continent()
+                        cursor = self.connection.cursor()
+                        cursor.execute('INSERT INTO continents (continent_code, name) VALUES (?, ?)',
+                                       (continent.continent_code, continent.name))
+                        self.connection.commit()
+                        yield ContinentSavedEvent(continent)
+                    except squlite3.Error as e:
+                        yield SaveContinentFailedEvent(str(e))
 
-
+                # Countries.py
 
 
             except sqlite3.Error as e:
