@@ -215,6 +215,7 @@ class Engine:
         if isinstance(event, StartRegionSearchEvent):
             try:
                 region_code = event.region_code()
+                local_code = event.local_code()
                 name = event.name()
                 cursor = self.connection.cursor()
                 cursor.execute(
