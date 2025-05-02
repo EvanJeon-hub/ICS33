@@ -71,7 +71,7 @@ class Engine:
                 name = event.name()
                 cursor = self.connection.cursor()
                 cursor.execute(
-                    'SELECT * FROM continent WHERE continent_code=? AND name=?',
+                    'SELECT * FROM continent WHERE continent_code=? OR name=?',
                     (continent_code, name)
                 )
                 result = cursor.fetchone()
@@ -139,7 +139,7 @@ class Engine:
                 name = event.name()
                 cursor = self.connection.cursor()
                 cursor.execute(
-                    'SELECT * FROM country WHERE country_code=? AND name=?',
+                    'SELECT * FROM country WHERE country_code=? OR name=?',
                     (country_code, name)
                 )
                 result = cursor.fetchone()
@@ -218,8 +218,8 @@ class Engine:
                 name = event.name()
                 cursor = self.connection.cursor()
                 cursor.execute(
-                    'SELECT * FROM region WHERE region_code=? AND name=?',
-                    (region_code, name)
+                    'SELECT * FROM region WHERE region_code=? OR local_code=? OR name=?',
+                    (region_code, local_code, name)
                 )
                 result = cursor.fetchone()
                 if result:
