@@ -1,34 +1,37 @@
-# p2app/engine/main.py
+"""p2app/engine/main.py"""
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
 
 import sqlite3
-
-import p2app.events.continents
-from p2app.events.app import QuitInitiatedEvent, EndApplicationEvent, ErrorEvent
+from p2app.events.app import (QuitInitiatedEvent,
+                              EndApplicationEvent, ErrorEvent)
 from p2app.events.database import (OpenDatabaseEvent, CloseDatabaseEvent,
                                    DatabaseOpenedEvent, DatabaseClosedEvent,
                                    DatabaseOpenFailedEvent)
-from p2app.events.continents import (Continent, StartContinentSearchEvent, ContinentSearchResultEvent,
+from p2app.events.continents import (Continent, StartContinentSearchEvent,
+                                     ContinentSearchResultEvent,
                                      LoadContinentEvent, ContinentLoadedEvent,
                                      SaveContinentEvent, SaveNewContinentEvent,
-                                     ContinentSavedEvent, SaveContinentFailedEvent)
-from p2app.events.countries import (Country, StartCountrySearchEvent, CountrySearchResultEvent,
-                                        LoadCountryEvent, CountryLoadedEvent,
-                                        SaveCountryEvent, SaveNewCountryEvent,
-                                        CountrySavedEvent, SaveCountryFailedEvent)
-from p2app.events.regions import (Region, StartRegionSearchEvent, RegionSearchResultEvent,
+                                     ContinentSavedEvent,
+                                     SaveContinentFailedEvent)
+from p2app.events.countries import (Country, StartCountrySearchEvent,
+                                    CountrySearchResultEvent,
+                                    LoadCountryEvent, CountryLoadedEvent,
+                                    SaveCountryEvent, SaveNewCountryEvent,
+                                    CountrySavedEvent, SaveCountryFailedEvent)
+from p2app.events.regions import (Region, StartRegionSearchEvent,
+                                  RegionSearchResultEvent,
                                   LoadRegionEvent, RegionLoadedEvent,
                                   SaveRegionEvent, SaveNewRegionEvent,
                                   RegionSavedEvent, SaveRegionFailedEvent)
 
 
-
 class Engine:
-    """An object that represents the application's engine, whose main role is to
-    process events sent to it by the user interface, then generate events that are
-    sent back to the user interface in response, allowing the user interface to be
-    unaware of any details of how the engine is implemented.
+    """An object that represents the application's engine, whose main role is
+    to process events sent to it by the user interface, then generate events
+    that are sent back to the user interface in response,
+    allowing the user interface to be unaware of any details
+    of how the engine is implemented.
     """
 
     def __init__(self):
@@ -37,7 +40,8 @@ class Engine:
         self.connection = None
 
     def process_event(self, event):
-        """A generator function that processes one event sent from the user interface,
+        """A generator function that processes
+        one event sent from the user interface,
         yielding zero or more events in response."""
 
         # User quits the application
@@ -69,7 +73,10 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('SELECT * FROM continent WHERE continent_code=? AND name=?', (continent_code, name))
+                cursor.execute(
+                    'SELECT * FROM continent WHERE continent_code=? AND name=?',
+                    (continent_code, name)
+                )
                 result = cursor.fetchone()
                 if result:
                     continent = Continent(result[0], result[1], result[2])
@@ -83,7 +90,8 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('SELECT * FROM continent WHERE continent_id=?', (continent_id,))
+                cursor.execute('SELECT * FROM continent WHERE continent_id=?',
+                               (continent_id,))
                 result = cursor.fetchone()
                 if result:
                     continent = Continent(result[0], result[1], result[2])
@@ -99,8 +107,10 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('INSERT INTO continent (continent_code, name) VALUES (?, ?)',
-                               (continent.continent_code, continent.name))
+                cursor.execute(
+                    'INSERT INTO continent (continent_code, name) VALUES (?, ?)',
+                    (continent.continent_code, continent.name)
+                )
 
                 self.connection.commit()
                 yield ContinentSavedEvent(continent)
@@ -114,8 +124,12 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('UPDATE continent SET continent_code=?, name=? WHERE continent_id=?',
-                               (continent.continent_code, continent.name, continent.continent_id))
+                cursor.execute(
+                    'UPDATE continent SET continent_code=?, name=? WHERE continent_id=?',
+                    (
+                        continent.continent_code, continent.name, continent.continent_id
+                    )
+                )
 
                 self.connection.commit()
                 yield ContinentSavedEvent(continent)
@@ -131,10 +145,14 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('SELECT * FROM country WHERE country_code=? AND name=?', (country_code, name))
+                cursor.execute(
+                    'SELECT * FROM country WHERE country_code=? AND name=?',
+                    (country_code, name)
+                )
                 result = cursor.fetchone()
                 if result:
-                    country = Country(result[0], result[1], result[2], result[3], result[4], result[5])
+                    country = Country(result[0], result[1], result[2],
+                                      result[3], result[4], result[5])
 
                     yield CountrySearchResultEvent(country)
             except sqlite3.Error as e:
@@ -146,10 +164,14 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('SELECT * FROM country WHERE country_id=?', (country_id,))
+                cursor.execute('SELECT * FROM country WHERE country_id=?',
+                               (country_id,))
                 result = cursor.fetchone()
                 if result:
-                    country =  Country(result[0], result[1], result[2], result[3], result[4], result[5])
+                    country = Country(
+                        result[0], result[1], result[2],
+                        result[3], result[4], result[5]
+                    )
 
                     yield CountryLoadedEvent(country)
             except sqlite3.Error as e:
@@ -162,8 +184,10 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('INSERT INTO country (country_code, name) VALUES (?, ?)',
-                               (country.country_code, country.name))
+                cursor.execute(
+                    'INSERT INTO country (country_code, name) VALUES (?, ?)',
+                    (country.country_code, country.name)
+                )
 
                 self.connection.commit()
                 yield CountrySavedEvent(country)
@@ -177,8 +201,10 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('UPDATE country SET country_code=?, name=? WHERE country_id=?',
-                               (country.country_code, country.name, country.country_id))
+                cursor.execute(
+                    'UPDATE country SET country_code=?, name=? WHERE country_id=?',
+                    (country.country_code, country.name, country.country_id)
+                )
 
                 self.connection.commit()
                 yield CountrySavedEvent(country)
@@ -194,10 +220,16 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('SELECT * FROM region WHERE region_code=? AND name=?', (region_code, name))
+                cursor.execute(
+                    'SELECT * FROM region WHERE region_code=? AND name=?',
+                    (region_code, name)
+                )
                 result = cursor.fetchone()
                 if result:
-                    region = Region(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
+                    region = Region(
+                        result[0], result[1], result[2], result[3],
+                        result[4], result[5], result[6], result[7]
+                    )
 
                     yield RegionSearchResultEvent(region)
             except sqlite3.Error as e:
@@ -210,10 +242,15 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('SELECT * FROM region WHERE region_id=?', (region_id,))
+                cursor.execute(
+                    'SELECT * FROM region WHERE region_id=?',
+                    (region_id,))
                 result = cursor.fetchone()
                 if result:
-                    region = Region(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
+                    region = Region(
+                        result[0], result[1], result[2], result[3],
+                        result[4], result[5], result[6], result[7]
+                    )
 
                     yield RegionLoadedEvent(region)
             except sqlite3.Error as e:
@@ -226,8 +263,10 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('INSERT INTO region (region_code, name) VALUES (?, ?)',
-                               (region.region_code, region.name))
+                cursor.execute(
+                    'INSERT INTO region (region_code, name) VALUES (?, ?)',
+                    (region.region_code, region.name)
+                )
 
                 self.connection.commit()
                 yield RegionSavedEvent(region)
@@ -241,8 +280,10 @@ class Engine:
                 cursor = self.connection.cursor()
 
                 # TODO: Debugging
-                cursor.execute('UPDATE region SET region_code=?, name=? WHERE region_id=?',
-                               (region.region_code, region.name, region.region_id))
+                cursor.execute(
+                    'UPDATE region SET region_code=?, name=? WHERE region_id=?',
+                    (region.region_code, region.name, region.region_id)
+                )
 
                 self.connection.commit()
                 yield RegionSavedEvent(region)
