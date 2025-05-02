@@ -124,7 +124,7 @@ class Engine:
                     (
                         continent.continent_code,
                         continent.name,
-                        continent.continent_id
+                        continent.continent_id  # primary key
                     )
                 )
                 self.connection.commit()
@@ -203,7 +203,7 @@ class Engine:
                         country.continent_id,  # foreign key
                         country.wikipedia_link,
                         country.keywords,
-                        country.country_id
+                        country.country_id  # primary key
                     )
                 )
                 self.connection.commit()
@@ -287,7 +287,7 @@ class Engine:
                         region.country_id,  # foreign key
                         region.wikipedia_link,
                         region.keywords,
-                        region.region_id
+                        region.region_id  # primary key
                     )
                 )
                 self.connection.commit()
