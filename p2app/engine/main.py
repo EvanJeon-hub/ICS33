@@ -104,7 +104,10 @@ class Engine:
                 cursor = self.connection.cursor()
                 cursor.execute(
                     'INSERT INTO continent (continent_code, name) VALUES (?, ?)',
-                    (continent.continent_code, continent.name)
+                    (
+                        continent.continent_code,
+                        continent.name
+                    )
                 )
                 self.connection.commit()
                 yield ContinentSavedEvent(continent)
@@ -119,7 +122,9 @@ class Engine:
                 cursor.execute(
                     'UPDATE continent SET continent_code=?, name=? WHERE continent_id=?',
                     (
-                        continent.continent_code, continent.name, continent.continent_id
+                        continent.continent_code,
+                        continent.name,
+                        continent.continent_id
                     )
                 )
                 self.connection.commit()
@@ -171,8 +176,14 @@ class Engine:
                 country = event.country()
                 cursor = self.connection.cursor()
                 cursor.execute(
-                    'INSERT INTO country (country_code, name, continent_id, wikipedia_link, keywords) VALUES (?, ?)',
-                    (coucountry.country_code, country.name, country.continent_id, country.wikipedia_link, country.keywords)
+                    'INSERT INTO country (country_code, name, continent_id, wikipedia_link, keywords) VALUES (?, ?, ?, ?, ?)',
+                    (
+                        country.country_code,
+                        country.name,
+                        country.continent_id,  # foreign key
+                        country.wikipedia_link,
+                        country.keywords
+                    )
                 )
                 self.connection.commit()
                 yield CountrySavedEvent(country)
@@ -186,7 +197,14 @@ class Engine:
                 cursor = self.connection.cursor()
                 cursor.execute(
                     'UPDATE country SET country_code=?, name=?, continent_id=?, wikipedia_link=?, keywords=? WHERE country_id=?',
-                    (country.country_code, country.name, country.continent_id, country.wikipedia_link, country.keywords, country.country_id)
+                    (
+                        country.country_code,
+                        country.name,
+                        country.continent_id,  # foreign key
+                        country.wikipedia_link,
+                        country.keywords,
+                        country.country_id
+                    )
                 )
                 self.connection.commit()
                 yield CountrySavedEvent(country)
@@ -200,8 +218,6 @@ class Engine:
                 region_code = event.region_code()
                 name = event.name()
                 cursor = self.connection.cursor()
-
-                # TODO: Debugging
                 cursor.execute(
                     'SELECT * FROM region WHERE region_code=? AND name=?',
                     (region_code, name)
@@ -212,7 +228,6 @@ class Engine:
                         result[0], result[1], result[2], result[3],
                         result[4], result[5], result[6], result[7]
                     )
-
                     yield RegionSearchResultEvent(region)
             except sqlite3.Error as e:
                 yield ErrorEvent(str(e))
@@ -222,8 +237,6 @@ class Engine:
             try:
                 region_id = event.region_id()
                 cursor = self.connection.cursor()
-
-                # TODO: Debugging
                 cursor.execute(
                     'SELECT * FROM region WHERE region_id=?',
                     (region_id,))
@@ -233,7 +246,6 @@ class Engine:
                         result[0], result[1], result[2], result[3],
                         result[4], result[5], result[6], result[7]
                     )
-
                     yield RegionLoadedEvent(region)
             except sqlite3.Error as e:
                 yield ErrorEvent(str(e))
@@ -243,13 +255,18 @@ class Engine:
             try:
                 region = event.region()
                 cursor = self.connection.cursor()
-
-                # TODO: Debugging
                 cursor.execute(
-                    'INSERT INTO region (region_code, name) VALUES (?, ?)',
-                    (region.region_code, region.name)
+                    'INSERT INTO region (region_code, local_code, name, continent_id, country_id, wikipedia_link, keywords) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                    (
+                        region.region_code,
+                        region.local_code,
+                        region.name,
+                        region.continent_id,  # foreign key
+                        region.country_id,  # foreign key
+                        region.wikipedia_link,
+                        region.keywords
+                    )
                 )
-
                 self.connection.commit()
                 yield RegionSavedEvent(region)
             except sqlite3.Error as e:
@@ -260,13 +277,19 @@ class Engine:
             try:
                 region = event.region()
                 cursor = self.connection.cursor()
-
-                # TODO: Debugging
                 cursor.execute(
-                    'UPDATE region SET region_code=?, name=? WHERE region_id=?',
-                    (region.region_code, region.name, region.region_id)
+                    'UPDATE region SET region_code=?, local_code=?, name=?, continent_id=?, country_id=?, wikipedia_link=?, keywords=? WHERE region_id=?',
+                    (
+                        region.region_code,
+                        region.local_code,
+                        region.name,
+                        region.continent_id,  # foreign key
+                        region.country_id,  # foreign key
+                        region.wikipedia_link,
+                        region.keywords,
+                        region.region_id
+                    )
                 )
-
                 self.connection.commit()
                 yield RegionSavedEvent(region)
             except sqlite3.Error as e:
