@@ -1,6 +1,7 @@
 """p2app/engine/main.py"""
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
+
 import sqlite3
 from p2app.events.app import (QuitInitiatedEvent,
                               EndApplicationEvent, ErrorEvent)
