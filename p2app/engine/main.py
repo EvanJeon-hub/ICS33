@@ -236,6 +236,21 @@ class Engine:
                         'SELECT * FROM region WHERE region_code=? AND local_code=? AND name=?',
                         (region_code, local_code, name)
                     )
+                elif region_code and local_code and not name:
+                    cursor.execute(
+                        'SELECT * FROM region WHERE region_code=? AND local_code=?',
+                        (region_code, local_code)
+                    )
+                elif region_code and name and not local_code:
+                    cursor.execute(
+                        'SELECT * FROM region WHERE region_code=? AND name=?',
+                        (region_code, name)
+                    )
+                elif not region_code and local_code and name:
+                    cursor.execute(
+                        'SELECT * FROM region WHERE local_code=? AND name=?',
+                        (local_code, name)
+                    )
                 else:
                     cursor.execute(
                         'SELECT * FROM region WHERE region_code=? OR local_code=? OR name=?',
