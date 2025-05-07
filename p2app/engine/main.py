@@ -236,9 +236,6 @@ class Engine:
                         'SELECT * FROM region WHERE region_code=? AND local_code=? AND name=?',
                         (region_code, local_code, name)
                     )
-
-
-
                 else:
                     cursor.execute(
                         'SELECT * FROM region WHERE region_code=? OR local_code=? OR name=?',
