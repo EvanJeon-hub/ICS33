@@ -71,10 +71,16 @@ class Engine:
                 continent_code = event.continent_code()
                 name = event.name()
                 cursor = self.connection.cursor()
-                cursor.execute(
-                    'SELECT * FROM continent WHERE continent_code=? OR name=?',
-                    (continent_code, name)
-                )
+                if continent_code and name:
+                    cursor.execute(
+                        'SELECT * FROM continent WHERE continent_code=? AND name=?',
+                        (continent_code, name)
+                    )
+                else:
+                    cursor.execute(
+                        'SELECT * FROM continent WHERE continent_code=? OR name=?',
+                        (continent_code, name)
+                    )
                 result = cursor.fetchone()
                 if result:
                     continent = Continent(result[0], result[1], result[2])
@@ -139,10 +145,16 @@ class Engine:
                 country_code = event.country_code()
                 name = event.name()
                 cursor = self.connection.cursor()
-                cursor.execute(
-                    'SELECT * FROM country WHERE country_code=? OR name=?',
-                    (country_code, name)
-                )
+                if country_code and name:
+                    cursor.execute(
+                        'SELECT * FROM country WHERE country_code=? AND name=?',
+                        (country_code, name)
+                    )
+                else:
+                    cursor.execute(
+                        'SELECT * FROM country WHERE country_code=? OR name=?',
+                        (country_code, name)
+                    )
                 result = cursor.fetchone()
                 if result:
                     country = Country(result[0], result[1], result[2],
@@ -219,10 +231,19 @@ class Engine:
                 local_code = event.local_code()
                 name = event.name()
                 cursor = self.connection.cursor()
-                cursor.execute(
-                    'SELECT * FROM region WHERE region_code=? OR local_code=? OR name=?',
-                    (region_code, local_code, name)
-                )
+                if region_code and local_code and name:
+                    cursor.execute(
+                        'SELECT * FROM region WHERE region_code=? AND local_code=? AND name=?',
+                        (region_code, local_code, name)
+                    )
+
+
+
+                else:
+                    cursor.execute(
+                        'SELECT * FROM region WHERE region_code=? OR local_code=? OR name=?',
+                        (region_code, local_code, name)
+                    )
                 result = cursor.fetchone()
                 if result:
                     region = Region(
