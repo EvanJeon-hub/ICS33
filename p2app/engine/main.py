@@ -81,10 +81,11 @@ class Engine:
                         'SELECT * FROM continent WHERE continent_code=? OR name=?',
                         (continent_code, name)
                     )
-                result = cursor.fetchone()
-                if result:
-                    continent = Continent(result[0], result[1], result[2])
-                    yield ContinentSearchResultEvent(continent)
+                results = cursor.fetchall()
+                if results:
+                    for result in results:
+                        continent = Continent(result[0], result[1], result[2])
+                        yield ContinentSearchResultEvent(continent)
             except sqlite3.Error as e:
                 yield ErrorEvent(str(e))
 
@@ -155,11 +156,12 @@ class Engine:
                         'SELECT * FROM country WHERE country_code=? OR name=?',
                         (country_code, name)
                     )
-                result = cursor.fetchone()
-                if result:
-                    country = Country(result[0], result[1], result[2],
-                                      result[3], result[4], result[5])
-                    yield CountrySearchResultEvent(country)
+                results = cursor.fetchall()
+                if results:
+                    for result in results:
+                        country = Country(result[0], result[1], result[2],
+                                          result[3], result[4], result[5])
+                        yield CountrySearchResultEvent(country)
             except sqlite3.Error as e:
                 yield ErrorEvent(str(e))
 
@@ -256,13 +258,14 @@ class Engine:
                         'SELECT * FROM region WHERE region_code=? OR local_code=? OR name=?',
                         (region_code, local_code, name)
                     )
-                result = cursor.fetchone()
-                if result:
-                    region = Region(
-                        result[0], result[1], result[2], result[3],
-                        result[4], result[5], result[6], result[7]
-                    )
-                    yield RegionSearchResultEvent(region)
+                results = cursor.fetchall()
+                if results:
+                    for result in results:
+                        region = Region(
+                            result[0], result[1], result[2], result[3],
+                            result[4], result[5], result[6], result[7]
+                        )
+                        yield RegionSearchResultEvent(region)
             except sqlite3.Error as e:
                 yield ErrorEvent(str(e))
 
