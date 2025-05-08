@@ -332,7 +332,6 @@ class Engine:
             except sqlite3.Error as e:
                 yield SaveRegionFailedEvent(str(e))
 
-        # User closes the database file
         if isinstance(event, CloseDatabaseEvent):
             if self.connection:
                 self.connection.close()
