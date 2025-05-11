@@ -7,7 +7,6 @@ and provides methods to manipulate it.
 """
 from grin.statement import GrinStatement
 
-
 class ProgramState:
     """
     Represents the state of the program.
@@ -45,4 +44,35 @@ class ProgramState:
 
     def pop_gosub(self) -> int:
         """Pops a line number from the GOSUB stack. (last-in-first-out)"""
+        if not self.gosub_stack:
+            raise RuntimeError("No GOSUB stack")
         return self.gosub_stack.pop() if self.gosub_stack else None
+
+    def evaluate(self, value):
+        """ Evaluates a value. """
+        if isinstance(value, str) and value.isidentifier():
+            return self.get_variable(value)
+        return value
+
+    # Handles the GOTO and GOSUB statements
+    def resolve_target(self, target):
+        """ Resolves a target to a line number. """
+
+        # check if a target is a name
+        if isinstance(target, str) and target.isidentifier():
+            return self.get_variable(target)
+
+        # check if a target is a label
+        if isinstance(target, str):
+            if target not in self.labels:
+                raise RuntimeError(f"Label {target} not found")
+            return self.labels[target]
+
+        # check if a target is out of the limit
+        if isinstance(target, int):
+            dataset = self.current_line + target
+            if dataset < 0 or dataset >= len(self.statements) + 1:
+                raise RuntimeError(f"Jump to invalid line: {dataset}")
+            return dataset
+
+        raise RuntimeError(f"Label {target} not found")
