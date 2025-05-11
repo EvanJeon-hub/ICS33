@@ -50,6 +50,15 @@ def to_tokens(line: str, line_number: int) -> Iterable[GrinToken]:
 
     Raises a GrinLexError when there is a lexical error on the line."""
 
+    """
+    return example:
+    [
+      GrinToken(Kind=LET, TEXT="LET", value="LET"),
+      GrinToken(Kind=IDENTIFIER, TEXT="AGE", value="AGE"),
+      GrinToken(Kind=LITERAL_INTEGER, TEXT="13", value=13)
+    ]
+    """
+
     index = 0
     start = 0
 
@@ -73,13 +82,17 @@ def to_tokens(line: str, line_number: int) -> Iterable[GrinToken]:
 
         start = index
 
+        # check if it is a keyword or identifier
         if line[index].isalpha():
             index += 1
 
+            # Check if it is an identifier
             while index < len(line) and line[index].isalnum():
                 index += 1
 
             yield _make_token(_TOKEN_KIND_MAP[line[start:index]], line[start:index])
+
+        # Check if it is a string literal
         elif line[index] == '"':
             index += 1
 
@@ -91,9 +104,12 @@ def to_tokens(line: str, line_number: int) -> Iterable[GrinToken]:
             else:
                 index += 1
                 yield _make_token(GrinTokenKind.LITERAL_STRING, line[(start + 1):(index - 1)])
+
+        # Check if it is a literal integer or negated integer
         elif line[index] == '-' or line[index].isdigit():
             is_negated = line[index] == '-'
             index += 1
+            # check if it is a negated integer
             digits = 0 if is_negated else 1
 
             while index < len(line) and line[index].isdigit():
@@ -102,9 +118,11 @@ def to_tokens(line: str, line_number: int) -> Iterable[GrinToken]:
 
             if is_negated and digits == 0:
                 _raise_error('Negation must be followed by at least one digit')
+
+            # Check if it is a float (followed by a decimal point and digits)
             elif index < len(line) and line[index] == '.':
                 index += 1
-
+                # check the following integer
                 while index < len(line) and line[index].isdigit():
                     index += 1
 
@@ -122,21 +140,24 @@ def to_tokens(line: str, line_number: int) -> Iterable[GrinToken]:
             yield _make_token(GrinTokenKind.EQUAL)
         elif line[index] == '<':
             index += 1
-
+            # <> (not equal to)
             if index < len(line) and line[index] == '>':
                 index += 1
                 yield _make_token(GrinTokenKind.NOT_EQUAL)
+            # <= (less than or equal to)
             elif index < len(line) and line[index] == '=':
                 index += 1
                 yield _make_token(GrinTokenKind.LESS_THAN_OR_EQUAL)
+            # < (less than)
             else:
                 yield _make_token(GrinTokenKind.LESS_THAN)
         elif line[index] == '>':
             index += 1
-
+            # >= (greater than or equal to)
             if index < len(line) and line[index] == '=':
                 index += 1
                 yield _make_token(GrinTokenKind.GREATER_THAN_OR_EQUAL)
+            # > (greater than)
             else:
                 yield _make_token(GrinTokenKind.GREATER_THAN)
         else:

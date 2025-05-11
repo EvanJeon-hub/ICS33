@@ -49,7 +49,7 @@ class ProgramState:
         return self.gosub_stack.pop() if self.gosub_stack else None
 
     def evaluate(self, value):
-        """ Evaluates a value. """
+        """ Evaluates a token is variable or integer. """
         if isinstance(value, str) and value.isidentifier():
             return self.get_variable(value)
         return value
