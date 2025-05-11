@@ -6,6 +6,12 @@ Manages the program state
 and provides methods to manipulate it.
 """
 
+class ProgramState:
+    """
+    Represents the state of the program.
+    Stores the current line number, variable stack, and GOSUB stack.
+    """
+
 
 
 
