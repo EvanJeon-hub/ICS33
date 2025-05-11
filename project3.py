@@ -9,12 +9,24 @@
 # program here, but consider how you can keep this part as simple as possible,
 # offloading as much of the complexity as you can into additional modules in
 # the 'grin' package, isolated in a way that allows you to unit test them.
-
-import grin
-
+import sys
+from grin.interpreter import GrinInterpreter
 
 def main() -> None:
-    pass
+    lines = []
+
+    try:
+        for line in sys.stdin:
+            line = line.rstrip("\n")
+            lines.append(line)
+            if line.strip() == '.':
+                break
+
+        interpreter = GrinInterpreter()
+        interpreter.run(lines)
+
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 if __name__ == '__main__':
