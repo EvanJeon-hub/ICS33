@@ -56,14 +56,19 @@ class GoSubStatement(GrinStatement):
 
 class ReturnStatement(GrinStatement):
    def execute(self, state: ProgramState):
-        pass
+        try:
+            return_line = state.pop_gosub()
+            state.current_line = return_line
+        except RuntimeError:
+            state.running = False
+            raise RuntimeError("No GOSUB stack to return to.")
 
 
 class EndStatement(GrinStatement):
     def execute(self, state: ProgramState):
-        pass
+        state.running = False
 
-
+# TODO
 def create_statements(tokens):
     pass
 
