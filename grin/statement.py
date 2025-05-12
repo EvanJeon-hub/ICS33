@@ -30,25 +30,31 @@ class PrintStatement(GrinStatement):
 
     def execute(self, state: ProgramState):
         value = state.evaluate(self.value)
-        print(value)
+        if value.startswith('"') and value.endswith('"'):
+            print(value[1:-1])  # Remove quotes
+        else:
+            print(value)
 
 
-# TODO
 class INNUMStatement(GrinStatement):
     def __init__(self, variable: str):
         self.variable = variable
 
     def execute(self, state: ProgramState):
-        pass
+        value = state.get_variable(self.variable)
+        print(value)
 
 
-# TODO
 class INSTRStatement(GrinStatement):
     def __init__(self, variable: str):
         self.variable = variable
 
     def execute(self, state: ProgramState):
-        pass
+        value = state.get_variable(self.variable)
+        if value.startswith('"') and value.endswith('"'):
+            print(value[1:-1])  # Remove quotes
+        else:
+            print(value)
 
 
 class AddStatement(GrinStatement):
