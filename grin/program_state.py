@@ -64,25 +64,11 @@ class ProgramState:
 
         return self.get_variable(value)
 
-    # Handles the GOTO and GOSUB statements
-    def resolve_target(self, target):
-        """ Resolves a target to a line number. """
+    # Handles the GOTO & GOSUB statements
+    @staticmethod
+    def resolve_target(target):
+        if isinstance(target, str) and target.startswith('"') and value.endswith('"'):
+            return target[1:-1]
 
-        # check if a target is a name
-        if isinstance(target, str) and target.isidentifier():
-            return self.get_variable(target)
+        return int(target)
 
-        # check if a target is a label
-        if isinstance(target, str):
-            if target not in self.labels:
-                raise RuntimeError(f"Label {target} not found")
-            return self.labels[target]
-
-        # check if a target is out of the limit
-        if isinstance(target, int):
-            dataset = self.current_line + target
-            if dataset < 0 or dataset >= len(self.statements) + 1:
-                raise RuntimeError(f"Jump to invalid line: {dataset}")
-            return dataset
-
-        raise RuntimeError(f"Label {target} not found")
