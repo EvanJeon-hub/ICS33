@@ -20,7 +20,6 @@ class LetStatement(GrinStatement):
         self.value = value
 
     def execute(self, state: ProgramState):
-        # Assuming a value is a number or a variable
         value = state.evaluate(self.value)
         state.set_variable(self.variable, value)
 
@@ -96,6 +95,25 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
         elif kind == GrinTokenKind.PRINT:
             val = tokens[index + 1].text()
             statement = PrintStatement(val)
+
+        elif kind == GrinTokenKind.ADD:
+            var = tokens[index + 1].text()
+            val = tokens[index + 2].text()
+            statement = AddStatement(var, val)
+
+        elif kind == GrinTokenKind.GOTO:
+            target = tokens[index + 1].text()
+            statement = GotoStatement(target)
+
+        elif kind == GrinTokenKind.GOSUB:
+            target = tokens[index + 1].text()
+            statement = GoSubStatement(target)
+
+        elif kind == GrinTokenKind.RETURN:
+            statement = ReturnStatement()
+
+        elif kind == GrinTokenKind.END:
+            statement = EndStatement()
 
         statements[line_number] = statement
 

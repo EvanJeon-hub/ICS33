@@ -26,11 +26,9 @@ class ProgramState:
     def advance(self):
         """ Advances the current line to the next statement. """
         self.current_line += 1
-        if self.current_line not in self.statements:
-            self.running = False
 
     def get_current_statement(self):
-        """ Returns the current statement.  """
+        """ Returns the current statement - used for interpreter"""
         return self.statements.get(self.current_line, None)
 
     def set_variable(self, name: str, value):

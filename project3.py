@@ -11,6 +11,7 @@
 # the 'grin' package, isolated in a way that allows you to unit test them.
 import sys
 from grin.interpreter import GrinInterpreter
+from grin.program_state import ProgramState
 
 def main() -> None:
     lines = []
@@ -20,8 +21,7 @@ def main() -> None:
             line = line.rstrip("\n")
             lines.append(line)
 
-            # Check for the end of input
-            if line.strip() == '.':
+            if line.startswith("."):
                 break
 
         interpreter = GrinInterpreter()
