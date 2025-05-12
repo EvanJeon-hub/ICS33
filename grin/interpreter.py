@@ -18,7 +18,7 @@ class GrinInterpreter(object):
         statements, labels = create_statements(token_lines)
         state = ProgramState(statements, labels)
 
-        while state.running:
+        while state.running is True:
             statement = state.get_current_statement()
 
             if statement is None:

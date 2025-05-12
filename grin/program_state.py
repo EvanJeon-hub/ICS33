@@ -31,6 +31,10 @@ class ProgramState:
         """ Returns the current statement - used for interpreter"""
         return self.statements.get(self.current_line, None)
 
+    def get_label_line(self, label_name: str):
+        """Returns the line number for a given label name."""
+        return self.labels.get(label_name)
+
     def set_variable(self, name: str, value):
         """Sets the value of a variable."""
         self.variable_stack[name] = value
@@ -65,10 +69,14 @@ class ProgramState:
         return self.get_variable(value)
 
     # Handles the GOTO & GOSUB statements
-    @staticmethod
-    def resolve_target(target):
-        if isinstance(target, str) and target.startswith('"') and value.endswith('"'):
-            return target[1:-1]
+    def resolve_target(self, target):
+        """ Resolves the target to a variable or integer. """
+        try:
+            if isinstance(target, str) and target.startswith('"') and target.endswith('"'):
+                return self.get_label_line(target[1:-1])
+            else:
+                return int(target)
+        except ValueError:
+            pass
 
-        return int(target)
-
+        return self.get_variable(target)

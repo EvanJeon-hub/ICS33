@@ -54,6 +54,7 @@ def parse(lines: Iterable[str]) -> Iterable[list[GrinToken]]:
 
 
 # Parse a single line of Grin code, returning a list of GrinTokens
+# Checks the Grintokenlist returned from to_tokens valid.
 def _parse_line(line: str, line_number: int) -> list[GrinToken]:
     tokens = list(to_tokens(line, line_number))
     """

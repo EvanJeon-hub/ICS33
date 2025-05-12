@@ -111,15 +111,12 @@ class DivideStatement(GrinStatement):
 
 # TODO: Should include option for IF with Operator
 # TODO: Continues until reach END
-# TODO: Don't require RETURN
 class GotoStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
 
     def execute(self, state: ProgramState):
-        target = state.resolve_target(self.target)
-        state.current_line = target
-        state.advance()
+        state.current_line = state.resolve_target(self.target)
 
 
 # TODO: Should include option for IF with Operator
@@ -220,6 +217,9 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
             raise RuntimeError
 
         statements[line_number] = statement
+
+        # Debugging
+        print(f"{statements}, {labels}")
 
     return statements, labels
 
