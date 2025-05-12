@@ -5,14 +5,17 @@ Stores stack of variables and GOSUB stack. (last-in-first-out)
 Manages the program state
 and provides methods to manipulate it.
 """
-from grin.statement import GrinStatement
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from grin.statement import GrinStatement
 
 class ProgramState:
     """
     Represents the state of the program.
     Stores the current line number, variable stack, and GOSUB stack.
     """
-    def __init__(self, statements: dict[int, GrinStatement], labels: dict[str, int]):
+    def __init__(self, statements: dict[int, "GrinStatement"], labels: dict[str, int]):
         self.statements = statements
         self.labels = labels
         self.current_line = 0
@@ -26,7 +29,7 @@ class ProgramState:
         if self.current_line not in self.statements:
             self.running = False
 
-    def get_current_statement(self) -> GrinStatement:
+    def get_current_statement(self):
         """ Returns the current statement.  """
         return self.statements.get(self.current_line, None)
 

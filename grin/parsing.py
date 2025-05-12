@@ -35,7 +35,7 @@ class GrinParseError(Exception):
         return self._location
 
 
-
+# parse a sequence of lines of Grin code
 def parse(lines: Iterable[str]) -> Iterable[list[GrinToken]]:
     """Given a sequence of strings containing lines of Grin code, generates a
     corresponding sequence of lists of GrinTokens, each being the tokens
@@ -53,8 +53,17 @@ def parse(lines: Iterable[str]) -> Iterable[list[GrinToken]]:
         yield tokens
 
 
+# Parse a single line of Grin code, returning a list of GrinTokens
 def _parse_line(line: str, line_number: int) -> list[GrinToken]:
     tokens = list(to_tokens(line, line_number))
+    """
+        tokens example:
+        [
+          GrinToken(Kind=LET, TEXT="LET", value="LET"),
+          GrinToken(Kind=IDENTIFIER, TEXT="AGE", value="AGE"),
+          GrinToken(Kind=LITERAL_INTEGER, TEXT="13", value=13)
+        ]
+    """
     index = 0
 
 
@@ -66,10 +75,13 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
         raise GrinParseError(message, GrinLocation(line_number, len(line) + 1))
 
 
+    # check if the current token is one of the specified kinds
+    # if so, return True; otherwise, return False
     def _token_is(*kinds: GrinTokenKind) -> bool:
         return index < len(tokens) and tokens[index].kind() in kinds
 
 
+    # Ensure the current token is one of the specified kinds
     def _expect(*kinds: GrinTokenKind) -> None:
         if not _token_is(*kinds):
             message = ', '.join(str(kind) for kind in kinds)
@@ -80,6 +92,7 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
                 _raise_error_on_token(message, tokens[index])
 
 
+    # parses a label (check identifier followed by a colon)
     def _parse_label() -> None:
         nonlocal index
 
@@ -89,6 +102,7 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
             index += 1
 
 
+    # parses a variable update (check identifier followed by a value)
     def _parse_variable_update() -> None:
         nonlocal index
         _expect(GrinTokenKind.IDENTIFIER)
@@ -96,17 +110,20 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
         _parse_value()
 
 
+   # parses a print statement (check PRINT followed by a value)
     def _parse_print() -> None:
         nonlocal index
         _parse_value()
 
 
+    # parses INNUM or INSTR statement
     def _parse_input() -> None:
         nonlocal index
         _expect(GrinTokenKind.IDENTIFIER)
         index += 1
 
 
+   # parses GOTO or GOSUB statements (optional IF condition)
     def _parse_jump() -> None:
         nonlocal index
         _parse_jump_target()
@@ -118,10 +135,12 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
             _parse_value()
 
 
+    # Handles statements with no arguments (RETURN, END)
     def _parse_empty() -> None:
         pass
 
 
+    # maps GrinTokenKind to the corresponding parsing function
     _BODY_PARSERS: dict[GrinTokenKind, Callable[[], None]] = {
         GrinTokenKind.LET: _parse_variable_update,
         GrinTokenKind.PRINT: _parse_print,
@@ -138,6 +157,7 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
     }
 
 
+    # select and call the correct parsing function
     def _parse_body() -> None:
         nonlocal index
 
@@ -149,6 +169,7 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
             _raise_error_on_token('Statement keyword expected', tokens[index])
 
 
+    # parses the target of a GOTO or GOSUB statement
     def _parse_jump_target() -> None:
         nonlocal index
 
@@ -159,6 +180,7 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
         index += 1
 
 
+    # parses the value of a value (int, float, string, identifier)
     def _parse_value() -> None:
         nonlocal index
 
@@ -169,6 +191,7 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
         index += 1
 
 
+   # parses a comparison operator (==, !=, <, <=, >, >=, <>)
     def _parse_comparison_operator() -> None:
         nonlocal index
 
@@ -185,11 +208,13 @@ def _parse_line(line: str, line_number: int) -> list[GrinToken]:
     elif len(tokens) == 1 and tokens[0].kind() == GrinTokenKind.DOT:
         return tokens
 
+    # check if the first token is a label
     _parse_label()
 
     if index >= len(tokens):
         _raise_error_at_end_of_line('Statement body expected')
 
+    # check if the first (or second) token is a keyword
     _parse_body()
 
     if index < len(tokens):

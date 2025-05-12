@@ -3,12 +3,28 @@
 """
 Includes the Grin interpreter, which executes the Grin program.
 """
+from typing import Iterable
 from grin.program_state import ProgramState
 from grin.statement import create_statements
+from grin.parsing import parse
+
 
 class GrinInterpreter(object):
-    def run(self, lines):
-        pass
+    """The Grin interpreter, which executes the Grin program."""
+    def run(self, lines: Iterable[str]):
+        token_lines = list(parse(lines))
+        statements, labels = create_statements(token_lines)
+        state = ProgramState(statements, labels)
+
+        while state.running:
+            statement = state.get_current_statement()
+            statement.execute(state)
+
+            if state.get_current_statement() == statement:
+                state.advance()
+
+
+
 
 
 
