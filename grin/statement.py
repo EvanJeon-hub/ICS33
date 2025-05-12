@@ -33,15 +33,83 @@ class PrintStatement(GrinStatement):
         print(value)
 
 
+# TODO
+class INNUMStatement(GrinStatement):
+    def __init__(self, variable: str):
+        self.variable = variable
+
+    def execute(self, state: ProgramState):
+        pass
+
+
+# TODO
+class INSTRStatement(GrinStatement):
+    def __init__(self, variable: str):
+        self.variable = variable
+
+    def execute(self, state: ProgramState):
+        pass
+
+
 class AddStatement(GrinStatement):
     def __init__(self, variable: str, value: str):
         self.variable = variable
         self.value = value
 
     def execute(self, state: ProgramState):
-        pass
+        value = state.evaluate(self.value)
+        current_value = state.get_variable(self.variable)
+        if current_value is None:
+            raise RuntimeError(f"Variable {self.variable} not found.")
+        new_value = current_value + value
+        state.set_variable(self.variable, new_value)
 
 
+class SubtractStatement(GrinStatement):
+    def __init__(self, variable: str, value: str):
+        self.variable = variable
+        self.value = value
+
+    def execute(self, state: ProgramState):
+        value = state.evaluate(self.value)
+        current_value = state.get_variable(self.variable)
+        if current_value is None:
+            raise RuntimeError(f"Variable {self.variable} not found.")
+        new_value = current_value - value
+        state.set_variable(self.variable, new_value)
+
+
+class MultiplyStatement(GrinStatement):
+    def __init__(self, variable: str, value: str):
+        self.variable = variable
+        self.value = value
+
+    def execute(self, state: ProgramState):
+        value = state.evaluate(self.value)
+        current_value = state.get_variable(self.variable)
+        if current_value is None:
+            raise RuntimeError(f"Variable {self.variable} not found.")
+        new_value = current_value * value
+        state.set_variable(self.variable, new_value)
+
+
+class DivideStatement(GrinStatement):
+    def __init__(self, variable: str, value: str):
+        self.variable = variable
+        self.value = value
+
+    def execute(self, state: ProgramState):
+        value = state.evaluate(self.value)
+        current_value = state.get_variable(self.variable)
+        if current_value is None:
+            raise RuntimeError(f"Variable {self.variable} not found.")
+        if value == 0:
+            raise RuntimeError("Division by zero.")
+        new_value = current_value / value
+        state.set_variable(self.variable, new_value)
+
+
+# TODO
 class GotoStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
@@ -50,6 +118,7 @@ class GotoStatement(GrinStatement):
         pass
 
 
+# TODO
 class GoSubStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
@@ -96,10 +165,33 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
             val = tokens[index + 1].text()
             statement = PrintStatement(val)
 
+        elif kind == GrinTokenKind.INNUM:
+            var = tokens[index + 1].text()
+            statement = INNUMStatement(var)
+
+        elif kind == GrinTokenKind.INSTR:
+            var = tokens[index + 1].text()
+            statement = INSTRStatement(var)
+
         elif kind == GrinTokenKind.ADD:
             var = tokens[index + 1].text()
             val = tokens[index + 2].text()
             statement = AddStatement(var, val)
+
+        elif kind == GrinTokenKind.SUBTRACT:
+            var = tokens[index + 1].text()
+            val = tokens[index + 2].text()
+            statement = SubtractStatement(var, val)
+
+        elif kind == GrinTokenKind.MULTIPLY:
+            var = tokens[index + 1].text()
+            val = tokens[index + 2].text()
+            statement = MultiplyStatement(var, val)
+
+        elif kind == GrinTokenKind.DIVIDE:
+            var = tokens[index + 1].text()
+            val = tokens[index + 2].text()
+            statement = DivideStatement(var, val)
 
         elif kind == GrinTokenKind.GOTO:
             target = tokens[index + 1].text()
@@ -114,6 +206,9 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
 
         elif kind == GrinTokenKind.END:
             statement = EndStatement()
+
+        else:
+            raise RuntimeError
 
         statements[line_number] = statement
 
