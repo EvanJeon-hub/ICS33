@@ -19,6 +19,8 @@ def main() -> None:
         for line in sys.stdin:
             line = line.rstrip("\n")
             lines.append(line)
+
+            # Check for the end of input
             if line.strip() == '.':
                 break
 

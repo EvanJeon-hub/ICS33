@@ -8,6 +8,7 @@ each class has a method to execute the statement
 from grin.program_state import ProgramState
 from grin.token import GrinTokenKind
 
+
 class GrinStatement:
     def execute(self, state: ProgramState):
         raise NotImplementedError("Subclasses must implement this method.")
