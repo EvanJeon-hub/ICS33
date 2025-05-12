@@ -68,15 +68,36 @@ class ProgramState:
 
         return self.get_variable(value)
 
-    # Handles the GOTO & GOSUB statements
     def resolve_target(self, target):
-        """ Resolves the target to a variable or integer. """
+        if isinstance(target, str):
+            if target.startswith('"') and target.endswith('"'):
+                label = target[1:-1]
+                line = self.get_label_line(label)
+                if line is None:
+                    raise ValueError(f"Label {label} not found")
+                return line
         try:
-            if isinstance(target, str) and target.startswith('"') and target.endswith('"'):
-                return self.get_label_line(target[1:-1])
-            else:
-                return int(target)
-        except ValueError:
-            pass
+            var = int(target)
+            if var > 0:
+                if self.current_line + var > len(self.statements):
+                    raise ValueError("Out of range")
+                return self.current_line + var
+            if var < 0:
+                if self.current_line + var > len(self.statements):
+                    raise ValueError("Out of range")
+                if self.current_line + var < 0:
+                    raise ValueError("Invalid Range")
+                return self.current_line + var
+            if var == 0:
+                raise ValueError("Infinite Loop is not permitted")
+        except ValueError as e:
+            raise RuntimeError(e)
 
-        return self.get_variable(target)
+        return None
+
+
+    # Handles the GOSUB statements
+    def resolve_target_gosub(self, target):
+        """ Resolves the target to a variable or integer. """
+
+

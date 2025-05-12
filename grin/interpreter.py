@@ -20,11 +20,12 @@ class GrinInterpreter(object):
 
         while state.running is True:
             statement = state.get_current_statement()
+            previous_line = state.current_line
 
             if statement is None:
                 break
 
             statement.execute(state)
 
-            if state.get_current_statement() == statement:
+            if state.current_line == previous_line:
                 state.advance()

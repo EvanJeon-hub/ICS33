@@ -110,7 +110,6 @@ class DivideStatement(GrinStatement):
 
 
 # TODO: Should include option for IF with Operator
-# TODO: Continues until reach END
 class GotoStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
@@ -120,14 +119,13 @@ class GotoStatement(GrinStatement):
 
 
 # TODO: Should include option for IF with Operator
-# TODO: Continues until reach END
 # TODO: should remember the line number to RETURN to
 class GoSubStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
 
     def execute(self, state: ProgramState):
-        pass
+        state.current_line = state.resolve_target_gosub(self.target)
 
 
 class ReturnStatement(GrinStatement):
@@ -140,7 +138,6 @@ class ReturnStatement(GrinStatement):
             raise RuntimeError("No GOSUB stack to return to.")
 
 
-# TODO: Should Interact with GOTO AND GOSUB
 class EndStatement(GrinStatement):
     def execute(self, state: ProgramState):
         state.running = False
