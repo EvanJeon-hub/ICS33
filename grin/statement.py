@@ -30,10 +30,7 @@ class PrintStatement(GrinStatement):
 
     def execute(self, state: ProgramState):
         value = state.evaluate(self.value)
-        if value.startswith('"') and value.endswith('"'):
-            print(value[1:-1])  # Remove quotes
-        else:
-            print(value)
+        print(value)
 
 
 class INNUMStatement(GrinStatement):
@@ -51,10 +48,7 @@ class INSTRStatement(GrinStatement):
 
     def execute(self, state: ProgramState):
         value = state.get_variable(self.variable)
-        if value.startswith('"') and value.endswith('"'):
-            print(value[1:-1])  # Remove quotes
-        else:
-            print(value)
+        print(value)
 
 
 class AddStatement(GrinStatement):
@@ -115,7 +109,7 @@ class DivideStatement(GrinStatement):
         state.set_variable(self.variable, new_value)
 
 
-# TODO
+# TODO: Should include option for IF with Operator
 class GotoStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
@@ -124,7 +118,7 @@ class GotoStatement(GrinStatement):
         pass
 
 
-# TODO
+# TODO: Should include option for IF with Operator
 class GoSubStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
@@ -199,10 +193,12 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
             val = tokens[index + 2].text()
             statement = DivideStatement(var, val)
 
+        # TODO: Should include option for IF with Operator
         elif kind == GrinTokenKind.GOTO:
             target = tokens[index + 1].text()
             statement = GotoStatement(target)
 
+        # TODO: Should include option for IF with Operator
         elif kind == GrinTokenKind.GOSUB:
             target = tokens[index + 1].text()
             statement = GoSubStatement(target)

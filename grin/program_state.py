@@ -51,11 +51,18 @@ class ProgramState:
 
     def evaluate(self, value):
         """ Evaluates a token is variable or integer. """
-        if isinstance(value, str) and value.isidentifier():
-            return self.get_variable(value)
-        elif value.isdigit():
-            return int(value)
-        return value
+        if isinstance(value, str) and value.startswith('"') and value.endswith('"'):
+            return value[1:-1]
+
+        try:
+            if '.' in value:
+                return float(value)
+            else:
+                return int(value)
+        except ValueError:
+            pass
+
+        return self.get_variable(value)
 
     # Handles the GOTO and GOSUB statements
     def resolve_target(self, target):
