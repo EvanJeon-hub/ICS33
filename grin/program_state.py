@@ -53,6 +53,8 @@ class ProgramState:
         """ Evaluates a token is variable or integer. """
         if isinstance(value, str) and value.isidentifier():
             return self.get_variable(value)
+        elif value.isdigit():
+            return int(value)
         return value
 
     # Handles the GOTO and GOSUB statements

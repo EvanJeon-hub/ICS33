@@ -178,17 +178,17 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
             val = tokens[index + 2].text()
             statement = AddStatement(var, val)
 
-        elif kind == GrinTokenKind.SUBTRACT:
+        elif kind == GrinTokenKind.SUB:
             var = tokens[index + 1].text()
             val = tokens[index + 2].text()
             statement = SubtractStatement(var, val)
 
-        elif kind == GrinTokenKind.MULTIPLY:
+        elif kind == GrinTokenKind.MULT:
             var = tokens[index + 1].text()
             val = tokens[index + 2].text()
             statement = MultiplyStatement(var, val)
 
-        elif kind == GrinTokenKind.DIVIDE:
+        elif kind == GrinTokenKind.DIV:
             var = tokens[index + 1].text()
             val = tokens[index + 2].text()
             statement = DivideStatement(var, val)
