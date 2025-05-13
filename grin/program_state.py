@@ -41,7 +41,7 @@ class ProgramState:
 
     def get_variable(self, name: str):
         """Gets the value of a variable. """
-        return self.variable_stack.get(name, None)
+        return self.variable_stack.get(name, 0)
 
     def push_gosub(self, line_number: int):
         """ Pushes a line number onto the GOSUB stack."""
@@ -55,18 +55,15 @@ class ProgramState:
 
     def evaluate(self, value):
         """ Evaluates a token is variable or integer. """
+        # Handle String Literal
         if isinstance(value, str) and value.startswith('"') and value.endswith('"'):
             return value[1:-1]
-
         try:
-            if '.' in value:
-                return float(value)
-            else:
-                return int(value)
+            # Handle Int or Float
+            return float(value) if '.' in value else int(value)
         except ValueError:
-            pass
-
-        return self.get_variable(value)
+            # Handle Variable
+            return self.get_variable(value)
 
     def resolve_target(self, target):
         if isinstance(target, str):
@@ -94,7 +91,6 @@ class ProgramState:
             raise RuntimeError(e)
 
         return None
-
 
     # Handles the GOSUB statements
     def resolve_target_gosub(self, target):
