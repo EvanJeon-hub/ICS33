@@ -105,7 +105,10 @@ class DivideStatement(GrinStatement):
             raise RuntimeError(f"Variable {self.variable} not found.")
         if value == 0:
             raise RuntimeError("Division by zero.")
-        new_value = current_value / value
+        if isinstance(current_value, int) and isinstance(value, int):
+            new_value = current_value // value
+        else:
+            new_value = current_value / value
         state.set_variable(self.variable, new_value)
 
 
@@ -216,8 +219,6 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
 
         statements[line_number] = statement
 
-        # Debugging
-        print(f"{statements}, {labels}")
 
     return statements, labels
 

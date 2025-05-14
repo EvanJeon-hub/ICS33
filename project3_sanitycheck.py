@@ -227,7 +227,6 @@ class TestOutputLine:
             raise TestFailure()
 
 
-
 class TestEndOfOutput:
     def __init__(self, timeout_in_seconds: float):
         self._timeout_in_seconds = timeout_in_seconds
@@ -247,25 +246,199 @@ class TestEndOfOutput:
             raise TestFailure()
 
 
-
-def run_test() -> None:
+def run_test_first_case() -> None:
     try:
         check_python_version()
 
         with contextlib.closing(start_process()) as process:
-            test_lines = make_test_lines()
+            test_lines = make_test_lines_first()
             run_test_lines(process, test_lines)
 
             print_labeled_output(
                 'PASSED',
-                'Your Project 3 implementation passed the sanity checker.  Note that',
+                'Passed First Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_second_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_second()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Second Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_third_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_third()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Third Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_fourth_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_third()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Fourth Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_fifth_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_fifth()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Fifth Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_sixth_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_sixth()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Sixth Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_seventh_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_seventh()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Seventh Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_eighth_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_eighth()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Eighth Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_nineth_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_nineth()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Nineth Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_tenth_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_tenth()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed Tenth Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_eleventh_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_eleventh()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed eleventh Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
+def run_test_last_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_last()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Congratulations! Your Project 3 implementation passed the sanity checker.  Note that',
                 'there are many other tests you\'ll want to run on your own, because',
                 'a number of other scenarios exist that are legal and interesting.')
     except TestFailure:
         print_labeled_output(
             'FAILED',
             'The sanity checker has failed, for the reasons described above.')
-
 
 
 def check_python_version() -> None:
@@ -279,7 +452,6 @@ def check_python_version() -> None:
             f'This course requires the use of a {req_major}.{req_minor} version instead.')
 
         raise TestFailure()
-
 
 
 def start_process() -> TextProcess:
@@ -299,7 +471,6 @@ def start_process() -> TextProcess:
             str(Path.cwd()))
 
 
-
 def print_labeled_output(label: str, *msg_lines: Sequence[str]) -> None:
     showed_first = False
 
@@ -314,8 +485,7 @@ def print_labeled_output(label: str, *msg_lines: Sequence[str]) -> None:
         print(label)
 
 
-
-def make_test_lines() -> list[TestInputLine | TestOutputLine]:
+def make_test_lines_first() -> list[TestInputLine | TestOutputLine]:
     return [
         TestInputLine('LET MESSAGE "Hello Boo!"'),
         TestInputLine('PRINT MESSAGE'),
@@ -324,13 +494,227 @@ def make_test_lines() -> list[TestInputLine | TestOutputLine]:
         TestEndOfOutput(2.0)
     ]
 
+def make_test_lines_second() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET NAME "Boo"'),
+        TestInputLine('LET AGE 13.015625'),
+        TestInputLine('PRINT NAME'),
+        TestInputLine('PRINT AGE'),
+        TestInputLine('.'),
+        TestOutputLine('Boo', 10.0),
+        TestOutputLine('13.015625', 10.0),
+        TestEndOfOutput(2.0)
+    ]
 
+def make_test_lines_third() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET A 3'),
+        TestInputLine('PRINT A'),
+        TestInputLine('GOSUB "CHUNK"'),
+        TestInputLine('PRINT A'),
+        TestInputLine('PRINT B'),
+        TestInputLine('GOTO "FINAL"'),
+        TestInputLine('CHUNK: LET A 4'),
+        TestInputLine('LET B 6'),
+        TestInputLine('RETURN'),
+        TestInputLine('FINAL: PRINT A'),
+        TestInputLine('.'),
+        TestOutputLine('3', 10.0),
+        TestOutputLine('4', 10.0),
+        TestOutputLine('6', 10.0),
+        TestOutputLine('4', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_fourth() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('PRINT "Number:"'),
+        TestInputLine('LET X 11'),
+        TestInputLine('INNUM X'),
+        TestInputLine('ADD X 7'),
+        TestInputLinne('PRINT X'),
+        TestInputLine('.'),
+        TestOutputLine('Number:', 10.0),
+        TestOutputLine('11', 10.0),
+        TestOutputLine('18', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_fifth() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET A 1'),
+        TestInputLine('GOTO 2'),
+        TestInputLine('LET A 2'),
+        TestInputLine('PRINT A'),
+        TestInputLine('.'),
+        TestOutputLine('1', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_sixth() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET Z 5'),
+        TestInputLine('GOTO 5'),
+        TestInputLine('LET C 4'),
+        TestInputLine('PRINT C'),
+        TestInputLine('PRINT Z'),
+        TestInputLine('END'),
+        TestInputLine('PRINT C'),
+        TestInputLine('PRINT Z'),
+        TestInputLine('GOTO -6'),
+        TestInputLine('.'),
+        TestOutputLine('0', 10.0),
+        TestOutputLine('5', 10.0),
+        TestOutputLine('4', 10.0),
+        TestOutputLine('5', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_seventh() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET Z 5'),
+        TestInputLine('GOTO "CZ"'),
+        TestInputLine('CCZ: LET C 4'),
+        TestInputLine('PRINT C'),
+        TestInputLine('PRINT Z'),
+        TestInputLine('END'),
+        TestInputLine('CZ: PRINT C'),
+        TestInputLine('PRINT Z'),
+        TestInputLine('GOTO "CCZ"'),
+        TestInputLine('.'),
+        TestOutputLine('0', 10.0),
+        TestOutputLine('5', 10.0),
+        TestOutputLine('4', 10.0),
+        TestOutputLine('5', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_eighth() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET A 4'),
+        TestInputLine('ADD A 3'),
+        TestInputLine('PRINT A'),
+        TestInputLine('LET B 5'),
+        TestInputLine('SUB B 3'),
+        TestInputLine('PRINT B'),
+        TestInputLine('LET C 6'),
+        TestInputLine('MULT C B'),
+        TestInputLine('PRINT C'),
+        TestInputLine('LET D 8'),
+        TestInputLine('DIV D 2'),
+        TestInputLine('PRINT D'),
+        TestInputLine('.'),
+        TestOutputLine('7', 10.0),
+        TestOutputLine('2', 10.0),
+        TestOutputLine('12', 10.0),
+        TestOutputLine('4', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_nineth() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET A 1'),
+        TestInputLine('GOSUB 4'),
+        TestInputLine('PRINT A'),
+        TestInputLine('PRINT B'),
+        TestInputLine('END'),
+        TestInputLine('LET A 2'),
+        TestInputLine('LET B 3'),
+        TestInputLine('RETURN'),
+        TestInputLine('.'),
+        TestOutputLine('2', 10.0),
+        TestOutputLine('3', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_tenth() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET A 3'),
+        TestInputLine('GOSUB "PRINTABC"'),
+        TestInputLine('LET B 4'),
+        TestInputLine('GOSUB "PRINTABC"'),
+        TestInputLine('LET C 5'),
+        TestInputLine('GOSUB "PRINTABC"'),
+        TestInputLine('LET A 1'),
+        TestInputLine('GOSUB "PRINTABC"'),
+        TestInputLine('END'),
+        TestInputLine('PRINTABC: PRINT A'),
+        TestInputLine('PRINT B'),
+        TestInputLine('PRINT C'),
+        TestInputLine('RETURN'),
+        TestInputLine('.'),
+        TestOutputLine('3', 10.0),
+        TestOutputLine('0', 10.0),
+        TestOutputLine('0', 10.0),
+        TestOutputLine('3', 10.0),
+        TestOutputLine('4', 10.0),
+        TestOutputLine('0', 10.0),
+        TestOutputLine('3', 10.0),
+        TestOutputLine('4', 10.0),
+        TestOutputLine('5', 10.0),
+        TestOutputLine('1', 10.0),
+        TestOutputLine('4', 10.0),
+        TestOutputLine('5', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_eleventh() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET A 1'),
+        TestInputLine('GOSUB 5'),
+        TestInputLine('PRINT A'),
+        TestInputLine('END'),
+        TestInputLine('LET A 3'),
+        TestInputLine('RETURN'),
+        TestInputLine('PRINT A'),
+        TestInputLine('LET A 2'),
+        TestInputLine('GOSUB -4'),
+        TestInputLine('PRINT A'),
+        TestInputLine('RETURN'),
+        TestInputLine('.'),
+        TestOutputLine('1', 10.0),
+        TestOutputLine('3', 10.0),
+        TestOutputLine('3', 10.0),
+        TestEndOfOutput(2.0)
+    ]
+
+def make_test_lines_last() -> list[TestInputLine | TestOutputLine]:
+    return [
+        TestInputLine('LET A 3'),
+        TestInputLine('LET B 5'),
+        TestInputLine('GOTO 2 IF A < 4'),
+        TestInputLine('PRINT A'),
+        TestInputLine('PRINT B'),
+        TestInputLine('.'),
+        TestOutputLine('5', 10.0),
+    ]
 
 def run_test_lines(process: TextProcess, test_lines: list[TestInputLine | TestOutputLine]) -> None:
     for line in test_lines:
         line.execute(process)
 
 
-
 if __name__ == '__main__':
-    run_test()
+    run_test_first_case()
+    print()
+    run_test_second_case()
+    print()
+    run_test_third_case()
+    print()
+    run_test_fourth_case()
+    print()
+    run_test_fifth_case()
+    print()
+    run_test_sixth_case()
+    print()
+    run_test_seventh_case()
+    print()
+    run_test_eighth_case()
+    print()
+    run_test_nineth_case()
+    print()
+    run_test_tenth_case()
+    print()
+    run_test_eleventh_case()
+    print()
+    run_test_last_case()
