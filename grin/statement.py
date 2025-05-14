@@ -119,13 +119,14 @@ class GotoStatement(GrinStatement):
 
 
 # TODO: Should include option for IF with Operator
-# TODO: should remember the line number to RETURN to
 class GoSubStatement(GrinStatement):
     def __init__(self, target):
         self.target = target
 
     def execute(self, state: ProgramState):
-        state.current_line = state.resolve_target_gosub(self.target)
+        return_line = state.current_line + 1
+        state.push_gosub(return_line)
+        state.current_line = state.resolve_target(self.target)
 
 
 class ReturnStatement(GrinStatement):

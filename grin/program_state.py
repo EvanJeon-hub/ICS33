@@ -66,6 +66,8 @@ class ProgramState:
             return self.get_variable(value)
 
     def resolve_target(self, target):
+        """ Resolves a target to a line number. """
+        # Handle String Literal (GOTO/GOSUB "label")
         if isinstance(target, str):
             if target.startswith('"') and target.endswith('"'):
                 label = target[1:-1]
@@ -73,6 +75,7 @@ class ProgramState:
                 if line is None:
                     raise ValueError(f"Label {label} not found")
                 return line
+        # Handle Integer (GOTO/GOSUB 3)
         try:
             var = int(target)
             if var > 0:
@@ -89,11 +92,6 @@ class ProgramState:
                 raise ValueError("Infinite Loop is not permitted")
         except ValueError as e:
             raise RuntimeError(e)
-
         return None
-
-    # Handles the GOSUB statements
-    def resolve_target_gosub(self, target):
-        """ Resolves the target to a variable or integer. """
 
 
