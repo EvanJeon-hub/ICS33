@@ -94,4 +94,20 @@ class ProgramState:
             raise RuntimeError(e)
         return None
 
-
+    @staticmethod
+    def evaluate_condition(left_target, right_target, relational_operator: str) -> bool:
+        """ Evaluates a condition based on the relational operator. """
+        if relational_operator == "<":
+            return left_target < right_target
+        elif relational_operator == "<=":
+            return left_target <= right_target
+        elif relational_operator == ">":
+            return left_target > right_target
+        elif relational_operator == ">=":
+            return left_target >= right_target
+        elif relational_operator == "=":
+            return left_target == right_target
+        elif relational_operator == "<>":
+            return left_target != right_target
+        else:
+            raise RuntimeError(f"Invalid relational operator: {relational_operator}")

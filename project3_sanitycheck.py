@@ -1,32 +1,4 @@
 # project3_sanitycheck.py
-#
-# ICS 33 Spring 2025
-# Project 3: Why Not Smile?
-#
-# This is a sanity checker for your Project 3 solution, which checks whether
-# your solution meets some basic requirements with respect to reading input
-# and formatting its output, as well as verifying that at least one example
-# can be run all the way to completion.  It runs your program, passes it
-# one legal input, then assesses whether the output is exactly correct.
-#
-# In order for the sanity check to run successfully, you'll need to meet
-# these requirements:
-#
-# * You're running the correct version of Python (3.13)
-# * This module is in the project directory alongside "project3.py" and
-#   whatever additional modules comprise your solution.
-# * It's possible to run the program by executing that "project3.py" module.
-# * Your program generates precisely correct output for one scenario.
-#
-# If your program is unable to pass this sanity checker, it will certainly be
-# unable to pass all of our automated tests (and it may well fail all of them).
-# On the other hand, there are other tests you'll want to run besides the one
-# scenario here, because we'll be testing more than just one when we grade
-# your work.
-#
-# YOU DO NOT NEED TO READ OR UNDERSTAND THIS CODE, though you can certainly
-# feel free to take a look at it.
-
 from collections.abc import Sequence
 import contextlib
 import locale
@@ -39,11 +11,7 @@ import tempfile
 import threading
 import time
 import traceback
-
-
-
 _REQUIRED_PYTHON_VERSION = ('3', '13')
-
 
 
 class TextProcessReadTimeout(Exception):
@@ -695,26 +663,20 @@ def run_test_lines(process: TextProcess, test_lines: list[TestInputLine | TestOu
 
 
 if __name__ == '__main__':
-    run_test_first_case()
-    print()
-    run_test_second_case()
-    print()
-    run_test_third_case()
-    print()
-    run_test_fourth_case()
-    print()
-    run_test_fifth_case()
-    print()
-    run_test_sixth_case()
-    print()
-    run_test_seventh_case()
-    print()
-    run_test_eighth_case()
-    print()
-    run_test_nineth_case()
-    print()
-    run_test_tenth_case()
-    print()
-    run_test_eleventh_case()
-    print()
-    run_test_last_case()
+    test_cases = [
+        run_test_first_case,
+        run_test_second_case,
+        run_test_third_case,
+        run_test_fourth_case,
+        run_test_fifth_case,
+        run_test_sixth_case,
+        run_test_seventh_case,
+        run_test_eighth_case,
+        run_test_nineth_case,
+        run_test_tenth_case,
+        run_test_eleventh_case,
+        run_test_last_case
+    ]
+    for test_case in test_cases:
+        test_case()
+        print()

@@ -113,18 +113,34 @@ class DivideStatement(GrinStatement):
 
 
 class GotoStatement(GrinStatement):
-    def __init__(self, target):
+    def __init__(self, target, left_target=None, relational_operator=None, right_target=None):
         self.target = target
+        self.left_target = left_target
+        self.relational_operator = relational_operator
+        self.right_target = right_target
 
     def execute(self, state: ProgramState):
+        if self.left_target is not None:
+            left_target = state.evaluate(self.left_target)
+            right_target = state.evaluate(self.right_target)
+            if not state.evaluate_condition(left_target, right_target, self.relational_operator):
+                return
         state.current_line = state.resolve_target(self.target)
 
 
 class GoSubStatement(GrinStatement):
-    def __init__(self, target):
+    def __init__(self, target, left_target=None, relational_operator=None, right_target=None):
         self.target = target
+        self.left_target = left_target
+        self.relational_operator = relational_operator
+        self.right_target = right_target
 
     def execute(self, state: ProgramState):
+        if self.left_target is not None:
+            left_target = state.evaluate(self.left_target)
+            right_target = state.evaluate(self.right_target)
+            if not state.evaluate_condition(left_target, right_target, self.relational_operator):
+                return
         return_line = state.current_line + 1
         state.push_gosub(return_line)
         state.current_line = state.resolve_target(self.target)
@@ -198,11 +214,23 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
 
         elif kind == GrinTokenKind.GOTO:
             target = tokens[index + 1].text()
-            statement = GotoStatement(target)
+            if len(tokens) > index + 2 and tokens[index + 2].kind() == GrinTokenKind.IF:
+                left_target = tokens[index + 3].text()
+                relational_operator = tokens[index + 4].text()
+                right_target = tokens[index + 5].text()
+                statement = GotoStatement(target, left_target, relational_operator, right_target)
+            else:
+                statement = GotoStatement(target)
 
         elif kind == GrinTokenKind.GOSUB:
             target = tokens[index + 1].text()
-            statement = GoSubStatement(target)
+            if len(tokens) > index + 2 and tokens[index + 2].kind() == GrinTokenKind.IF:
+                left_target = tokens[index + 3].text()
+                relational_operator = tokens[index + 4].text()
+                right_target = tokens[index + 5].text()
+                statement = GoSubStatement(target, left_target, relational_operator, right_target)
+            else:
+                statement = GoSubStatement(target)
 
         elif kind == GrinTokenKind.RETURN:
             statement = ReturnStatement()
