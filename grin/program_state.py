@@ -97,6 +97,13 @@ class ProgramState:
     @staticmethod
     def evaluate_condition(left_target, right_target, relational_operator: str) -> bool:
         """ Evaluates a condition based on the relational operator. """
+        allowed = (int, float)
+        if isinstance(left_target, allowed) and isinstance(right_target, allowed):
+            pass
+        elif isinstance(left_target, str) and isinstance(right_target, str):
+            pass
+        else:
+            raise RuntimeError("Invalid types for comparison")
         if relational_operator == "<":
             return left_target < right_target
         elif relational_operator == "<=":

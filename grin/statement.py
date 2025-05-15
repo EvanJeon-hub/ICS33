@@ -39,6 +39,8 @@ class INNUMStatement(GrinStatement):
 
     def execute(self, state: ProgramState):
         value = state.get_variable(self.variable)
+        if not isinstance(value, (int, float)):
+            raise RuntimeError(f"Variable {self.variable} is not a number.")
         print(value)
 
 
@@ -48,6 +50,8 @@ class INSTRStatement(GrinStatement):
 
     def execute(self, state: ProgramState):
         value = state.get_variable(self.variable)
+        if not isinstance(value, str):
+            raise RuntimeError(f"Variable {self.variable} is not a string.")
         print(value)
 
 
@@ -61,7 +65,10 @@ class AddStatement(GrinStatement):
         current_value = state.get_variable(self.variable)
         if current_value is None:
             raise RuntimeError(f"Variable {self.variable} not found.")
-        new_value = current_value + value
+        try:
+            new_value = current_value + value
+        except Exception as e:
+            raise RuntimeError(f"Invalid addition: {e}")
         state.set_variable(self.variable, new_value)
 
 
@@ -75,7 +82,10 @@ class SubtractStatement(GrinStatement):
         current_value = state.get_variable(self.variable)
         if current_value is None:
             raise RuntimeError(f"Variable {self.variable} not found.")
-        new_value = current_value - value
+        try:
+            new_value = current_value - value
+        except Exception as e:
+            raise RuntimeError(f"Invalid subtraction: {e}")
         state.set_variable(self.variable, new_value)
 
 
@@ -89,7 +99,12 @@ class MultiplyStatement(GrinStatement):
         current_value = state.get_variable(self.variable)
         if current_value is None:
             raise RuntimeError(f"Variable {self.variable} not found.")
-        new_value = current_value * value
+        if isinstance(current_value, str) and isinstance(value, int) and value < 0:
+            raise RuntimeError("Cannot multiply string by negative integer.")
+        try:
+            new_value = current_value * value
+        except Exception as e:
+            raise RuntimeError(f"Invalid multiplication: {e}")
         state.set_variable(self.variable, new_value)
 
 
@@ -103,12 +118,15 @@ class DivideStatement(GrinStatement):
         current_value = state.get_variable(self.variable)
         if current_value is None:
             raise RuntimeError(f"Variable {self.variable} not found.")
-        if value == 0:
+        if isinstance(value, (int, float)) and value == 0:
             raise RuntimeError("Division by zero.")
-        if isinstance(current_value, int) and isinstance(value, int):
-            new_value = current_value // value
-        else:
-            new_value = current_value / value
+        try:
+            if isinstance(current_value, int) and isinstance(value, int):
+                new_value = current_value // value
+            else:
+                new_value = current_value / value
+        except Exception as e:
+            raise RuntimeError(f"Invalid division: {e}")
         state.set_variable(self.variable, new_value)
 
 
@@ -141,9 +159,12 @@ class GoSubStatement(GrinStatement):
             right_target = state.evaluate(self.right_target)
             if not state.evaluate_condition(left_target, right_target, self.relational_operator):
                 return
+        resolved_line = state.resolve_target(self.target)
+        if resolved_line == state.current_line:
+            raise RuntimeError("GOSUB cannot jump to the same line it is on.")
         return_line = state.current_line + 1
         state.push_gosub(return_line)
-        state.current_line = state.resolve_target(self.target)
+        state.current_line = resolved_line
 
 
 class ReturnStatement(GrinStatement):
@@ -242,7 +263,6 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
             raise RuntimeError
 
         statements[line_number] = statement
-
 
     return statements, labels
 
