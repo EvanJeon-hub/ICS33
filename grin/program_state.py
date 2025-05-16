@@ -75,8 +75,6 @@ class ProgramState:
                 if line is None:
                     raise ValueError(f"Label {label} not found")
                 return line
-            else:
-                raise RuntimeError(f"Goto/Gosub target must be integer or string with quotes.")
         # Handle Integer (GOTO/GOSUB 3)
         try:
             var = int(target)

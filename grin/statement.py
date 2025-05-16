@@ -263,6 +263,8 @@ def create_statements(token_lines: list[list]) -> tuple[dict[int, GrinStatement]
             raise RuntimeError
 
         statements[line_number] = statement
+        # Debugging
+        # print(statements, labels)
 
     return statements, labels
 
