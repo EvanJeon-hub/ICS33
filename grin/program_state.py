@@ -75,6 +75,9 @@ class ProgramState:
                 if line is None:
                     raise ValueError(f"Label {label} not found")
                 return line
+            if not target[-1].isdigit() if '-' in target else not target.isdigit():
+                if not target.startswith('"') and not target.endswith('"'):
+                    raise ValueError("Invalid label format")
         # Handle Integer (GOTO/GOSUB 3)
         try:
             var = int(target)
