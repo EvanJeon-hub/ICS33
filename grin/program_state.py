@@ -77,7 +77,7 @@ class ProgramState:
     def resolve_target(self, target):
         """ Resolves a target to a line number. """
         try:
-            # Handle String Literal (GOTO/GOSUB "label")
+            # Handle String Literal
             if isinstance(target, str):
                 if target.startswith('"') and target.endswith('"'):
                     label = target[1:-1]
@@ -91,7 +91,7 @@ class ProgramState:
                 elif not target.lstrip('-').isdigit():
                     raise ValueError("Invalid label format")
 
-            # Handle Integer (GOTO/GOSUB 3)
+            # Handle Integer
             var = int(target)
 
             if var > 0:
@@ -112,7 +112,7 @@ class ProgramState:
         except Exception as e:
             raise RuntimeError(e)
 
-        return None
+        raise RuntimeError("Unreachable: resolve_target() fell through logic unexpectedly.")
 
     @staticmethod
     def evaluate_condition(left_target, right_target, relational_operator: str) -> bool:

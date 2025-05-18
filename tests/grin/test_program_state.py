@@ -144,83 +144,92 @@ class TestProgramState(unittest.TestCase):
         result = program_state.evaluate(None)
         assert result == 0
 
-    def test_resolve_target_cases(self):
-        """Test the resolve_target method."""
-        statements = {0: None, 1: None, 2: None, 3: None}
-        labels = {"start": 2}
+    def test_resolve_target_valid_label(self):
+        """Test resolving a valid label."""
+        statements = {0: None, 1: None}
+        labels = {"start": 1}
         program_state = ProgramState(statements, labels)
+        assert program_state.resolve_target('"start"') == 1
 
-        assert program_state.resolve_target('"start"') == 2
-
+    def test_resolve_target_label_not_found(self):
+        """Test resolving a label that doesn't exist."""
+        program_state = ProgramState({0: None}, {})
         with self.assertRaises(RuntimeError) as e:
-            program_state.resolve_target('"not_exist"')
-        assert "Label not_exist not found" in str(e.exception)
+            program_state.resolve_target('"missing"')
+        assert "Label missing not found" in str(e.exception)
 
-        with self.assertRaises(RuntimeError):
-            program_state.resolve_target('start"')  # invalid
+    def test_resolve_target_invalid_label_start_quote_missing(self):
+        """Test resolving a label with invalid quote format: missing start quote."""
+        program_state = ProgramState({}, {})
+        with self.assertRaises(RuntimeError) as e:
+            program_state.resolve_target('label"')
+        assert "Invalid label format" in str(e.exception)
 
-        with self.assertRaises(RuntimeError):
-            program_state.resolve_target('"start')  # invalid
+    def test_resolve_target_invalid_label_end_quote_missing(self):
+        """Test resolving a label with invalid quote format: missing end quote."""
+        program_state = ProgramState({}, {})
+        with self.assertRaises(RuntimeError) as e:
+            program_state.resolve_target('"label')
+        assert "Invalid label format" in str(e.exception)
 
-        program_state.current_line = 1
-        assert program_state.resolve_target("2") == 3
+    def test_resolve_target_positive_relative_jump(self):
+        """Test relative positive jump within bounds."""
+        statements = {0: None, 1: None, 2: None}
+        program_state = ProgramState(statements, {})
+        program_state.current_line = 0
+        assert program_state.resolve_target("2") == 2
 
+    def test_resolve_target_negative_relative_jump(self):
+        """Test relative negative jump within bounds."""
+        statements = {0: None, 1: None, 2: None}
+        program_state = ProgramState(statements, {})
         program_state.current_line = 2
         assert program_state.resolve_target("-1") == 1
 
+    def test_resolve_target_negative_jump_invalid_range(self):
+        """Test negative jump resulting in line < 0."""
+        statements = {0: None, 1: None, 2: None}
+        program_state = ProgramState(statements, {})
         program_state.current_line = 0
         with self.assertRaises(RuntimeError) as e:
             program_state.resolve_target("-1")
         assert "Invalid Range" in str(e.exception)
 
+    def test_resolve_target_zero_jump_infinite_loop(self):
+        """Test jump with zero (not permitted)."""
+        statements = {0: None, 1: None}
+        program_state = ProgramState(statements, {})
         program_state.current_line = 1
         with self.assertRaises(RuntimeError) as e:
             program_state.resolve_target("0")
         assert "Infinite Loop is not permitted" in str(e.exception)
 
-    def test_resolve_target_edge_cases(self):
-        """Test the resolve_target method with edge cases."""
+    def test_resolve_target_forward_jump_out_of_range(self):
+        """Test forward jump that exceeds program length."""
+        statements = {0: None, 1: None}
+        program_state = ProgramState(statements, {})
+        program_state.current_line = 1
+        with self.assertRaises(RuntimeError) as e:
+            program_state.resolve_target("2")  # 1 + 2 = 3 > len=2
+        assert "Out of range" in str(e.exception)
+
+    def test_resolve_target_backward_jump_out_of_range(self):
+        """Test backward jump that exceeds program start."""
         statements = {0: None, 1: None, 2: None}
-        labels = {"valid": 1}
-        program_state = ProgramState(statements, labels)
-
-        assert program_state.resolve_target('"valid"') == 1
-
-        with self.assertRaises(RuntimeError) as ctx:
-            program_state.resolve_target('"notfound"')
-        assert "Label notfound not found" in str(ctx.exception)
-
-        with self.assertRaises(RuntimeError) as ctx:
-            program_state.resolve_target('label"')
-        assert "Invalid label format" in str(ctx.exception)
-
-        program_state.current_line = 2
-        with self.assertRaises(RuntimeError) as ctx:
-            program_state.resolve_target("2")  # 2 + 2 = 4 > len(statements)
-        assert "Out of range" in str(ctx.exception)
-
-        program_state.current_line = 2
-        with self.assertRaises(RuntimeError) as ctx:
-            program_state.resolve_target("-5")  # 2 - 5 = -3 < 0
-        assert "Invalid Range" in str(ctx.exception)
-
+        program_state = ProgramState(statements, {})
         program_state.current_line = 5
-        with self.assertRaises(RuntimeError) as ctx:
-            program_state.resolve_target("-1")
-        assert "Out of range" in str(ctx.exception)
+        with self.assertRaises(RuntimeError) as e:
+            program_state.resolve_target("-1")  # 5 - 1 = 4 > len=3
+        assert "Out of range" in str(e.exception)
 
+    def test_resolve_target_invalid_type_returns_none(self):
+        """Test resolve_target fallback when given invalid type."""
+        statements = {0: None, 1: None}
+        program_state = ProgramState(statements, {})
+        with self.assertRaises(RuntimeError) as e:
+            program_state.resolve_target(object())  # not int or str
+        assert "argument must be a string" in str(e.exception)
 
-        with self.assertRaises(RuntimeError) as ctx:
-            program_state.resolve_target("0")
-        assert "Infinite Loop is not permitted" in str(ctx.exception)
-
-        program_state.current_line = 2
-        result = program_state.resolve_target("-1")
-        assert result == 1
-
-        program_state.current_line = 0
-        result = program_state.resolve_target("2")
-        assert result == 2
 
 
 
