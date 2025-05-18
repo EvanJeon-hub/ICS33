@@ -55,69 +55,96 @@ class ProgramState:
 
     def evaluate(self, value):
         """ Evaluates a token is variable or integer. """
-        # Handle String Literal
-        if isinstance(value, str) and value.startswith('"') and value.endswith('"'):
-            return value[1:-1]
         try:
-            # Handle Int or Float
-            return float(value) if '.' in value else int(value)
+            # Handle String Literal
+            if isinstance(value, str) and value.startswith('"') and value.endswith('"'):
+                return value[1:-1]
+
+            # if a value is string, convert to int or float
+            if isinstance(value, str):
+                return float(value) if '.' in value else int(value)
+
+            # if a value is already int or float, return it
+            if isinstance(value, (int, float)):
+                return value
+
+            return self.get_variable(value)
+
         except ValueError:
             # Handle Variable
             return self.get_variable(value)
 
     def resolve_target(self, target):
         """ Resolves a target to a line number. """
-        # Handle String Literal (GOTO/GOSUB "label")
-        if isinstance(target, str):
-            if target.startswith('"') and target.endswith('"'):
-                label = target[1:-1]
-                line = self.get_label_line(label)
-                if line is None:
-                    raise ValueError(f"Label {label} not found")
-                return line
-            if not target[-1].isdigit() if '-' in target else not target.isdigit():
-                if not target.startswith('"') and not target.endswith('"'):
-                    raise ValueError("Invalid label format")
-        # Handle Integer (GOTO/GOSUB 3)
         try:
+            # Handle String Literal (GOTO/GOSUB "label")
+            if isinstance(target, str):
+                if target.startswith('"') and target.endswith('"'):
+                    label = target[1:-1]
+                    line = self.get_label_line(label)
+
+                    if line is None:
+                        raise ValueError(f"Label {label} not found")
+
+                    return line
+
+                elif not target.lstrip('-').isdigit():
+                    raise ValueError("Invalid label format")
+
+            # Handle Integer (GOTO/GOSUB 3)
             var = int(target)
+
             if var > 0:
                 if self.current_line + var > len(self.statements):
                     raise ValueError("Out of range")
                 return self.current_line + var
+
             if var < 0:
                 if self.current_line + var > len(self.statements):
                     raise ValueError("Out of range")
                 if self.current_line + var < 0:
                     raise ValueError("Invalid Range")
                 return self.current_line + var
+
             if var == 0:
                 raise ValueError("Infinite Loop is not permitted")
-        except ValueError as e:
+
+        except Exception as e:
             raise RuntimeError(e)
+
         return None
 
     @staticmethod
     def evaluate_condition(left_target, right_target, relational_operator: str) -> bool:
         """ Evaluates a condition based on the relational operator. """
         allowed = (int, float)
+
         if isinstance(left_target, allowed) and isinstance(right_target, allowed):
             pass
+
         elif isinstance(left_target, str) and isinstance(right_target, str):
             pass
+
         else:
             raise RuntimeError("Invalid types for comparison")
+
         if relational_operator == "<":
             return left_target < right_target
+
         elif relational_operator == "<=":
             return left_target <= right_target
+
         elif relational_operator == ">":
             return left_target > right_target
+
         elif relational_operator == ">=":
             return left_target >= right_target
+
         elif relational_operator == "=":
             return left_target == right_target
+
         elif relational_operator == "<>":
             return left_target != right_target
+
         else:
             raise RuntimeError(f"Invalid relational operator: {relational_operator}")
