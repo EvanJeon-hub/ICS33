@@ -3,6 +3,7 @@
 from grin.program_state import ProgramState
 from grin.statement import GrinStatement
 import unittest
+
 # coverage report -m
 # coverage run -m --branch pytest . (branch coverage)
 
@@ -230,7 +231,95 @@ class TestProgramState(unittest.TestCase):
             program_state.resolve_target(object())  # not int or str
         assert "argument must be a string" in str(e.exception)
 
+    def test_evaluate_condition_between_variables(self):
+        """Test evaluating a condition between two variables."""
+        program_state = ProgramState({}, {})
+        program_state.set_variable("A", 5)
+        program_state.set_variable("B", 10)
+        result = program_state.evaluate_condition("A", "B", "<")
+        assert result is True
 
+    def test_evaluate_condition_between_variables_fail(self):
+        """Test evaluating a condition between two variables."""
+        program_state = ProgramState({}, {})
+        program_state.set_variable("A", 5)
+        program_state.set_variable("B", 10)
+        result = program_state.evaluate_condition("A", "B", ">")
+        assert result is False
+
+    def test_evaluate_condition_invalid_type_comparison(self):
+        """Test evaluating a condition with invalid types."""
+        program_state = ProgramState({}, {})
+        with self.assertRaises(RuntimeError) as e:
+            program_state.evaluate_condition("A", 5, "<")
+        assert "Invalid types for comparison" in str(e.exception)
+
+
+    def test_evaluate_condition_less_than(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(4, 5, "<")
+        assert result is True
+
+    def test_evaluate_condition_less_than_fail(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(6, 5, "<")
+        assert result is False
+
+    def test_evaluate_condition_greater_than(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(6, 5, ">")
+        assert result is True
+
+    def test_evaluate_condition_greater_than_fail(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(4, 5, ">")
+        assert result is False
+
+    def test_evaluate_condition_equal(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(5, 5, "=")
+        assert result is True
+
+    def test_evaluate_condition_equal_fail(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(5, 6, "=")
+        assert result is False
+
+    def test_evaluate_condition_not_equal(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(5, 5, "<>")
+        assert result is False
+
+    def test_evaluate_condition_not_equal_fail(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(5, 6, "<>")
+        assert result is True
+
+    def test_evaluate_condition_less_than_equal(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(5, 5, "<=")
+        assert result is True
+
+    def test_evaluate_condition_less_than_equal_fail(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(6, 5, "<=")
+        assert result is False
+
+    def test_evaluate_condition_greater_than_equal(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(5, 5, ">=")
+        assert result is True
+
+    def test_evaluate_condition_greater_than_equal_fail(self):
+        program_state = ProgramState({}, {})
+        result = program_state.evaluate_condition(4, 5, ">=")
+        assert result is False
+
+    def test_evaluate_condition_invalid_operator(self):
+        program_state = ProgramState({}, {})
+        with self.assertRaises(RuntimeError) as e:
+            program_state.evaluate_condition(5, 5, "invalid")
+        assert "Invalid relational operator" in str(e.exception)
 
 
 if __name__ == "__main__":
