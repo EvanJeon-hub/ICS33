@@ -390,6 +390,22 @@ def run_test_eleventh_case() -> None:
             'FAILED',
             'The sanity checker has failed, for the reasons described above.')
 
+def run_test_twelfth_case() -> None:
+    try:
+        check_python_version()
+
+        with contextlib.closing(start_process()) as process:
+            test_lines = make_test_lines_twelfth()
+            run_test_lines(process, test_lines)
+
+            print_labeled_output(
+                'PASSED',
+                'Passed twelfth Case')
+    except TestFailure:
+        print_labeled_output(
+            'FAILED',
+            'The sanity checker has failed, for the reasons described above.')
+
 def run_test_last_case() -> None:
     try:
         check_python_version()
@@ -646,6 +662,18 @@ def make_test_lines_eleventh() -> list[TestInputLine | TestOutputLine]:
         TestEndOfOutput(2.0)
     ]
 
+def make_test_lines_twelfth() -> list[TestInputLine | TestOutputLine]:
+    return[
+        TestInputLine('LET A 3'),
+        TestInputLine('LET B 5'),
+        TestInputLine('GOTO 2 IF A > 4'),
+        TestInputLine('PRINT A'),
+        TestInputLine('PRINT B'),
+        TestInputLine('.'),
+        TestOutputLine('3', 10.0),
+        TestOutputLine('5', 10.0),
+    ]
+
 def make_test_lines_last() -> list[TestInputLine | TestOutputLine]:
     return [
         TestInputLine('LET A 3'),
@@ -675,6 +703,7 @@ if __name__ == '__main__':
         run_test_nineth_case,
         run_test_tenth_case,
         run_test_eleventh_case,
+        run_test_twelfth_case,
         run_test_last_case
     ]
     for test_case in test_cases:
