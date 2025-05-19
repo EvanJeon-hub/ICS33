@@ -20,6 +20,7 @@ class TestGrinStatement(unittest.TestCase):
         with self.assertRaises(NotImplementedError):
             statement.execute(ProgramState([], []))
 
+
 class TestLetStatement(unittest.TestCase):
     """Test the GrinStatement class and its subclasses."""
     def test_let_statement(self):
@@ -385,6 +386,30 @@ def make_token(kind, text, line=1, column=1):
 
 class TestCreateStatements(unittest.TestCase):
     """Test the create_statements function."""
+    def test_create_let_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.LET, "LET"),
+             make_token(GrinTokenKind.IDENTIFIER, "X"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "5")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, LetStatement)
+        self.assertEqual(stmt.variable, "X")
+        self.assertEqual(stmt.value, "5")
+
+    def test_create_print_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.PRINT, "PRINT"),
+             make_token(GrinTokenKind.IDENTIFIER, "X")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, PrintStatement)
+        self.assertEqual(stmt.value, "X")
+
     def test_create_INNUM_statement(self):
         tokens = [
             [make_token(GrinTokenKind.INNUM, "INNUM"),
@@ -548,9 +573,5 @@ class TestCreateStatements(unittest.TestCase):
             create_statements(tokens)
 
 
-
-
-
 if __name__ == "__main__":
     unittest.main()
-
