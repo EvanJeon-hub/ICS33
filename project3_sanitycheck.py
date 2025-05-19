@@ -706,6 +706,10 @@ if __name__ == '__main__':
         run_test_twelfth_case,
         run_test_last_case
     ]
+    print('\nThis Sanity checker is designed to check more testcases.\n'
+          'This version will check 12 more testcases than the original sanity checker.\n'
+          'Testcases are based on the ICS33 project 3 project requirement website.\n'
+          'Created by Evan-Soobin Jeon\n')
     for test_case in test_cases:
         test_case()
         print()

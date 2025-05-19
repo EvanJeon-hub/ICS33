@@ -99,8 +99,6 @@ class MultiplyStatement(GrinStatement):
         current_value = state.get_variable(self.variable)
         if current_value is None:
             raise RuntimeError(f"Variable {self.variable} not found.")
-        if isinstance(current_value, str) and isinstance(value, int) and value < 0:
-            raise RuntimeError("Cannot multiply string by negative integer.")
         try:
             new_value = current_value * value
         except Exception as e:
