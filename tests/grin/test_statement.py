@@ -2,7 +2,8 @@
 # Evan-Soobin Jeon
 
 from grin.statement import *
-from grin.token import GrinTokenKind
+from grin.token import GrinToken, GrinTokenKind
+from grin.location import GrinLocation
 from grin.program_state import ProgramState
 from contextlib import redirect_stdout
 import io
@@ -175,7 +176,7 @@ class TestArithmeticStatements(unittest.TestCase):
                 raise ValueError("Boom")
 
         state = ProgramState({}, {})
-        state.set_variable("X", Exploding())  # will explode on *
+        state.set_variable("X", Exploding())
         multiply_statement = MultiplyStatement("X", "3")
 
         with self.assertRaises(RuntimeError) as e:
@@ -242,7 +243,7 @@ class TestGotoStatement(unittest.TestCase):
         state = ProgramState({0: None, 1: None, 2: None}, {})
         state.current_line = 0
 
-        stmt = GotoStatement("2")  # 점프 대상: 현재 라인 + 2 = 2
+        stmt = GotoStatement("2")
         stmt.execute(state)
 
         self.assertEqual(state.current_line, 2)
@@ -303,7 +304,7 @@ class TestGosubStatement(unittest.TestCase):
         state.set_variable("A", 5)
         state.current_line = 0
 
-        stmt = GoSubStatement("2", "A", "<", "10")  # 5 < 10 → True
+        stmt = GoSubStatement("2", "A", "<", "10")
         stmt.execute(state)
 
         self.assertEqual(state.current_line, 2)
@@ -314,7 +315,7 @@ class TestGosubStatement(unittest.TestCase):
         state.set_variable("A", 15)
         state.current_line = 0
 
-        stmt = GoSubStatement("2", "A", "<", "10")  # 15 < 10 → False
+        stmt = GoSubStatement("2", "A", "<", "10")
         stmt.execute(state)
 
         self.assertEqual(state.current_line, 0)
@@ -378,8 +379,175 @@ class TestEndStatement(unittest.TestCase):
         self.assertFalse(state.running)
 
 
+def make_token(kind, text, line=1, column=1):
+    return GrinToken(kind=kind, text=text, location=GrinLocation(line, column), value=text)
+
+
 class TestCreateStatements(unittest.TestCase):
     """Test the create_statements function."""
+    def test_create_INNUM_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.INNUM, "INNUM"),
+             make_token(GrinTokenKind.IDENTIFIER, "X")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, INNUMStatement)
+        self.assertEqual(stmt.variable, "X")
+
+    def test_create_INSTR_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.INSTR, "INSTR"),
+             make_token(GrinTokenKind.IDENTIFIER, "X")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, INSTRStatement)
+        self.assertEqual(stmt.variable, "X")
+
+    def test_create_add_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.ADD, "ADD"),
+             make_token(GrinTokenKind.IDENTIFIER, "X"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "5")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, AddStatement)
+        self.assertEqual(stmt.variable, "X")
+        self.assertEqual(stmt.value, "5")
+
+    def test_create_subtract_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.SUB, "SUB"),
+             make_token(GrinTokenKind.IDENTIFIER, "X"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "5")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, SubtractStatement)
+        self.assertEqual(stmt.variable, "X")
+        self.assertEqual(stmt.value, "5")
+
+    def test_create_multiply_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.MULT, "MULT"),
+             make_token(GrinTokenKind.IDENTIFIER, "X"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "5")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, MultiplyStatement)
+        self.assertEqual(stmt.variable, "X")
+        self.assertEqual(stmt.value, "5")
+
+    def test_create_divide_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.DIV, "DIV"),
+             make_token(GrinTokenKind.IDENTIFIER, "X"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "5")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, DivideStatement)
+        self.assertEqual(stmt.variable, "X")
+        self.assertEqual(stmt.value, "5")
+
+    def test_create_goto_without_condition(self):
+        tokens = [
+            [make_token(GrinTokenKind.GOTO, "GOTO"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "1")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, GotoStatement)
+        self.assertEqual(stmt.target, "1")
+        self.assertIsNone(stmt.left_target)
+        self.assertIsNone(stmt.relational_operator)
+        self.assertIsNone(stmt.right_target)
+
+    def test_create_goto_with_condition(self):
+        tokens = [
+            [make_token(GrinTokenKind.GOTO, "GOTO"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "1"),
+             make_token(GrinTokenKind.IF, "IF"),
+             make_token(GrinTokenKind.IDENTIFIER, "X"),
+             make_token(GrinTokenKind.LESS_THAN, "<"),
+             make_token(GrinTokenKind.LITERAL_INTEGER, "5")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, GotoStatement)
+        self.assertEqual(stmt.target, "1")
+        self.assertEqual(stmt.left_target, "X")
+        self.assertEqual(stmt.relational_operator, "<")
+        self.assertEqual(stmt.right_target, "5")
+
+    def test_create_gosub_without_condition(self):
+        tokens = [
+            [make_token(GrinTokenKind.GOSUB, "GOSUB"),
+             make_token(GrinTokenKind.LITERAL_STRING, '"start"')]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, GoSubStatement)
+        self.assertEqual(stmt.target, '"start"')
+        self.assertIsNone(stmt.left_target)
+        self.assertIsNone(stmt.relational_operator)
+        self.assertIsNone(stmt.right_target)
+
+    def test_create_gosub_with_condition(self):
+        tokens = [
+            [make_token(GrinTokenKind.GOSUB, "GOSUB"),
+             make_token(GrinTokenKind.LITERAL_STRING, '"start"'),
+             make_token(GrinTokenKind.IF, "IF"),
+             make_token(GrinTokenKind.IDENTIFIER, "A"),
+             make_token(GrinTokenKind.EQUAL, "="),
+             make_token(GrinTokenKind.IDENTIFIER, "B")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, GoSubStatement)
+        self.assertEqual(stmt.target, '"start"')
+        self.assertEqual(stmt.left_target, "A")
+        self.assertEqual(stmt.relational_operator, "=")
+        self.assertEqual(stmt.right_target, "B")
+
+    def test_create_return_statement(self):
+        tokens = [
+            [make_token(GrinTokenKind.RETURN, "RETURN")]
+        ]
+
+        statements, labels = create_statements(tokens)
+        stmt = statements[0]
+        self.assertIsInstance(stmt, ReturnStatement)
+
+    def test_raises_on_unknown_token_kind(self):
+        class FakeToken:
+            @staticmethod
+            def kind():
+                return "UNKNOWN"
+
+            @staticmethod
+            def text():
+                return "???"
+
+        tokens = [[FakeToken()]]
+
+        with self.assertRaises(RuntimeError):
+            create_statements(tokens)
+
+
 
 
 
