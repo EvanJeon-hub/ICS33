@@ -43,9 +43,7 @@ class mainTest(unittest.TestCase):
         self.assertIn("Error:", output)
 
     def test_direct_main_starts_with_dot(self):
-        input_code = """\
-        .
-        """
+        input_code = ".\n"
         sys.stdin = io.StringIO(input_code)
         f = io.StringIO()
         with redirect_stdout(f):

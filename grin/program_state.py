@@ -7,7 +7,7 @@ and provides methods to manipulate it.
 """
 from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from grin.statement import GrinStatement
 
 class ProgramState:
