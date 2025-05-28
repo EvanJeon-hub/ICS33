@@ -1,3 +1,4 @@
+"""A module for defining terminal and variable symbols in a grammar."""
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
 
@@ -11,13 +12,12 @@ class TerminalSymbol:
 
 
 class VariableSymbol:
-    """Represents a variable symbol in a grammar."""
     def __init__(self, variable: str):
         self.variable = variable
 
-    def find(self, _):
-        if self.variable == variable:
-            yield self.variable
+    def find(self, grammar):
+        rule = grammar.get_rule(self.variable)
+        yield from rule.generate(grammar)
 
 
 def parse_symbol(symbol: str):
