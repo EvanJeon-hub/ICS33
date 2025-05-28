@@ -1,39 +1,29 @@
 # Evan-Soobin Jeon
 # ejeon2@uci.edu
-def generate_range(start, end = None, step = 1):
-    if end is None:
-        end = start
-        start = 0
+# problem2.py
 
-    if step == 0:
-        raise ValueError("Step cannot be zero.")
+class HashableByAttributes:
+    def __hash__(self):
+        attrs = tuple(
+            (key, value) for key, value in self.__dict__.items()
+            if isinstance(value, (int, float, str, tuple, bool, type(None)))
+        )
+        return hash(attrs)
 
-    if step > 0:
-        while start < end:
-            yield start
-            start += step
-    else:
-        while start > end:
-            yield start
-            start += step
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return self.__dict__ == other.__dict__
 
-def no_fizz_without_buzz(start):
-    i = start
-    while True:
-        if (i % 3 == 0 and i % 5 == 0) or (i % 3 != 0 and i % 5 != 0):
-            yield i
-        i += 1
 
-def cartesian_product(*args):
-    if not args:
-        yield
+class Person(HashableByAttributes):
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
 
-    def product_helper(index, current):
-        if index == len(args):
-            yield current
-            return
 
-        for element in args[index]:
-            yield from product_helper(index + 1, current + (element,))
-
-    yield from product_helper(0, ())
+class Coordinate(HashableByAttributes):
+    def __init__(self, x, y, metadata=None):
+        self.x = x
+        self.y = y
+        self.metadata = metadata
