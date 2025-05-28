@@ -23,6 +23,7 @@ class Rule:
         selected_option = random.choices(self.options, weights=weights, k=1)[0]
         return selected_option.generate(grammar)
 
+
 class Grammar:
     def __init__(self):
         self._rules = {}
