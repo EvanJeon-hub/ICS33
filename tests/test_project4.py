@@ -46,3 +46,17 @@ class TestProject4Main(unittest.TestCase):
                 self.assertIn(line, expected_outputs)
         finally:
             sys.stdin = stdin_backup
+
+    def test_main_invalid_file(self):
+        user_input = "non_existent_file.txt\n5\nGreeting\n"
+
+        stdin_backup = sys.stdin
+        stdout_capture = io.StringIO()
+
+        try:
+            sys.stdin = io.StringIO(user_input)
+            with redirect_stdout(stdout_capture):
+                with self.assertRaises(FileNotFoundError):
+                    main()
+        finally:
+            sys.stdin = stdin_backup

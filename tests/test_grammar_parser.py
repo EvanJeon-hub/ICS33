@@ -6,6 +6,7 @@ import os
 
 # coverage report -m
 # coverage run -m --branch pytest . (branch coverage)
+
 class TestGrammarParser(unittest.TestCase):
     """ Test class for Grammar Parser"""
     def setUp(self):
