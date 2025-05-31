@@ -66,7 +66,6 @@ class Grammar:
                     options = []
                     while lines[i] != "}":
                         parts = lines[i].split()
-                        print(parts)
                         chance = int(parts[0])
                         symbols = parts[1:]
                         options.append(Option(chance, symbols))
